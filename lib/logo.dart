@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
-import '_1.dart';
+import 'start.dart';
 import 'dart:async';
 
 class logo extends StatefulWidget {
@@ -16,19 +16,16 @@ class _logoState extends State<logo> {
   Timer? timer;
   @override
   void initState() {
+    super.initState();
     timer = Timer(
       const Duration(seconds: 3),
       () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => st1(),
-          ),
-        );
+        Navigator.pushReplacementNamed(context, "/start");
       },
     );
   }
 
+  @override
   void dispose() {
     super.dispose();
     timer?.cancel();
@@ -36,97 +33,75 @@ class _logoState extends State<logo> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: const Color(0xff1e1c1c),
-        body: Stack(
-          children: <Widget>[
-            Pinned.fromPins(
-              Pin(size: 500.0, end: -190.0),
-              Pin(size: 250.0, middle: 0.4747),
-              child: Stack(
-                children: <Widget>[
-                  Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: const AssetImage('assets/logo.png'),
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                    margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 40.2),
-                  ),
-                  Pinned.fromPins(
-                    Pin(size: 164.0, start: 33.0),
-                    Pin(size: 54.0, end: 0.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: const AssetImage('assets/clust.png'),
-                          fit: BoxFit.fill,
-                        ),
-                      ),
+    return Scaffold(
+      backgroundColor: const Color(0xff1e1c1c),
+      body: Center(
+        child: Container(
+          height: 263,
+          width: 664,
+          color: Colors.amber.withOpacity(0.5),
+          child: Stack(
+            children: [
+              Positioned(
+                top: MediaQuery.of(context).size.height * 0.0,
+                left: MediaQuery.of(context).size.width * 0.25,
+                child: Container(
+                  height: 209,
+                  width: 500,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/logo.png'),
+                      fit: BoxFit.fill,
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-            Pinned.fromPins(
-              Pin(size: 210.0, start: -73.0),
-              Pin(size: 220.0, start: 25.0),
-              child: Stack(
-                children: <Widget>[
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.all(Radius.elliptical(9999.0, 9999.0)),
-                      border: Border.all(
-                          width: 0.5, color: const Color(0xff2b2828)),
+              Positioned(
+                top: MediaQuery.of(context).size.height * 0.215,
+                left: MediaQuery.of(context).size.width * 0.33,
+                child: Container(
+                  height: 54,
+                  width: 164,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/clust.png'),
+                      fit: BoxFit.fill,
                     ),
                   ),
-                  Align(
-                    alignment: Alignment(0.0, 0.009),
-                    child: Container(
-                      width: 104.0,
-                      height: 109.0,
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.all(Radius.elliptical(9999.0, 9999.0)),
-                        border: Border.all(
-                            width: 0.5, color: const Color(0xff2b2828)),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-            Pinned.fromPins(
-              Pin(size: 158.0, end: -55.0),
-              Pin(size: 166.0, end: -87.0),
-              child: Stack(
-                children: <Widget>[
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.all(Radius.elliptical(9999.0, 9999.0)),
-                      border: Border.all(
-                          width: 0.5, color: const Color(0xff2b2828)),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.all(Radius.elliptical(9999.0, 9999.0)),
-                      border: Border.all(
-                          width: 0.5, color: const Color(0xff2b2828)),
-                    ),
-                    margin: EdgeInsets.fromLTRB(27.0, 29.0, 27.0, 28.0),
-                  ),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
+      // Positioned(
+      //   top: MediaQuery.of(context).size.height * 0.339,
+      //   left: MediaQuery.of(context).size.width * 0.25,
+      //   child: Container(
+      //     height: 209,
+      //     width: 500,
+      //     decoration: const BoxDecoration(
+      //       image: DecorationImage(
+      //         image: AssetImage('assets/logo.png'),
+      //         fit: BoxFit.fill,
+      //       ),
+      //     ),
+      //   ),
+      // ),
+      // Positioned(
+      //   top: MediaQuery.of(context).size.height * 0.564,
+      //   left: MediaQuery.of(context).size.width * 0.33,
+      //   child: Container(
+      //     height: 54,
+      //     width: 164,
+      //     decoration: const BoxDecoration(
+      //       image: DecorationImage(
+      //         image: AssetImage('assets/clust.png'),
+      //         fit: BoxFit.fill,
+      //       ),
+      //     ),
+      //   ),
+      // ),
     );
   }
 }

@@ -1,11 +1,14 @@
-import 'package:clust/_1.dart';
+import 'dart:convert';
+
+import 'package:clust/start.dart';
 import 'package:clust/main.dart';
+import 'package:clust/network_helper.dart';
 import 'package:clust/signupx.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
+import 'package:http/http.dart' as http;
 import 'model/mysql.dart';
 
 class signinx extends StatefulWidget {
@@ -17,6 +20,8 @@ class signinx extends StatefulWidget {
   State<signinx> createState() => _signinxState();
 }
 
+// late List<dynamic> data;
+
 class _signinxState extends State<signinx> {
   var db = new Mysql();
   var mail = '';
@@ -24,20 +29,24 @@ class _signinxState extends State<signinx> {
   final userPass = TextEditingController();
   var isobscure = true;
   final _formKey = GlobalKey<FormState>();
+  networkHelper connection =
+      networkHelper(url: "http://192.168.1.104:3333/user/");
+
   @override
   void initState() {
     isobscure = true;
-    db.getConnection().then((conn) {
-      String sql = 'SELECT `email` FROM `userlogin` WHERE 1';
-      conn.query(sql).then((value) {
-        for (var row in value) {
-          setState(() {
-            mail = row[0];
-          });
-        }
-        debugPrint(mail);
-      });
-    });
+    // db.getConnection().then((conn) {
+    //   String sql = 'SELECT `email` FROM `userlogin` WHERE 1';
+    //   conn.query(sql).then((value) {
+    //     for (var row in value) {
+    //       setState(() {
+    //         mail = row[0];
+    //       });
+    //     }
+    //     debugPrint(mail);
+    //   });
+    // });
+    // data = connection.fetchData();
   }
 
   @override
@@ -47,40 +56,11 @@ class _signinxState extends State<signinx> {
       backgroundColor: const Color(0xff1e1c1c),
       body: Stack(
         children: <Widget>[
-          // Pinned.fromPins(
-          //   Pin(size: 500.0, middle: -1),
-          //   Pin(size: 239.0, start: 115.0),
-          //   child: Stack(
-          //     children: <Widget>[
-          //       Container(
-          //         decoration: BoxDecoration(
-          //           image: DecorationImage(
-          //             image: const AssetImage('assets/logo.png'),
-          //             fit: BoxFit.fill,
-          //           ),
-          //         ),
-          //         margin: EdgeInsets.fromLTRB(0.0, 0.0, 2.0, 29.0),
-          //       ),
-          //       Pinned.fromPins(
-          //         Pin(size: 164.0, start: 33.0),
-          //         Pin(size: 54.0, end: 0.0),
-          //         child: Container(
-          //           decoration: BoxDecoration(
-          //             image: DecorationImage(
-          //               image: const AssetImage('assets/clust.png'),
-          //               fit: BoxFit.fill,
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          // Align(
-          //     // alignment: Alignment(0.016, 1),
-          //     child: SizedBox(
-          //   // width: 268.0,
-          //   // height: 500.0,
+          Text(
+            "jbnzx",
+            // data[0]["first_name"],
+            style: TextStyle(color: Colors.white),
+          ),
           Form(
               key: _formKey,
               child: Stack(
@@ -148,7 +128,7 @@ class _signinxState extends State<signinx> {
                             ),
                           ),
                           SizedBox(
-                            height: 50,
+                            height: 25,
                           ),
                           TextFormField(
                             textAlign: TextAlign.left,
@@ -220,7 +200,7 @@ class _signinxState extends State<signinx> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => st1(),
+                                              builder: (context) => start(),
                                             ),
                                           );
                                         }
