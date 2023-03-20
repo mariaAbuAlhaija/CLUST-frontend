@@ -1,4 +1,4 @@
-import 'package:clust/signinx.dart';
+import 'package:clust/screens/signinx.dart';
 import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
 import 'package:flutter/gestures.dart';

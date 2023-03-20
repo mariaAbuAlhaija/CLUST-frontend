@@ -1,15 +1,15 @@
 import 'dart:convert';
 
-import 'package:clust/start.dart';
+import 'package:clust/screens/start.dart';
 import 'package:clust/main.dart';
 import 'package:clust/network_helper.dart';
-import 'package:clust/signupx.dart';
+import 'package:clust/screens/signupx.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
-import 'model/mysql.dart';
+import '../model/mysql.dart';
 
 class signinx extends StatefulWidget {
   signinx({

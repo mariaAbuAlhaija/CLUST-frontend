@@ -1,6 +1,6 @@
-import 'package:clust/logo.dart';
-import 'package:clust/signinx.dart';
-import 'package:clust/start.dart';
+import 'package:clust/screens/logo.dart';
+import 'package:clust/screens/signinx.dart';
+import 'package:clust/screens/start.dart';
 import 'package:flutter/material.dart';
 
 void main() {
