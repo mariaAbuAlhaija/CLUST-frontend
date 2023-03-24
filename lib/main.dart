@@ -1,3 +1,4 @@
+import 'package:clust/models/tag_model.dart';
 import 'package:clust/screens/logo.dart';
 import 'package:clust/screens/signinx.dart';
 import 'package:clust/screens/start.dart';
@@ -6,12 +7,12 @@ import 'package:clust/styles/mobile_styles.dart' as mobile;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:io' show Platform;
+import 'controllers/tag_controller';
 
-import 'controllers/event_controller.dart';
 import 'models/event_model.dart';
 
 Future<void> main() async {
-    EventController controller = EventController();
+    TagController controller = TagController();
 
 ///////////////////////////////////////////
 //   Event newEvent = Event(
@@ -33,12 +34,12 @@ Future<void> main() async {
 //    Event addedEvent = await controller.createEvent(newEvent);
 
 ///////////////////////////////////////////////////
-  List<Event> events = await controller.getAll();
-  Event eventbyid =await controller.getByID(2);
+  List<Tag> events = await controller.getAll();
+  Tag eventbyid =await controller.getByID(2);
   events.forEach((event) {
-    print(event.name);
+    print(event.text_description);
   });
-   print(eventbyid.name);
+   print(eventbyid.text_description);
   runApp(MyApp());
 }
 
