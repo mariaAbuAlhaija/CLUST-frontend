@@ -16,7 +16,7 @@ import 'controllers/tag_controller';
 import 'models/event_model.dart';
 
 Future<void> main() async {
-    ReportController controller = ReportController();
+    // ReportController controller = ReportController();
 
 ///////////////////////////////////////////
 //   Event newEvent = Event(
@@ -30,20 +30,17 @@ Future<void> main() async {
 //     'Pending',
 //     0,
 //     100,
-//     'Thank you for registering!',
-  
+//     'Thank you for registering!', 
 //   );
- 
-
 //    Event addedEvent = await controller.createEvent(newEvent);
 
 ///////////////////////////////////////////////////
-  List<Report> events = await controller.getAll();
-  Report eventbyid =await controller.getByID(2);
-  events.forEach((event) {
-    print(event.description);
-  });
-   print(eventbyid.description);
+  // List<Report> events = await controller.getAll();
+  // Report eventbyid =await controller.getByID(2);
+  // events.forEach((event) {
+  //   print(event.description);
+  // });
+  //  print(eventbyid.description);
   runApp(MyApp());
 }
 
