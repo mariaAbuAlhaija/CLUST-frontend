@@ -7,7 +7,38 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:io' show Platform;
 
-void main() {
+import 'controllers/event_controller.dart';
+import 'models/event_model.dart';
+
+Future<void> main() async {
+    EventController controller = EventController();
+
+///////////////////////////////////////////
+//   Event newEvent = Event(
+// 0,
+//     'New Event',
+//     'A new event',
+//     2,
+//     1,
+//     "2023-03-19",
+//    "2023-03-19",
+//     'Pending',
+//     0,
+//     100,
+//     'Thank you for registering!',
+  
+//   );
+ 
+
+//    Event addedEvent = await controller.createEvent(newEvent);
+
+///////////////////////////////////////////////////
+  List<Event> events = await controller.getAll();
+  Event eventbyid =await controller.getByID(2);
+  events.forEach((event) {
+    print(event.name);
+  });
+   print(eventbyid.name);
   runApp(MyApp());
 }
 
