@@ -189,6 +189,61 @@ class ApiHelper {
     }
   }
 
+//--------------------------------------
+ Future getCategorys() async {
+    String url = 'http://192.168.93.1:3333/category/';
+
+    http.Response response = await http.get(Uri.parse(url));
+
+    switch (response.statusCode) {
+      case 200:
+        dynamic jsonObject = jsonDecode(response.body);
+        return jsonObject;
+      case 400:
+        throw "Bad Request";
+      case 401:
+        throw "Unauthrizied";
+      case 402:
+        throw "Payment Required";
+      case 403:
+        throw "Forbidden";
+      case 404:
+        throw "Not Found";
+      case 500:
+        throw "Server Error :(";
+      default:
+        throw "Server Error :(";
+    }
+  }
+
+  Future getCategory(int id) async {
+   
+     String url = 'http://192.168.93.1:3333/category/$id';
+
+    http.Response response = await http.get(Uri.parse(url));
+   
+    switch (response.statusCode) {
+      case 200:
+        dynamic jsonObject = jsonDecode(response.body);
+        return jsonObject;
+      case 400:
+        throw "Bad Request";
+      case 401:
+        throw "Unauthrizied";
+      case 402:
+        throw "Payment Required";
+      case 403:
+        throw "Forbidden";
+      case 404:
+        throw "Not Found";
+      case 500:
+        throw "Server Error :(";
+      default:
+        throw "Server Error :(";
+    }
+  }
+
+
 
 
 
