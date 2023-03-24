@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
-import '../model/mysql.dart';
+import '../models/mysql.dart';
 
 class signinx extends StatefulWidget {
   signinx({
@@ -23,7 +23,7 @@ class signinx extends StatefulWidget {
 // late List<dynamic> data;
 
 class _signinxState extends State<signinx> {
- // var db = new Mysql();
+  // var db = new Mysql();
   var mail = '';
   final userEmail = TextEditingController();
   final userPass = TextEditingController();
