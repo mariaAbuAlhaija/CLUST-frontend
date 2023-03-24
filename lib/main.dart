@@ -1,4 +1,6 @@
+import 'package:clust/controllers/report_controller.dart';
 import 'package:clust/models/category_model.dart';
+import 'package:clust/models/report_model.dart';
 import 'package:clust/models/tag_model.dart';
 import 'package:clust/screens/logo.dart';
 import 'package:clust/screens/signinx.dart';
@@ -14,7 +16,7 @@ import 'controllers/tag_controller';
 import 'models/event_model.dart';
 
 Future<void> main() async {
-    CategoryController controller = CategoryController();
+    ReportController controller = ReportController();
 
 ///////////////////////////////////////////
 //   Event newEvent = Event(
@@ -36,12 +38,12 @@ Future<void> main() async {
 //    Event addedEvent = await controller.createEvent(newEvent);
 
 ///////////////////////////////////////////////////
-  List<Category> events = await controller.getAll();
-  Category eventbyid =await controller.getByID(2);
+  List<Report> events = await controller.getAll();
+  Report eventbyid =await controller.getByID(2);
   events.forEach((event) {
-    print(event.name);
+    print(event.description);
   });
-   print(eventbyid.name);
+   print(eventbyid.description);
   runApp(MyApp());
 }
 
