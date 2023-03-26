@@ -24,35 +24,43 @@ class Event {
       this.capacity,
       this.thanking_message);
   factory Event.fromJson(Map<String, dynamic> json) {
-    DateTime st = DateTime.parse(json['start_date']);
-    DateTime en = DateTime.parse(json['end_date']);
+    DateTime st = DateTime.parse(json['start_date']??'');
+    DateTime en = DateTime.parse(json['end_date']??'');
     return Event(
-        json['id'],
-        json['name'],
-        json['description'],
-        json['category_id'],
-        json['organizer_id'],
+        json['id']??0,
+        json['name']??'',
+        json['description']??'',
+        json['category_id']??0,
+        json['organizer_id']??0,
        st,
       en,
-        json['status'],
-        json['views'],
-        json['capacity'],
-        json['thanking_message']);
+        json['status']??'',
+        json['views']??0,
+        json['capacity']??0,
+        json['thanking_message']??'');
   }
+  
 
   Map<String, dynamic> toJson() {
+   
+   
+   
+   
+   
+   
     return {
-      'id': id,
+    
       'name': name,
       'description': description,
-      'category_id': category_id,
-      'organizer_id': organizer_id,
-      'start_date': start_date,
-      'end_date': end_date,
+      'category_id': category_id.toString(),
+      'organizer_id': organizer_id.toString(),
+      'start_date': start_date.toString(),
+      'end_date': end_date.toString(),
       'status': status,
-      'views': views,
-      'capacity': capacity,
+      'views': views.toString(),
+      'capacity': capacity.toString(),
       'thanking_message': thanking_message,
+      
     };
   }
 }

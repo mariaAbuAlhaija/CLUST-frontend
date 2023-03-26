@@ -17,10 +17,10 @@ class TagController {
     return result;
   }
 
-//   Future<Tag> createTag(Tag tag) async {
-//   dynamic jsonObject = await ApiHelper(domain: '').postTag(tag);
-//   Tag result = Tag.fromJson(jsonObject);
-//   return result;
-// }
-
+ 
+  Future<Tag> create(Tag tag) async {
+    dynamic jsonObject = await ApiHelper(domain: '').createTag("tag", tag.toJson());
+    dynamic result = Tag.fromJson(jsonObject);
+    return result;
+  }
 }
