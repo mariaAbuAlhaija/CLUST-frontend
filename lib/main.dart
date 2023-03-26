@@ -1,3 +1,4 @@
+import 'package:clust/controllers/event_controller.dart';
 import 'package:clust/controllers/report_controller.dart';
 import 'package:clust/models/category_model.dart';
 import 'package:clust/models/report_model.dart';
@@ -5,6 +6,7 @@ import 'package:clust/models/tag_model.dart';
 import 'package:clust/screens/logo.dart';
 import 'package:clust/screens/signinx.dart';
 import 'package:clust/screens/start.dart';
+import 'package:clust/styles/colors.dart';
 import 'package:clust/styles/web_styles.dart' as web;
 import 'package:clust/styles/mobile_styles.dart' as mobile;
 import 'package:flutter/material.dart';
@@ -16,7 +18,7 @@ import 'controllers/tag_controller';
 import 'models/event_model.dart';
 
 Future<void> main() async {
-    // ReportController controller = ReportController();
+    EventController controller = EventController();
 
 ///////////////////////////////////////////
 //   Event newEvent = Event(
@@ -35,12 +37,12 @@ Future<void> main() async {
 //    Event addedEvent = await controller.createEvent(newEvent);
 
 ///////////////////////////////////////////////////
-  // List<Report> events = await controller.getAll();
-  // Report eventbyid =await controller.getByID(2);
-  // events.forEach((event) {
-  //   print(event.description);
-  // });
-  //  print(eventbyid.description);
+  List<Event> events = await controller.getAll();
+  Event eventbyid =await controller.getByID(2);
+  events.forEach((event) {
+    print(event.description);
+  });
+   print(eventbyid.description);
   runApp(MyApp());
 }
 
@@ -50,6 +52,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        primaryColor: Constants.white ,
+        accentColor: Constants.wine,
+        
           useMaterial3: true,
           textTheme: Platform.isWindows
               ? GoogleFonts.kameronTextTheme(
