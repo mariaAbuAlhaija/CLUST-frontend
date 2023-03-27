@@ -49,13 +49,13 @@ class Event {
    
    
     return {
-    
+      'id': id.toString(),
       'name': name,
       'description': description,
       'category_id': category_id.toString(),
       'organizer_id': organizer_id.toString(),
-      'start_date': start_date.toString(),
-      'end_date': end_date.toString(),
+      'start_date': start_date,
+      'end_date': end_date,
       'status': status,
       'views': views.toString(),
       'capacity': capacity.toString(),

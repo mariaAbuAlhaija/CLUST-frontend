@@ -5,8 +5,8 @@ import 'package:http/http.dart' as http;
 import '../models/event_model.dart';
 
 class ApiHelper {
-  ApiHelper({required this.domain});
-  String domain;
+
+    String domain = "192.168.93.1:3333";
 
   Future get(String path) async {
     Uri uri = Uri.http(domain, path);

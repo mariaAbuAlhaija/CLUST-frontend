@@ -1,7 +1,8 @@
+import 'package:clust/controllers/event_controller.dart';
 import 'package:clust/controllers/report_controller.dart';
-import 'package:clust/models/category_model.dart';
+import 'package:clust/models/event_model.dart';
 import 'package:clust/models/report_model.dart';
-import 'package:clust/models/category_model.dart';
+import 'package:clust/models/event_model.dart';
 import 'package:clust/screens/logo.dart';
 import 'package:clust/screens/signinx.dart';
 import 'package:clust/screens/start.dart';
@@ -11,39 +12,41 @@ import 'package:clust/styles/mobile_styles.dart' as mobile;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:io' show Platform;
-import 'controllers/category_contoller.dart';
-//C:\Users\Admin\clustt\lib\controllers\category_contoller.dart
-import 'models/category_model.dart';
+//C:\Users\Admin\clustt\lib\controllers\event_contoller.dart
+import 'models/event_model.dart';
 
 Future<void> main() async {
-  CategoryController controller = CategoryController();
+  EventController controller = EventController();
 
 ///////////////////////////////////////////
-//   Category newCategory = Category(
-// 0,
-//     'New Category',
-//     'A new category',
-//     2,
-//     1,
-//     DateTime.parse("2023-03-19"),
-//     DateTime.parse( "2023-03-19"),
-//     'available',
-//     0,
-//     100,
-//     'Thank you for registering!',
-//   );
-  Category newcategory = Category(0, "test");
-  Category addedCategory = await controller.create(newcategory);
+  Event newEvent = Event(
+2,
+    'New Event',
+    'A new event',
+    2,
+    1,
+    DateTime.parse("2023-03-19"),
+    DateTime.parse( "2023-03-19"),
+    'available',
+    0,
+    100,
+    'Thank you for registering!',
+  );
+  //Event newevent = Event(5, "update");
 
 ///////////////////////////////////////////////////
 //
 
-  List<Category> categorys = await controller.getAll();
-  Category categorybyid = await controller.getByID(2);
-  categorys.forEach((category) {
-    print(category.name);
+  List<Event> events = await controller.getAll();
+  Event eventbyid = await controller.getByID(2);
+  events.forEach((event) {
+    print(event.name);
   });
-  print(categorybyid.name);
+  print(eventbyid.name);
+ // Event addedEvent = await controller.create(newEvent);
+ Event addedEvent = await controller.update(newEvent);
+
+await controller.destroy(5);
   runApp(MyApp());
 }
 
