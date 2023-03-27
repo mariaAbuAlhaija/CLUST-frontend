@@ -8,7 +8,7 @@ class ApiHelper {
   ApiHelper({required this.domain});
   String domain;
 
-  //! functions down are kept as examples //
+  //! functions down are kept as examples
   Future get(String path) async {
     Uri uri = Uri.https(domain, path);
     var response = await http.get(uri);

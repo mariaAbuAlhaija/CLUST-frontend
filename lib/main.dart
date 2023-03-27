@@ -1,4 +1,4 @@
-import 'package:clust/controllers/event_controller.dart';
+import 'package:clust/controllers/tag_controller.dart';
 import 'package:clust/controllers/report_controller.dart';
 import 'package:clust/models/category_model.dart';
 import 'package:clust/models/report_model.dart';
@@ -13,36 +13,39 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:io' show Platform;
 import 'controllers/category_contoller.dart';
-import 'controllers/tag_controller';
+import 'controllers/tag_controller.dart';
 //C:\Users\Admin\clustt\lib\controllers\category_contoller.dart
-import 'models/event_model.dart';
+import 'models/tag_model.dart';
 
 Future<void> main() async {
-    EventController controller = EventController();
+  TagController controller = TagController();
 
 ///////////////////////////////////////////
-//   Event newEvent = Event(
+//   Tag newTag = Tag(
 // 0,
-//     'New Event',
-//     'A new event',
+//     'New Tag',
+//     'A new tag',
 //     2,
 //     1,
-//     "2023-03-19",
-//    "2023-03-19",
-//     'Pending',
+//     DateTime.parse("2023-03-19"),
+//     DateTime.parse( "2023-03-19"),
+//     'available',
 //     0,
 //     100,
-//     'Thank you for registering!', 
+//     'Thank you for registering!',
 //   );
-//    Event addedEvent = await controller.createEvent(newEvent);
+Tag newtag = Tag(5, "test");
+ Tag addedTag = await controller.create(newtag);
 
 ///////////////////////////////////////////////////
-  List<Event> events = await controller.getAll();
-  Event eventbyid =await controller.getByID(2);
-  events.forEach((event) {
-    print(event.description);
+//
+  
+  List<Tag> tags = await controller.getAll();
+  Tag tagbyid = await controller.getByID(2);
+  tags.forEach((tag) {
+    print(tag.text_description);
   });
-   print(eventbyid.description);
+  print(tagbyid.text_description);
   runApp(MyApp());
 }
 
@@ -52,9 +55,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: Constants.white ,
-        accentColor: Constants.wine,
-        
+          primaryColor: Constants.white,
+          accentColor: Constants.wine,
           useMaterial3: true,
           textTheme: Platform.isWindows
               ? GoogleFonts.kameronTextTheme(

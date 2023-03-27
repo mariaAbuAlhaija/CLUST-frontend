@@ -9,7 +9,7 @@ bool isMemory;
 
  Image(this.id, this.path,this.eventId,this.isMemory);
   factory Image.fromJson(Map<String, dynamic> json) {
-    return Image(json['id'], json['path'], json['eventId'], json['isMemory']);
+    return Image(json['id']??0, json['path']??'', json['eventId']??0, json['isMemory']??0);
   }
 
   Map<String, dynamic> toJson() {
