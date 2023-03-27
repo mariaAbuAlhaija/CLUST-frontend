@@ -8,27 +8,26 @@ class ApiHelper {
   ApiHelper({required this.domain});
   String domain;
 
-  //! functions down are kept as examples
   Future get(String path) async {
-    Uri uri = Uri.https(domain, path);
+    Uri uri = Uri.http(domain, path);
     var response = await http.get(uri);
     return responsing(response);
   }
 
   Future post(String path, Map body) async {
-    Uri uri = Uri.https(domain, path);
+    Uri uri = Uri.http(domain, path);
     var response = await http.post(uri, body: body);
     return responsing(response);
   }
 
   Future put(String path, Map body) async {
-    Uri uri = Uri.https(domain, path);
+    Uri uri = Uri.http(domain, path);
     var response = await http.put(uri, body: body);
     return responsing(response);
   }
 
   Future delete(String path) async {
-    Uri uri = Uri.https(domain, path);
+    Uri uri = Uri.http(domain, path);
     var response = await http.delete(uri);
     return responsing(response);
   }
@@ -54,86 +53,4 @@ class ApiHelper {
         throw "Server Error :(";
     }
   }
-
-//   Future postEvent(Event event) async {
-//     String url = 'http://192.168.93.1:3333/event/';
-//     var uri = Uri.parse(url);
-//     //http.Response response = await http.post(Uri.parse(url));
-
-//     var jsonBody = jsonEncode({
-//       "name": event.name,
-//       "description": event.description,
-//       "category_id": event.category_id,
-//       "organizer_id": event.organizer_id,
-//       "start_date": event.start_date,
-//       "end_date": event.end_date,
-//       "status": event.status,
-//       "views": event.views,
-//       "capacity": event.capacity,
-//       "thanking_message": event.thanking_message,
-//     });
-//  debugPrint(jsonBody.toString());
-//     http.Response response = await http.post(uri, body:
-//     {
-//       "name": event.name,
-//       "description": event.description,
-//       "category_id": event.category_id.toString(),
-//       "organizer_id": event.organizer_id.toString(),
-//       "start_date": event.start_date,
-//       "end_date": event.end_date,
-//       "status": event.status,
-//       "views": event.views.toString(),
-//       "capacity": event.capacity.toString(),
-//       "thanking_message": event.thanking_message,
-//     }
-
-//     );
-
-//     switch (response.statusCode) {
-//       case 201:
-//         dynamic jsonObject = jsonDecode(response.body);
-//         return jsonObject;
-//       case 400:
-//         throw "Bad Request";
-//       case 401:
-//         throw "Unauthrizied";
-//       case 402:
-//         throw "Payment Required";
-//       case 403:
-//         throw "Forbidden";
-//       case 404:
-//         throw "Not Found";
-//       case 500:
-//         throw "Server Error :(";
-//       default:
-//        debugPrint(response.statusCode.toString());
-//         throw "Server Error :(";
-//     }
-//   }
 }
-
-// {
-
-//       "name": "My Live Event",
-//       "description": "This is my live event",
-//       "category_id": 2,
-//       "organizer_id": 1,
-//       "start_date": "2023-03-07T03:00:00.000Z",
-//       "end_date": "2023-03-08T11:00:00.000Z",
-//       "status": "available",
-//       "views": 0,
-//       "capacity": 100,
-//       "thanking_message": "Thank you for attending my live event",
-//       "images": []
-//   },
-
-//    {"name":"New Event",
-//    "description":"A new event",
-//    "category_id":1,
-//    "organizer_id":1,
-//    "start_date":"DateTime.now() as String",
-//    "end_date":" DateTime.now() as String",
-//    "status":"Pending",
-//    "views":0,
-//    "capacity":100,
-//    "thanking_message":"Thank you for registering!"}

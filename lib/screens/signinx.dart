@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:clust/screens/start.dart';
 import 'package:clust/main.dart';
-import 'package:clust/network_helper.dart';
 import 'package:clust/screens/signupx.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -28,8 +27,8 @@ class _signinxState extends State<signinx> {
   final userPass = TextEditingController();
   var isobscure = true;
   final _formKey = GlobalKey<FormState>();
-  networkHelper connection =
-      networkHelper(url: "http://192.168.1.104:3333/user/");
+  // networkHelper connection =
+  //     networkHelper(url: "http://192.168.1.104:3333/user/");
 
   @override
   void initState() {

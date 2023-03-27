@@ -1,8 +1,7 @@
-import 'package:clust/controllers/tag_controller.dart';
 import 'package:clust/controllers/report_controller.dart';
 import 'package:clust/models/category_model.dart';
 import 'package:clust/models/report_model.dart';
-import 'package:clust/models/tag_model.dart';
+import 'package:clust/models/category_model.dart';
 import 'package:clust/screens/logo.dart';
 import 'package:clust/screens/signinx.dart';
 import 'package:clust/screens/start.dart';
@@ -13,18 +12,17 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:io' show Platform;
 import 'controllers/category_contoller.dart';
-import 'controllers/tag_controller.dart';
 //C:\Users\Admin\clustt\lib\controllers\category_contoller.dart
-import 'models/tag_model.dart';
+import 'models/category_model.dart';
 
 Future<void> main() async {
-  TagController controller = TagController();
+  CategoryController controller = CategoryController();
 
 ///////////////////////////////////////////
-//   Tag newTag = Tag(
+//   Category newCategory = Category(
 // 0,
-//     'New Tag',
-//     'A new tag',
+//     'New Category',
+//     'A new category',
 //     2,
 //     1,
 //     DateTime.parse("2023-03-19"),
@@ -34,18 +32,18 @@ Future<void> main() async {
 //     100,
 //     'Thank you for registering!',
 //   );
-Tag newtag = Tag(5, "test");
- Tag addedTag = await controller.create(newtag);
+  Category newcategory = Category(0, "test");
+  Category addedCategory = await controller.create(newcategory);
 
 ///////////////////////////////////////////////////
 //
-  
-  List<Tag> tags = await controller.getAll();
-  Tag tagbyid = await controller.getByID(2);
-  tags.forEach((tag) {
-    print(tag.text_description);
+
+  List<Category> categorys = await controller.getAll();
+  Category categorybyid = await controller.getByID(2);
+  categorys.forEach((category) {
+    print(category.name);
   });
-  print(tagbyid.text_description);
+  print(categorybyid.name);
   runApp(MyApp());
 }
 

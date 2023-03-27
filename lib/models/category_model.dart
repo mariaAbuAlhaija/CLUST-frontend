@@ -9,7 +9,7 @@ class Category {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'id': id.toString(),
       'name': name,
     };
   }
