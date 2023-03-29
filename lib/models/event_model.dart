@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class Event {
   int id;
   String name;
@@ -40,19 +42,21 @@ class Event {
         json['thanking_message'] ?? '');
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id.toString(),
-      'name': name,
-      'description': description,
-      'category_id': category_id.toString(),
-      'organizer_id': organizer_id.toString(),
-      'start_date': start_date,
-      'end_date': end_date,
-      'status': status,
-      'views': views.toString(),
-      'capacity': capacity.toString(),
-      'thanking_message': thanking_message,
-    };
-  }
+ Map<String, dynamic> toJson() {
+  return {
+    "id": id.toString(),
+    "name": name,
+    "description": description,
+    "category_id": category_id.toString(),
+    "organizer_id": organizer_id.toString(),
+    "start_date": start_date.toIso8601String(),
+    "end_date": end_date.toIso8601String(),
+    "status": status,
+    "views": views.toString(),
+    "capacity": capacity.toString(),
+    "thanking_message": thanking_message,
+  };
+}
+
+
 }

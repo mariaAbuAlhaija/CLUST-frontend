@@ -12,13 +12,16 @@ class Tag {
 
   Tag(this.id, this.text_description);
   factory Tag.fromJson(Map<String, dynamic> json) {
-    return Tag(json['id'] ?? 0, json['text_description'] ?? '');
+    return Tag(
+      json['id'] ?? 0,
+      json['text_description'] ?? '',
+    );
   }
 
   Map<String, dynamic> toJson() {
     return {
-     
-      'textDescription': text_description,
+      'id': id.toString(),
+      'text_description': text_description,
     };
   }
 }
