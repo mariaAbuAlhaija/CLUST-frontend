@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
 class Constants {
-  static const largeScreen = 1336; //any thing greater is website
-  static const smallScreen = 360; //any thing smaller is mobile
   static const white = Color(0xFFFFFFFF);
   static const sand = Color(0xFFE1BC6D);
   static const wine = Color(0xFF591C1B);
