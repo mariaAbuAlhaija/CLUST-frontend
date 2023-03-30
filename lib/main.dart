@@ -1,8 +1,6 @@
-import 'package:clust/controllers/event_controller.dart';
-import 'package:clust/controllers/report_controller.dart';
+import 'package:clust/controllers/image_controller.dart';
 import 'package:clust/models/event_model.dart';
-import 'package:clust/models/report_model.dart';
-import 'package:clust/models/event_model.dart';
+
 import 'package:clust/screens/logo.dart';
 import 'package:clust/screens/signinx.dart';
 import 'package:clust/screens/start.dart';
@@ -12,17 +10,19 @@ import 'package:clust/styles/mobile_styles.dart' as mobile;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:io' show Platform;
-//C:\Users\Admin\clustt\lib\controllers\event_contoller.dart
-import 'models/event_model.dart';
+
+import 'controllers/event_controller.dart';
+import 'models/image_model.dart';
+//C:\Users\Admin\clustt\lib\controllers\image_contoller.dart
 
 Future<void> main() async {
   EventController controller = EventController();
-
+  controller.getAll();
 ///////////////////////////////////////////
   Event newEvent = Event(
-2,
+    5,
     'New Event',
-    'A new event',
+    'A new image',
     2,
     1,
     DateTime.parse("2023-03-19"),
@@ -32,21 +32,26 @@ Future<void> main() async {
     100,
     'Thank you for registering!',
   );
-  //Event newevent = Event(5, "update");
+//  Event newimage = Event(1, "cont_test", 2, true);
 
 ///////////////////////////////////////////////////
 //
 
-  List<Event> events = await controller.getAll();
-  Event eventbyid = await controller.getByID(2);
-  events.forEach((event) {
-    print(event.name);
+  List images = await controller.getAll();
+    images.forEach((image) {
+    print(image.id);
   });
-  print(eventbyid.name);
- // Event addedEvent = await controller.create(newEvent);
- Event addedEvent = await controller.update(newEvent);
+  print("byid:\n");
+  Event imagebyid = await controller.getByID(2);
 
-await controller.destroy(5);
+  print(imagebyid.id);
+  print("create:\n");  
+   Event addedEvent = await controller.create(newEvent);
+  print("update:\n");
+
+   addedEvent = await controller.update(newEvent);
+  print("delete:\n");
+  await controller.destroy(4);
   runApp(MyApp());
 }
 

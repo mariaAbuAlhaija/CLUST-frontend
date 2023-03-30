@@ -1,24 +1,30 @@
- class Image  {
-int id;
+class BelongImage {
+  int id;
 
   String path;
 
-int eventId;
+  int eventId;
 
-bool isMemory;
+  bool isMemory;
 
- Image(this.id, this.path,this.eventId,this.isMemory);
-  factory Image.fromJson(Map<String, dynamic> json) {
-    return Image(json['id']??0, json['path']??'', json['eventId']??0, json['isMemory']??0);
+  BelongImage(this.id, this.path, this.eventId, this.isMemory);
+  factory BelongImage.fromJson(Map<String, dynamic> json) {
+    return BelongImage(
+      json['id'] ?? 0,
+      json['path'] ?? '',
+      json['eventId'] ?? 0,
+      json['isMemory'] is bool ? json['isMemory'] : json['isMemory'] == 1,
+
+
+    );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'id': id.toString(),
       'path': path,
-      'eventId': eventId,
-       'isMemory': isMemory,
+      'event_id': eventId.toString(),
+      'is_memory': isMemory  ? 0.toString() : 1.toString(),
     };
   }
-
 }

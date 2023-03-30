@@ -4,7 +4,10 @@ class Category {
 
   Category(this.id, this.name);
   factory Category.fromJson(Map<String, dynamic> json) {
-    return Category(json['id'] ?? 0, json['name'] ?? '');
+    return Category(
+      json['id'] ?? 0,
+      json['name'] ?? '',
+    );
   }
 
   Map<String, dynamic> toJson() {

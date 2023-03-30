@@ -5,8 +5,7 @@ import 'package:http/http.dart' as http;
 import '../models/event_model.dart';
 
 class ApiHelper {
-
-    String domain = "192.168.93.1:3333";
+  String domain = "192.168.93.1:3333";
 
   Future get(String path) async {
     Uri uri = Uri.http(domain, path);
@@ -21,6 +20,7 @@ class ApiHelper {
   }
 
   Future put(String path, Map body) async {
+    print(body.toString());
     Uri uri = Uri.http(domain, path);
     var response = await http.put(uri, body: body);
     return responsing(response);
