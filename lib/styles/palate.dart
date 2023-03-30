@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Constants {
+class Palate {
   static const white = Color(0xFFFFFFFF);
   static const sand = Color(0xFFE1BC6D);
   static const wine = Color(0xFF591C1B);
