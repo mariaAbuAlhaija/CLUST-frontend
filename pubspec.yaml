@@ -30,6 +30,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   adobe_xd: ^2.0.1
+  chewie: ^1.4.0
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
@@ -38,7 +39,7 @@ dependencies:
   google_fonts: ^4.0.3
   http: ^0.13.5
   mysql1: ^0.20.0
-  
+  video_player: ^2.6.1
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -59,7 +60,6 @@ flutter:
   assets:
     - assets/images/
     - assets/videos/
-
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see
