@@ -9,7 +9,7 @@ class landingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        textTheme: GoogleFonts.loraTextTheme().apply(
+        textTheme: GoogleFonts.kameronTextTheme().apply(
           bodyColor: Colors.white,
           displayColor: Colors.white,
         ),
@@ -51,15 +51,13 @@ class landingScreen extends StatelessWidget {
                                       children: [
                                         Center(
                                           child: Align(
-                                            alignment:
-                                                AlignmentDirectional(0, -1),
-                                            child: Text('You Are Invited!',
-                                                style: GoogleFonts.lora(
-                                                    textStyle: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: largeTextSize,
-                                                ))),
-                                          ),
+                                              alignment:
+                                                  AlignmentDirectional(0, -1),
+                                              child: Text('You Are Invited!',
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: largeTextSize,
+                                                  ))),
                                         ),
                                         Padding(
                                           padding:
@@ -75,12 +73,9 @@ class landingScreen extends StatelessWidget {
                                                 'To a new experience of organizing and attending events\n',
                                                 textAlign: TextAlign.center,
                                                 maxLines: 1,
-                                                style: GoogleFonts.lora(
-                                                  textStyle: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    fontSize: mediumTextSize,
-                                                  ),
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.normal,
+                                                  fontSize: mediumTextSize,
                                                 ),
                                               ),
                                             ),
@@ -99,7 +94,7 @@ class landingScreen extends StatelessWidget {
                                                 },
                                                 child: Text(
                                                   'Get started!',
-                                                  style: GoogleFonts.lora(
+                                                  style: TextStyle(
                                                     fontSize: 23,
                                                     fontWeight: FontWeight.bold,
                                                   ),
@@ -184,13 +179,10 @@ class landingScreen extends StatelessWidget {
                                 },
                                 child: Text(
                                   'Join',
-                                  style: GoogleFonts.lora(
-                                    textStyle: TextStyle(
-                                      fontFamily: 'Lora',
-                                      color: Colors.white,
-                                      fontSize: 21,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 backgroundColor: Color(0xFF454242),
@@ -210,13 +202,10 @@ class landingScreen extends StatelessWidget {
                                 onPressed: () => print("pressddd"),
                                 child: Text(
                                   'Sign In',
-                                  style: GoogleFonts.lora(
-                                    textStyle: TextStyle(
-                                      color: Palate.white,
-                                      fontFamily: 'Lora',
-                                      fontSize: 21,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                  style: TextStyle(
+                                    color: Palate.white,
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 style: TextButton.styleFrom(
@@ -262,12 +251,9 @@ class landingScreen extends StatelessWidget {
                           padding: EdgeInsets.fromLTRB(406, 151, 52, 42),
                           child: Text(
                             'An environment where to\nplan and manage events',
-                            style: GoogleFonts.lora(
-                              textStyle: TextStyle(
-                                fontFamily: 'Lora',
-                                fontSize: mediumestTextSize,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            style: TextStyle(
+                              fontSize: mediumestTextSize,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
@@ -276,11 +262,8 @@ class landingScreen extends StatelessWidget {
                               EdgeInsetsDirectional.fromSTEB(406, 275, 52, 0),
                           child: Text(
                             'Browse events, reserve spots, enjoy your \ntime,\nMake extraordinary memories!',
-                            style: GoogleFonts.lora(
-                              textStyle: TextStyle(
-                                fontFamily: 'Lora',
-                                fontSize: mediumTextSize,
-                              ),
+                            style: TextStyle(
+                              fontSize: mediumTextSize,
                             ),
                           ),
                         ),
@@ -321,12 +304,9 @@ class landingScreen extends StatelessWidget {
                                             616, 200, 331, 44),
                                         child: Text(
                                           'Create Your own',
-                                          style: GoogleFonts.lora(
-                                            textStyle: TextStyle(
-                                              fontFamily: 'Lora',
-                                              fontSize: mediumestTextSize,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                          style: TextStyle(
+                                            fontSize: mediumestTextSize,
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                       ),
@@ -339,12 +319,9 @@ class landingScreen extends StatelessWidget {
                                             945, 0, 0, 44), //  0, 0, 331, 0),
                                         child: Text(
                                           'CLUST is designed to help you \ncustomize your own events',
-                                          style: GoogleFonts.lora(
-                                            textStyle: TextStyle(
-                                              fontFamily: 'Lora',
-                                              fontSize: mediumTextSize,
-                                              fontWeight: FontWeight.normal,
-                                            ),
+                                          style: TextStyle(
+                                            fontSize: mediumTextSize,
+                                            fontWeight: FontWeight.normal,
                                           ),
                                         ),
                                       ),
@@ -476,9 +453,9 @@ class landingScreen extends StatelessWidget {
                                     0, 200, 436, 0),
                                 child: Text(
                                   'Create Your own',
-                                  style: GoogleFonts.lora(
+                                    style: TextStyle(
                                     textStyle: TextStyle(
-                                      fontFamily: 'Lora',
+                                      
                                       fontSize: 45,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -493,9 +470,9 @@ class landingScreen extends StatelessWidget {
                                     0, 292, 331, 0),
                                 child: Text(
                                               'CLUST is designed to help you \ncustomize your own events',
-                                              style: GoogleFonts.lora(
+                                                style: TextStyle(
                                                 textStyle: TextStyle(
-                                                  fontFamily: 'Lora',
+                                                  
                                                   fontSize: 33,
                                                   fontWeight: FontWeight.normal,
                                                 ),
