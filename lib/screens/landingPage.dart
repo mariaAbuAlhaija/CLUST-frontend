@@ -208,6 +208,7 @@ class landingScreen extends StatelessWidget {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
+                                
                                 style: TextButton.styleFrom(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 10),
