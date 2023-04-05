@@ -4,9 +4,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../widgets/staggered.dart';
+
 class landingScreen extends StatelessWidget {
+  final ScrollController _scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      // Scroll to bottom after the widget has been built
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+    });
     return MaterialApp(
       theme: ThemeData(
         textTheme: GoogleFonts.kameronTextTheme().apply(
@@ -120,6 +128,7 @@ class landingScreen extends StatelessWidget {
                         Align(
                           alignment: AlignmentDirectional(0, -1),
                           child: ListView(
+                            controller: _scrollController,
                             padding: EdgeInsets.zero,
                             reverse: true,
                             shrinkWrap: true,
@@ -128,8 +137,8 @@ class landingScreen extends StatelessWidget {
                               Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     206, 0, 206, 62),
-                                child: Image.network(
-                                  'https://picsum.photos/seed/585/600',
+                                child: Image.asset(
+                                  'assets/images/landing.gif',
                                   width: 1467,
                                   height: 1024,
                                   fit: BoxFit.cover,
@@ -208,7 +217,6 @@ class landingScreen extends StatelessWidget {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                
                                 style: TextButton.styleFrom(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 10),
@@ -335,153 +343,64 @@ class landingScreen extends StatelessWidget {
                 ]),
               ),
               Container(
-                height: 1024,
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/*
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-      body: SafeArea(
-
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
-          child: ListView(
-            padding: EdgeInsets.zero,
-            scrollDirection: Axis.vertical,
-            children: [
-            
-            Container(
-                width: 100,
-                height: MediaQuery.of(context).size.height * 1,
-                decoration: BoxDecoration(
-                  color: Color(0xFF221F1F),
-                ),
+                color: Palate.black,
+                height: 1700,
                 child: Column(
-                  mainAxisSize: MainAxisSize.max,
                   children: [
-                    Container(
-                      width: 1920,
-                      height: 500,
-                      decoration: BoxDecoration(
-                        color: Color(0xFF1E1C1C),
-                      ),
-                      child: Stack(
-                        children: [
-                          Align(
-                            alignment: AlignmentDirectional(1, 0),
-                            child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  0, 28, 252, 79),
-                              child: Image.network(
-                                'https://picsum.photos/seed/104/600',
-                                width: 500,
-                                height: 500,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
+                    Align(
+                      alignment: AlignmentDirectional(-1, 0),
+                      child: Padding(
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(407, 120, 0, 64),
+                        child: Text(
+                          'Gallary',
+                          style: TextStyle(
+                            fontSize: 45,
+                            fontWeight: FontWeight.bold,
                           ),
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(406, 151, 0, 0),
-                            child: Text(
-                              'An environment where to\nplan and manage events',
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .override(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 45,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(406, 306, 52, 0),
-                            child: Text(
-                              'Browse events, reserve spots, enjoy your \ntime,\nMake extraordinary memories!',
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .override(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 33,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
+                    Container(
                       child: Container(
-                        width: 1920,
-                        height: 589,
-                        decoration: BoxDecoration(
-                          color: Color(0xFF221F1F),
+                          height: 1000,
+                          decoration: BoxDecoration(color: Palate.darkred),
+                          child:
+                              Container(width: 1000, child: StaggeredPage())),
+                    ),
+                    Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 170, 0, 0),
+                      child: Text(
+                        'Dive more?',
+                        style: TextStyle(
+                          fontSize: 70,
                         ),
-                        child: Stack(
-                          children: [
-                            Align(
-                              alignment: AlignmentDirectional(-1, 0),
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    406, 45, 0, 44),
-                                child: Image.network(
-                                  'https://picsum.photos/seed/104/600',
-                                  width: 500,
-                                  height: 500,
-                                  fit: BoxFit.cover,
+                      ),
+                    ),
+                    Expanded(
+                      child: Align(
+                        alignment: AlignmentDirectional(0, -1),
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 55, 0, 0),
+                          child: SizedBox(
+                            width: 258,
+                            child: FloatingActionButton(
+                              onPressed: () {
+                                // Add your onPressed action here
+                              },
+                              child: Text(
+                                'Home Page',
+                                style: TextStyle(
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ),
-                            Align(
-                              alignment: AlignmentDirectional(1, -1),
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0, 200, 436, 0),
-                                child: Text(
-                                  'Create Your own',
-                                    style: TextStyle(
-                                    textStyle: TextStyle(
-                                      
-                                      fontSize: 45,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                )
+                              backgroundColor: Palate.lightwine,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
                               ),
                             ),
-                            Align(
-                              alignment: AlignmentDirectional(1, -1),
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0, 292, 331, 0),
-                                child: Text(
-                                              'CLUST is designed to help you \ncustomize your own events',
-                                                style: TextStyle(
-                                                textStyle: TextStyle(
-                                                  
-                                                  fontSize: 33,
-                                                  fontWeight: FontWeight.normal,
-                                                ),
-                                              ),
-                                            )
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
@@ -489,9 +408,27 @@ class landingScreen extends StatelessWidget {
                 ),
               ),
               Container(
-                height: 1024,
-                decoration: BoxDecoration(
-                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                height: 359,
+                color: Palate.darkred,
+                child: Stack(
+                  children: [
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 100, 0),
+                        child: Image.asset(
+                          'assets/images/biglogo.png',
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(100, 0, 0, 0),
+                        child: Image.asset(
+                          'assets/images/bigclust.png',
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -501,5 +438,3 @@ class landingScreen extends StatelessWidget {
     );
   }
 }
-
-*/
