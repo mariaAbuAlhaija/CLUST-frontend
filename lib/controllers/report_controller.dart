@@ -1,4 +1,3 @@
-
 import '../models/report_model.dart';
 import 'api_helper.dart';
 
@@ -20,15 +19,13 @@ class ReportController {
   }
 
   Future<Report> create(Report report) async {
-    dynamic jsonObject =
-        await ApiHelper().post(path, report.toJson());
+    dynamic jsonObject = await ApiHelper().post(path, body: report.toJson());
     Report result = Report.fromJson(jsonObject);
     return result;
   }
 
   Future<Report> update(Report report) async {
-    dynamic jsonObject =
-        await ApiHelper().put(path, report.toJson());
+    dynamic jsonObject = await ApiHelper().put(path, report.toJson());
     Report result = Report.fromJson(jsonObject);
     return result;
   }
@@ -38,5 +35,4 @@ class ReportController {
     // Report result = Report.fromJson(jsonObject);
     // return result;
   }
-
 }

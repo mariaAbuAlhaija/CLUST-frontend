@@ -20,7 +20,7 @@ class BelongImageController {
   }
 
   Future<BelongImage> create(BelongImage image) async {
-    dynamic jsonObject = await ApiHelper().post(path, image.toJson());
+    dynamic jsonObject = await ApiHelper().post(path, body: image.toJson());
     BelongImage result = BelongImage.fromJson(jsonObject);
     return result;
   }
