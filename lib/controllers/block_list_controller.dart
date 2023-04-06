@@ -20,7 +20,7 @@ class BlockListController {
   }
 
   Future<BlockList> create(BlockList blockList) async {
-    dynamic jsonObject = await ApiHelper().post(path, blockList.toJson());
+    dynamic jsonObject = await ApiHelper().post(path, body: blockList.toJson());
     BlockList result = BlockList.fromJson(jsonObject);
     return result;
   }

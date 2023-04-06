@@ -1,11 +1,9 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-
-import '../models/event_model.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ApiHelper {
-  String domain = "192.168.93.1:3333";
+  String domain = "192.168.100.51:3333";
 
   Future get(String path) async {
     Uri uri = Uri.http(domain, path);
@@ -13,7 +11,7 @@ class ApiHelper {
     return responsing(response);
   }
 
-  Future post(String path, Map body) async {
+  Future post(String path, {Map? body}) async {
     Uri uri = Uri.http(domain, path);
     var response = await http.post(uri, body: body);
     return responsing(response);
@@ -30,6 +28,12 @@ class ApiHelper {
     Uri uri = Uri.http(domain, path);
     var response = await http.delete(uri);
     return responsing(response);
+  }
+
+  Future<String> getToken() async {
+    var storage = FlutterSecureStorage();
+    String result = await storage.read(key: "token") as String;
+    return result;
   }
 
   responsing(http.Response response) {

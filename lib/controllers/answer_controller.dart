@@ -20,7 +20,7 @@ class AnswerController {
   }
 
   Future<Answer> create(Answer answer) async {
-    dynamic jsonObject = await ApiHelper().post(path, answer.toJson());
+    dynamic jsonObject = await ApiHelper().post(path, body: answer.toJson());
     Answer result = Answer.fromJson(jsonObject);
     return result;
   }

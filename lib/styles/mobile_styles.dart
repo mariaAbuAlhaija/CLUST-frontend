@@ -1,37 +1,44 @@
+import 'package:clust/styles/palate.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-const largestTextSize = 27.0;
-const mediumestTextSize = 21.0;
-const mediumerTextSize = 17.0;
-const mediumTextSize = 15.0;
-const smallTextSize = 13.0;
-const smallestTextSize = 11.0;
+var largestTextSize = 27.0.sp;
+var mediumestTextSize = 21.0.sp;
+var mediumerTextSize = 17.0.sp;
+var mediumTextSize = 15.0.sp;
+var smallTextSize = 13.0.sp;
+var smallestTextSize = 12.0.sp;
+displayLarge({color = Palate.white, weight = FontWeight.normal}) => TextStyle(
+      fontWeight: weight,
+      fontSize: largestTextSize,
+      color: color,
+    );
 
-const displayLarge = TextStyle(
-  fontWeight: FontWeight.bold,
-  fontSize: largestTextSize,
-);
+headlineLarge({color = Palate.white, weight = FontWeight.normal}) => TextStyle(
+      fontWeight: weight,
+      fontSize: mediumestTextSize,
+      color: color,
+    );
+headlineMedium({color = Palate.white, weight = FontWeight.normal}) => TextStyle(
+      fontWeight: weight,
+      fontSize: mediumerTextSize,
+      color: color,
+    );
 
-const headlineLarge = TextStyle(
-  fontWeight: FontWeight.bold,
-  fontSize: mediumestTextSize,
-);
-const headlineMedium = TextStyle(
-  fontWeight: FontWeight.normal,
-  fontSize: mediumerTextSize,
-);
+headlineSmall({color = Palate.white, weight = FontWeight.normal}) => TextStyle(
+      fontWeight: weight,
+      fontSize: mediumTextSize,
+      color: color,
+    );
 
-const headlineSmall = TextStyle(
-  fontWeight: FontWeight.normal,
-  fontSize: mediumTextSize,
-);
+bodySmall({color = Palate.white, weight = FontWeight.normal}) => TextStyle(
+      fontWeight: weight,
+      fontSize: smallTextSize,
+      color: color,
+    );
 
-const bodySmall = TextStyle(
-  fontWeight: FontWeight.bold,
-  fontSize: smallTextSize,
-);
-
-const labelSmall = TextStyle(
-  fontWeight: FontWeight.normal,
-  fontSize: smallestTextSize,
-);
+labelSmall({color = Palate.white, weight = FontWeight.normal}) => TextStyle(
+      fontWeight: weight,
+      fontSize: smallestTextSize,
+      color: color,
+    );

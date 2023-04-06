@@ -20,7 +20,8 @@ class InteractionController {
   }
 
   Future<Interaction> create(Interaction interaction) async {
-    dynamic jsonObject = await ApiHelper().post(path, interaction.toJson());
+    dynamic jsonObject =
+        await ApiHelper().post(path, body: interaction.toJson());
     Interaction result = Interaction.fromJson(jsonObject);
     return result;
   }
