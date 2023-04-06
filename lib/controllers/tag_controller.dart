@@ -2,7 +2,7 @@ import '../models/tag_model.dart';
 import 'api_helper.dart';
 
 class TagController {
-   String path = "tag/";
+  String path = "tag/";
   Future<List<Tag>> getAll() async {
     dynamic jsonObject = await ApiHelper().get(path);
     List<Tag> result = [];
@@ -19,15 +19,13 @@ class TagController {
   }
 
   Future<Tag> create(Tag tag) async {
-    dynamic jsonObject =
-        await ApiHelper().post(path, tag.toJson());
+    dynamic jsonObject = await ApiHelper().post(path, body: tag.toJson());
     Tag result = Tag.fromJson(jsonObject);
     return result;
   }
 
   Future<Tag> update(Tag tag) async {
-    dynamic jsonObject =
-        await ApiHelper().put(path, tag.toJson());
+    dynamic jsonObject = await ApiHelper().put(path, tag.toJson());
     Tag result = Tag.fromJson(jsonObject);
     return result;
   }

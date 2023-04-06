@@ -1,65 +1,66 @@
+import 'package:clust/styles/palate.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-const largestTextSize = 70.0;
-const largerTextSize = 50.0;
-const largeTextSize = 45.0;
-const mediumestTextSize = 33.0;
-const mediumerTextSize = 27.0;
-const mediumTextSize = 23.0;
-const smallTextSize = 21.0;
-const smallerTextSize = 19.0;
-const smallestTextSize = 17.0;
+var largestTextSize = 70.0.sp;
+var largerTextSize = 50.0.sp;
+var largeTextSize = 45.0.sp;
+var mediumestTextSize = 33.0.sp;
+var mediumerTextSize = 27.0.sp;
+var mediumTextSize = 23.0.sp;
+var smallTextSize = 21.0.sp;
+var smallerTextSize = 19.0.sp;
+var smallestTextSize = 17.0.sp;
 
-const displayLarge = TextStyle(
-  fontWeight: FontWeight.normal,
-  fontSize: largestTextSize,
-);
+displayLarge({color = Palate.white, weight = FontWeight.normal}) => TextStyle(
+      fontWeight: weight,
+      fontSize: largestTextSize,
+      color: color,
+    );
 
-const displayMedium = TextStyle(
-  fontWeight: FontWeight.normal,
-  fontSize: largerTextSize,
-);
+displayMedium({color = Palate.white, weight = FontWeight.normal}) => TextStyle(
+      fontWeight: weight,
+      fontSize: largerTextSize,
+      color: color,
+    );
 
-const headlineLarge = TextStyle(
-  fontWeight: FontWeight.bold,
-  fontSize: largeTextSize,
-);
-const headlineMedium = TextStyle(
-  fontWeight: FontWeight.normal,
-  fontSize: largeTextSize,
-);
+headlineLarge({color = Palate.white, weight = FontWeight.normal}) => TextStyle(
+      fontWeight: weight,
+      fontSize: largeTextSize,
+      color: color,
+    );
+headlineMedium({color = Palate.white, weight = FontWeight.normal}) => TextStyle(
+      fontWeight: weight,
+      fontSize: mediumerTextSize,
+      color: color,
+    );
 
-const headlineSmall = TextStyle(
-  fontWeight: FontWeight.normal,
-  fontSize: mediumestTextSize,
-);
+headlineSmall({color = Palate.white, weight = FontWeight.normal}) => TextStyle(
+      fontWeight: weight,
+      fontSize: mediumestTextSize,
+      color: color,
+    );
 
-const bodyLarge = TextStyle(
-  fontWeight: FontWeight.bold,
-  fontSize: mediumerTextSize,
-);
+bodySmall({color = Palate.white, weight = FontWeight.normal}) => TextStyle(
+      fontWeight: weight,
+      fontSize: mediumTextSize,
+      color: color,
+    );
 
-const bodyMedium = TextStyle(
-  fontWeight: FontWeight.normal,
-  fontSize: mediumerTextSize,
-);
+labelLarge({color = Palate.white, weight = FontWeight.normal}) => TextStyle(
+      fontWeight: weight,
+      fontSize: smallTextSize,
+      color: color,
+    );
 
-const bodySmall = TextStyle(
-  fontWeight: FontWeight.bold,
-  fontSize: mediumTextSize,
-);
+labelMedium({color = Palate.white, weight = FontWeight.normal}) => TextStyle(
+      fontWeight: weight,
+      fontSize: smallerTextSize,
+      color: color,
+    );
 
-const labelLarge = TextStyle(
-  fontWeight: FontWeight.normal,
-  fontSize: smallTextSize,
-);
-
-const labelMedium = TextStyle(
-  fontWeight: FontWeight.normal,
-  fontSize: smallerTextSize,
-);
-
-const labelSmall = TextStyle(
-  fontWeight: FontWeight.normal,
-  fontSize: smallestTextSize,
-);
+labelSmall({color = Palate.white, weight = FontWeight.normal}) => TextStyle(
+      fontWeight: weight,
+      fontSize: smallestTextSize,
+      color: color,
+    );

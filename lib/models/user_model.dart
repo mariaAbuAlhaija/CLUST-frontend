@@ -11,27 +11,30 @@ class User {
   int? sid;
   String email;
   String password;
-  User(
-    this.id,
-    this.firstName,
-    this.lastName,
-    this.birthDate,
-    this.gender,
-    this.email,
-    this.password, {
+  User({
+    required this.firstName,
+    required this.lastName,
+    required this.birthDate,
+    this.gender = Gender.female,
+    required this.email,
+    required this.password,
+    this.id = 0,
     this.about,
     this.image,
     this.sid,
-  });
+  }) {
+    id += id;
+  }
+
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      json['id'] ?? "",
-      json['firstName'] ?? "",
-      json['lastName'] ?? "",
-      json['birthDate'] ?? 0,
-      json['gender'] ?? 0,
-      json['email'] ?? "",
-      json['password'],
+      firstName: json['firstName'] ?? "",
+      lastName: json['lastName'] ?? "",
+      birthDate: json['birthDate'] ?? DateTime.now(),
+      // gender: json['gender'] ?? Gender,
+      email: json['email'] ?? "",
+      password: json['password'] ?? "",
+      id: json['id'] ?? "",
       about: json['about'] ?? "",
       image: json['image'] ?? "",
       sid: json['sid'] ?? 0,

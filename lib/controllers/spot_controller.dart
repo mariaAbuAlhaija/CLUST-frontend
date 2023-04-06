@@ -19,7 +19,7 @@ class SpotController {
   }
 
   Future<Spot> create(Spot spot) async {
-    dynamic jsonObject = await ApiHelper().post(path, spot.toJson());
+    dynamic jsonObject = await ApiHelper().post(path, body: spot.toJson());
     Spot result = Spot.fromJson(jsonObject);
     return result;
   }

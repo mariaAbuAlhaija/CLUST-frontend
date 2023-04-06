@@ -2,16 +2,53 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:clust/styles/palate.dart';
 
-class logo extends StatefulWidget {
-  logo({
+class Logo extends StatefulWidget {
+  Logo({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<logo> createState() => _logoState();
+  State<Logo> createState() => _LogoState();
+  Center logo() {
+    return Center(
+      child: Container(
+        height: 300,
+        width: 164,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              height: 120,
+              width: 120,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/logo.png'),
+                  fit: BoxFit.fill,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Container(
+                height: 54,
+                width: 150,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/clust.png'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
-class _logoState extends State<logo> {
+class _LogoState extends State<Logo> {
   Timer? timer;
   @override
   void initState() {
@@ -19,7 +56,7 @@ class _logoState extends State<logo> {
     timer = Timer(
       const Duration(seconds: 3),
       () {
-        // Navigator.pushReplacementNamed(context, "/start");
+        Navigator.pushReplacementNamed(context, "/start");
       },
     );
   }
@@ -32,37 +69,6 @@ class _logoState extends State<logo> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        height: 300,
-        width: 164,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              height: 150,
-              width: 150,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/logo.png'),
-                  fit: BoxFit.fill,
-                ),
-              ),
-            ),
-            Container(
-              height: 54,
-              width: 164,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/clust.png'),
-                  fit: BoxFit.fill,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    return Logo().logo();
   }
 }

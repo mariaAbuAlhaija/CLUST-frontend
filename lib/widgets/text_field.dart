@@ -1,15 +1,24 @@
+import 'package:clust/styles/palate.dart';
+import 'package:clust/styles/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class TextField extends StatefulWidget {
-  TextField(
-      {super.key,
-      required this.type,
-      required this.controller,
-      required this.hint});
+  TextField({
+    super.key,
+    required this.type,
+    required this.controller,
+    required this.hint,
+    required this.lable,
+    this.forWhat = For.signup,
+  });
   Type type;
   TextEditingController controller;
   String hint;
+  String lable;
+  For forWhat;
 
   @override
   State<TextField> createState() => TtextFieldState();
@@ -19,19 +28,75 @@ class TtextFieldState extends State<TextField> {
   var obscureText = true;
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      validator: validators(),
-      controller: widget.controller,
-      decoration: InputDecoration(
-        hintText: widget.hint,
-        contentPadding: const EdgeInsets.fromLTRB(20, 20, 20, 390),
-        isDense: true,
-        suffix: isPassword ? suffix() : null,
-      ),
-      obscureText: isPassword ? obscureText : false,
-      keyboardType: keyboardType(),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        lable(context),
+        SizedBox(
+          height: 15.h,
+        ),
+        TextFormField(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          validator:
+              widget.forWhat == For.signup ? validators() : signinValidators(),
+          controller: widget.controller,
+          decoration: decoration(context),
+          obscureText: isPassword ? obscureText : false,
+          keyboardType: keyboardType(),
+        ),
+      ],
     );
+  }
+
+  Text lable(BuildContext context) =>
+      Text(widget.lable, style: Theme.of(context).textTheme.headlineSmall);
+
+  InputDecoration decoration(BuildContext context) {
+    return InputDecoration(
+      filled: true,
+      fillColor: Palate.white,
+      hintText: widget.hint,
+      hintStyle: hintstyle(context),
+      contentPadding: padding(),
+      isDense: true,
+      suffixIcon: isPassword ? suffix() : null,
+      border: border(),
+      focusedBorder: focusedborder(),
+    );
+  }
+
+  TextStyle? hintstyle(BuildContext context) {
+    return kIsWeb
+        ? Theme.of(context).textTheme.labelMedium
+        : Theme.of(context).textTheme.bodySmall;
+  }
+
+  EdgeInsets padding() {
+    return const EdgeInsets.symmetric(vertical: 15, horizontal: 10);
+  }
+
+  OutlineInputBorder focusedborder() {
+    return OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: Colors.transparent, width: 0),
+        gapPadding: 20);
+  }
+
+  OutlineInputBorder border() {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(color: Colors.transparent, width: 0),
+      gapPadding: 20,
+    );
+  }
+
+  FormFieldValidator<String> signinValidators() {
+    return FormBuilderValidators.compose([
+      FormBuilderValidators.required(),
+      isEmail
+          ? FormBuilderValidators.email()
+          : FormBuilderValidators.required(),
+    ]);
   }
 
   FormFieldValidator<String> validators() {
@@ -67,8 +132,8 @@ class TtextFieldState extends State<TextField> {
           });
         },
         child: obscureText
-            ? const Icon(Icons.visibility)
-            : const Icon(Icons.visibility_off));
+            ? const Icon(Icons.visibility, color: Palate.black, size: 22)
+            : const Icon(Icons.visibility_off, color: Palate.black, size: 22));
   }
 
   TextInputType keyboardType() {
@@ -85,3 +150,5 @@ class TtextFieldState extends State<TextField> {
 }
 
 enum Type { email, password, general }
+
+enum For { signin, signup }
