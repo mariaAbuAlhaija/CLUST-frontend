@@ -10,14 +10,14 @@ import 'package:clust/styles/mobile_styles.dart' as mobile;
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class signup extends StatefulWidget {
-  const signup({super.key});
+class Signup extends StatefulWidget {
+  const Signup({super.key});
 
   @override
-  State<signup> createState() => _signupState();
+  State<Signup> createState() => _SignupState();
 }
 
-class _signupState extends State<signup> {
+class _SignupState extends State<Signup> {
   var nameController = TextEditingController();
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
@@ -45,18 +45,21 @@ class _signupState extends State<signup> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Logo().logo(),
+                kIsWeb ? Logo().logo() : sizedBoxH(context, 150.h),
                 FormBuilder(
                   key: _formKey,
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         nameField(),
+                        sizedBoxH(context, 20.h),
+                        datePicker(context),
+                        sizedBoxH(context, 20.h),
                         emailField(),
-                        sizedBox(context, kIsWeb ? 30.h : 20.h),
+                        sizedBoxH(context, 20.h),
                         passwordField(context),
                         submitButton(context),
-                        sizedBox(context, 10.h),
+                        sizedBoxH(context, 10.h),
                         options(context)
                       ]),
                 ),
@@ -68,6 +71,61 @@ class _signupState extends State<signup> {
     );
   }
 
+  Column datePicker(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        lable(context),
+        SizedBox(
+          height: 15.h,
+        ),
+        FormBuilderDateTimePicker(
+          name: "Date",
+          inputType: InputType.date,
+          decoration: InputDecoration(
+            hintText: "Date of birth",
+            filled: true,
+            fillColor: Palate.white,
+            hintStyle: hintstyle(context),
+            contentPadding: padding(),
+            isDense: true,
+            border: border(),
+            focusedBorder: focusedborder(),
+          ),
+          firstDate: DateTime(1900, 1, 1),
+          lastDate: DateTime.now(),
+        ),
+      ],
+    );
+  }
+
+  Text lable(BuildContext context) =>
+      Text("Date of birth", style: Theme.of(context).textTheme.headlineSmall);
+  TextStyle? hintstyle(BuildContext context) {
+    return kIsWeb
+        ? Theme.of(context).textTheme.labelMedium
+        : Theme.of(context).textTheme.bodySmall;
+  }
+
+  EdgeInsets padding() {
+    return const EdgeInsets.symmetric(vertical: 15, horizontal: 10);
+  }
+
+  OutlineInputBorder focusedborder() {
+    return OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: Colors.transparent, width: 0),
+        gapPadding: 20);
+  }
+
+  OutlineInputBorder border() {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(color: Colors.transparent, width: 0),
+      gapPadding: 20,
+    );
+  }
+
   RichText options(BuildContext context) {
     return RichText(
       textAlign: TextAlign.center,
@@ -75,15 +133,19 @@ class _signupState extends State<signup> {
           style: kIsWeb
               ? Theme.of(context).textTheme.labelLarge
               : Theme.of(context).textTheme.bodySmall,
-          text: ("Not a member? "),
-          children: const [
+          text: ("Already a member? "),
+          children: [
             TextSpan(
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    Navigator.pushNamed(context, "/signin");
+                  },
                 style: TextStyle(color: Palate.sand),
-                text: kIsWeb ? "\nSign up" : "Sign up")
+                text: kIsWeb ? "\nSign in" : "Sign in"),
           ],
           recognizer: TapGestureRecognizer()
             ..onTap = () {
-              // Navigator.pop(context);
+              Navigator.pushNamed(context, "/signin");
             }),
     );
   }
@@ -102,7 +164,7 @@ class _signupState extends State<signup> {
             forWhat: txtField.For.signin,
           ),
         ),
-        sizedBox(context, 7.h),
+        sizedBoxH(context, 7.h),
         RichText(
           text: TextSpan(
               style: kIsWeb
@@ -131,21 +193,41 @@ class _signupState extends State<signup> {
     );
   }
 
-  Container nameField() {
-    return Container(
-      width: 460,
-      child: txtField.TextField(
-        type: txtField.Type.general,
-        controller: nameController,
-        hint: "Name",
-        lable: "Name",
-        forWhat: txtField.For.signup,
-      ),
+  Row nameField() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          width: 170,
+          child: txtField.TextField(
+            type: txtField.Type.general,
+            controller: nameController,
+            hint: "First name",
+            lable: "First name",
+            forWhat: txtField.For.signup,
+          ),
+        ),
+        // sizedBoxW(context, 10.w),
+        Container(
+          width: 170,
+          child: txtField.TextField(
+            type: txtField.Type.general,
+            controller: nameController,
+            hint: "Last name",
+            lable: "Last name",
+            forWhat: txtField.For.signup,
+          ),
+        ),
+      ],
     );
   }
 
-  SizedBox sizedBox(BuildContext context, height) {
+  SizedBox sizedBoxH(BuildContext context, height) {
     return SizedBox(height: height);
+  }
+
+  SizedBox sizedBoxW(BuildContext context, width) {
+    return SizedBox(width: width);
   }
 
   Padding submitButton(BuildContext context) {
@@ -178,7 +260,7 @@ class _signupState extends State<signup> {
               backgroundColor: MaterialStateProperty.all(
                   Palate.lighterBlack.withOpacity(0.48))),
           child: Text(
-            "Sign In",
+            "Sign Up",
             style: kIsWeb
                 ? Theme.of(context).textTheme.bodySmall
                 : Theme.of(context).textTheme.headlineMedium,

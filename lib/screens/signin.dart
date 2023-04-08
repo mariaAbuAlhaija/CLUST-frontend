@@ -10,14 +10,14 @@ import 'package:clust/styles/mobile_styles.dart' as mobile;
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class signin extends StatefulWidget {
-  const signin({super.key});
+class SignIn extends StatefulWidget {
+  const SignIn({super.key});
 
   @override
-  State<signin> createState() => _signinState();
+  State<SignIn> createState() => _SignInState();
 }
 
-class _signinState extends State<signin> {
+class _SignInState extends State<SignIn> {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   final _formKey = GlobalKey<FormBuilderState>();
@@ -70,19 +70,20 @@ class _signinState extends State<signin> {
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
-          style: kIsWeb
-              ? Theme.of(context).textTheme.labelLarge
-              : Theme.of(context).textTheme.bodySmall,
-          text: ("Not a member? "),
-          children: const [
-            TextSpan(
-                style: TextStyle(color: Palate.sand),
-                text: kIsWeb ? "\nSign up" : "Sign up")
-          ],
-          recognizer: TapGestureRecognizer()
-            ..onTap = () {
-              // Navigator.pop(context);
-            }),
+        recognizer: TapGestureRecognizer()
+          ..onTap = () {
+            Navigator.pushNamed(context, "/signup");
+          },
+        style: kIsWeb
+            ? Theme.of(context).textTheme.labelLarge
+            : Theme.of(context).textTheme.bodySmall,
+        text: ("Not a member? "),
+        children: const [
+          TextSpan(
+              style: TextStyle(color: Palate.sand),
+              text: kIsWeb ? "\nSign up" : "Sign up")
+        ],
+      ),
     );
   }
 
@@ -141,19 +142,7 @@ class _signinState extends State<signin> {
         width: 460,
         child: ElevatedButton(
           onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              String email = emailController.text;
-              String password = passwordController.text;
-              print("before");
-              UserController().getByID(1).then((value) {
-                print("during");
-                Navigator.pushNamed(context, "/start");
-              }).catchError((ex, stacktrace) {
-                print("error");
-                print(ex.toString());
-                print(stacktrace);
-              });
-            }
+            onPress(context);
           },
           style: ButtonStyle(
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -171,5 +160,21 @@ class _signinState extends State<signin> {
         ),
       ),
     );
+  }
+
+  void onPress(BuildContext context) {
+    if (_formKey.currentState!.validate()) {
+      String email = emailController.text;
+      String password = passwordController.text;
+      print("before");
+      UserController().signin(email, password).then((value) {
+        print("during");
+        Navigator.pushNamed(context, "/start");
+      }).catchError((ex, stacktrace) {
+        print("error");
+        print(ex.toString());
+        print(stacktrace);
+      });
+    }
   }
 }

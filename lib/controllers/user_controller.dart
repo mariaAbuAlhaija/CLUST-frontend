@@ -4,7 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'api_helper.dart';
 
 class UserController {
-  String path = "/user/";
+  String path = "user/";
   Future<List<User>> getAll() async {
     dynamic jsonObject = await ApiHelper().get(path);
     List<User> result = [];
@@ -41,7 +41,7 @@ class UserController {
   Future<bool> signin(email, password) async {
     try {
       dynamic jsonObject = await ApiHelper()
-          .post("$path/login", body: {'email': email, 'password': password});
+          .post("{$path}login", body: {'email': email, 'password': password});
       String type = jsonObject["type"];
       String token = jsonObject["token"];
       var storage = FlutterSecureStorage();

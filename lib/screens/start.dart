@@ -16,7 +16,7 @@ class start extends StatelessWidget {
           height: 49.0,
           child: ElevatedButton(
             onPressed: () {
-              Navigator.pushReplacementNamed(context, "/signin");
+              Navigator.pushReplacementNamed(context, "/signup");
             },
             style: ButtonStyle(
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
