@@ -1,6 +1,6 @@
 import 'package:clust/models/user_model.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
+import 'dart:convert';
 import 'api_helper.dart';
 
 class UserController {
@@ -33,21 +33,24 @@ class UserController {
   }
 
   Future<void> distroy(int id) async {
-    dynamic jsonObject = await ApiHelper().delete("$path$id");
+    dynamic jsonObject = await ApiHelper().delete("$path$id/");
     // User result = User.fromJson(jsonObject);
     // return result;
   }
 
   Future<bool> signin(email, password) async {
     try {
-      dynamic jsonObject = await ApiHelper()
-          .post("{$path}login", body: {'email': email, 'password': password});
-      String type = jsonObject["type"];
-      String token = jsonObject["token"];
-      var storage = FlutterSecureStorage();
-      await storage.write(key: "token", value: "$type $token");
+      dynamic jsonObject = await ApiHelper().post(
+        "{$path}login/",
+        body: json.encode({'email': email, 'password': password}),
+      );
+      // String type = jsonObject["type"];
+      // String token = jsonObject["token"];
+      // var storage = FlutterSecureStorage();
+      // await storage.write(key: "token", value: "$type $token");
       return true;
     } catch (ex) {
+      print("hahahah");
       print(ex);
       rethrow;
     }

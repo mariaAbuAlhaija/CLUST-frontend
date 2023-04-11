@@ -1,7 +1,7 @@
 import 'package:clust/controllers/user_controller.dart';
 import 'package:clust/screens/logo.dart';
 import 'package:clust/styles/palate.dart';
-import 'package:clust/widgets/text_field.dart' as txtField;
+import 'package:clust/widgets/text_field.dart' as txt_field;
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -70,16 +70,16 @@ class _SignInState extends State<SignIn> {
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
-        recognizer: TapGestureRecognizer()
-          ..onTap = () {
-            Navigator.pushNamed(context, "/signup");
-          },
         style: kIsWeb
             ? Theme.of(context).textTheme.labelLarge
             : Theme.of(context).textTheme.bodySmall,
         text: ("Not a member? "),
-        children: const [
+        children: [
           TextSpan(
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  Navigator.pushNamed(context, "/signup");
+                },
               style: TextStyle(color: Palate.sand),
               text: kIsWeb ? "\nSign up" : "Sign up")
         ],
@@ -93,12 +93,12 @@ class _SignInState extends State<SignIn> {
       children: [
         Container(
           width: 460,
-          child: txtField.TextField(
-            type: txtField.Type.password,
+          child: txt_field.TextField(
+            type: txt_field.Type.password,
             controller: passwordController,
             hint: "Password",
             lable: "Password",
-            forWhat: txtField.For.signin,
+            forWhat: txt_field.For.signin,
           ),
         ),
         sizedBox(context, 7.h),
@@ -120,12 +120,12 @@ class _SignInState extends State<SignIn> {
   Container emailField() {
     return Container(
       width: 460,
-      child: txtField.TextField(
-        type: txtField.Type.email,
+      child: txt_field.TextField(
+        type: txt_field.Type.email,
         controller: emailController,
         hint: "Email",
         lable: "Email",
-        forWhat: txtField.For.signin,
+        forWhat: txt_field.For.signin,
       ),
     );
   }
@@ -167,7 +167,7 @@ class _SignInState extends State<SignIn> {
       String email = emailController.text;
       String password = passwordController.text;
       print("before");
-      UserController().signin(email, password).then((value) {
+      UserController().distroy(2).then((value) {
         print("during");
         Navigator.pushNamed(context, "/start");
       }).catchError((ex, stacktrace) {

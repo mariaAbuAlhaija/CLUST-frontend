@@ -23,7 +23,7 @@ class landingScreen extends StatelessWidget {
         ),
       ),
       home: Scaffold(
-        backgroundColor: Palate.darkred,
+        backgroundColor: Palate.darker,
         body: SafeArea(
           child: ListView(
             padding: EdgeInsets.zero,
@@ -33,7 +33,7 @@ class landingScreen extends StatelessWidget {
                 width: 100,
                 height: 1024,
                 decoration: BoxDecoration(
-                  color: Palate.darkred,
+                  color: Palate.darker,
                 ),
                 child: Stack(
                   children: [
@@ -364,7 +364,7 @@ class landingScreen extends StatelessWidget {
                     Container(
                       child: Container(
                           height: 1000,
-                          decoration: BoxDecoration(color: Palate.darkred),
+                          decoration: BoxDecoration(color: Palate.darker),
                           child:
                               Container(width: 1000, child: StaggeredPage())),
                     ),
@@ -409,7 +409,7 @@ class landingScreen extends StatelessWidget {
               ),
               Container(
                 height: 359,
-                color: Palate.darkred,
+                color: Palate.darker,
                 child: Stack(
                   children: [
                     Center(

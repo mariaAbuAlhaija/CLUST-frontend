@@ -1,3 +1,4 @@
+import 'package:clust/screens/signup.dart';
 import 'package:clust/styles/palate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,12 +13,14 @@ class TextField extends StatefulWidget {
     required this.hint,
     required this.lable,
     this.forWhat = For.signup,
+    this.confirmPassword = "k",
   });
   Type type;
   TextEditingController controller;
   String hint;
   String lable;
   For forWhat;
+  String? confirmPassword;
 
   @override
   State<TextField> createState() => TtextFieldState();
@@ -42,13 +45,16 @@ class TtextFieldState extends State<TextField> {
           decoration: decoration(context),
           obscureText: isPassword ? obscureText : false,
           keyboardType: keyboardType(),
+          onChanged: (value) => print(widget.controller.text),
         ),
       ],
     );
   }
 
-  Text lable(BuildContext context) =>
-      Text(widget.lable, style: Theme.of(context).textTheme.headlineSmall);
+  Text lable(BuildContext context) => Text(widget.lable,
+      style: kIsWeb
+          ? Theme.of(context).textTheme.labelLarge
+          : Theme.of(context).textTheme.headlineSmall);
 
   InputDecoration decoration(BuildContext context) {
     return InputDecoration(
@@ -105,19 +111,37 @@ class TtextFieldState extends State<TextField> {
           ? FormBuilderValidators.email()
           : isPassword
               ? customisedValidator
-              : FormBuilderValidators.required(),
+              : isConfirm
+                  ? confirmValidator
+                  : FormBuilderValidators.required(),
     ]);
   }
 
   String customisedValidator(value) {
     if (!value!.contains(RegExp("(?=.*?[0-9])"))) {
-      return "password must have at least one digit";
+      return "Include one digit at least";
     }
     if (!value.contains(RegExp("(?=.*?[A-Za-z])"))) {
-      return "password must have at least one letter";
+      return "Include one letter at least";
     }
     if (!value.contains(RegExp(".{8,}"))) {
-      return "password must have more than 8 characters";
+      return "Include more than 8 characters";
+    }
+
+    return "";
+  }
+
+  String confirmValidator(value) {
+    if (value != passwordController.text) {
+      print("v=$value c=${passwordController.text}");
+      print("v=$value c=${passwordController.text}");
+      print("pc= ${passwordController.text}");
+      print("fn= ${fnameController.text}");
+      print("ln= ${lnameController.text}");
+      print("db= ${dateController.text}");
+      print("e= ${emailController.text}");
+      print("g= ${selectedIndex}");
+      return "Passwords must match";
     }
 
     return "";
@@ -146,8 +170,9 @@ class TtextFieldState extends State<TextField> {
   bool get isEmail => widget.type == Type.email;
 
   bool get isPassword => widget.type == Type.password;
+  bool get isConfirm => widget.type == Type.confirm;
 }
 
-enum Type { email, password, general }
+enum Type { email, password, general, confirm }
 
 enum For { signin, signup }

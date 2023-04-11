@@ -18,7 +18,7 @@ class Logo extends StatefulWidget {
   Center logo() {
     return Center(
       child: Container(
-        height: 300,
+        height: 185,
         width: 164,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
