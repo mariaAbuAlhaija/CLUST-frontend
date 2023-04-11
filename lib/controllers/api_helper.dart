@@ -7,15 +7,16 @@ class ApiHelper {
 
   Future get(String path) async {
     Uri uri = Uri.http(domain, path);
-    var response = await http.get(uri);
+    var token = await getToken();
+    var headers = {"Authorization": token};
+    var response = await http.get(uri, headers: headers);
     return responsing(response);
   }
 
   Future post(String path, {body}) async {
     print(body.toString());
     Uri uri = Uri.http(domain, path);
-    var response = await http.post(uri,
-        headers: {"Content-Type": "application/json"}, body: body);
+    var response = await http.post(uri, body: body);
     return responsing(response);
   }
 
@@ -43,19 +44,19 @@ class ApiHelper {
         dynamic jsonObject = jsonDecode(response.body);
         return jsonObject;
       case 400:
-        throw "Bad Request";
+        throw "${response.statusCode}: Bad Request\nResponse Body\n${response.body}";
       case 401:
-        throw "Unauthrizied";
+        throw "${response.statusCode}: Unauthrizied\nResponse Body\n${response.body}";
       case 402:
-        throw "Payment Required";
+        throw "${response.statusCode}: Payment Required\nResponse Body\n${response.body}";
       case 403:
-        throw "Forbidden";
+        throw "${response.statusCode}: Forbidden\nResponse Body\n${response.body}";
       case 404:
-        throw "Not Found";
+        throw "${response.statusCode}: Not Found\nResponse Body\n${response.body}";
       case 500:
-        throw "Server Error :(";
+        throw "${response.statusCode}: Server Error :(\nResponse Body\n${response.body}";
       default:
-        throw "Server Error :(";
+        throw "${response.statusCode}: Server Error :(\nResponse Body\n${response.body}";
     }
   }
 }

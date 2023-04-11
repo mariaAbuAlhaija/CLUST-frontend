@@ -1,4 +1,5 @@
 import 'package:clust/controllers/user_controller.dart';
+import 'package:clust/models/user_model.dart';
 import 'package:clust/screens/logo.dart';
 import 'package:clust/styles/palate.dart';
 import 'package:clust/widgets/chips.dart';
@@ -16,7 +17,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 var fnameController = TextEditingController();
 var lnameController = TextEditingController();
 var dateController = TextEditingController();
-var genderController;
+Gender genderController = Gender.other;
 var emailController = TextEditingController();
 var passwordController = TextEditingController();
 var confirmPasswordController = TextEditingController();
@@ -138,22 +139,16 @@ class _SignupState extends State<Signup> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           splitedFields(fnameController, "First name", "First name",
-              txtField.Type.general, false),
+              txtField.Type.general),
           // sizedBoxW(context, 10.w),
-          splitedFields(lnameController, "Last name", "Last name",
-              txtField.Type.general, false),
+          splitedFields(
+              lnameController, "Last name", "Last name", txtField.Type.general),
         ],
       ),
     );
   }
 
-  Container splitedFields(controller, hint, lable, type, confirm) {
-    String confirmtxt = confirm ? passwordController.text : "h";
-    print("pc= ${passwordController.text}");
-    print("fn= ${fnameController.text}");
-    print("ln= ${lnameController.text}");
-    print("db= ${dateController.text}");
-    print("e= ${emailController.text}");
+  Container splitedFields(controller, hint, lable, type) {
     return Container(
       width: kIsWeb ? 225 : 170,
       child: txtField.TextField(
@@ -162,7 +157,6 @@ class _SignupState extends State<Signup> {
         hint: hint,
         lable: lable,
         forWhat: txtField.For.signup,
-        confirmPassword: confirmtxt,
       ),
     );
   }
@@ -174,10 +168,10 @@ class _SignupState extends State<Signup> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           splitedFields(passwordController, "Password", "Password",
-              txtField.Type.password, false),
+              txtField.Type.password),
           // sizedBoxW(context, 10.w),
           splitedFields(confirmPasswordController, "Confirm", "Confirm",
-              txtField.Type.confirm, true),
+              txtField.Type.confirm),
         ],
       ),
     );
@@ -199,11 +193,18 @@ class _SignupState extends State<Signup> {
         width: 460,
         child: ElevatedButton(
           onPressed: () {
+            print("pressed");
             if (_formKey.currentState!.validate()) {
-              String email = emailController.text;
-              String password = passwordController.text;
+              print("inside");
+              User _user = User(
+                  firstName: fnameController.text,
+                  lastName: lnameController.text,
+                  birthDate: dateController.text,
+                  email: emailController.text,
+                  password: passwordController.text,
+                  gender: genderController);
               print("before");
-              UserController().getByID(1).then((value) {
+              UserController().create(_user).then((value) {
                 print("during");
                 Navigator.pushNamed(context, "/start");
               }).catchError((ex, stacktrace) {
@@ -231,174 +232,3 @@ class _SignupState extends State<Signup> {
     );
   }
 }
-
-// /////////////////////////
-// class TextField extends StatefulWidget {
-//   TextField({
-//     super.key,
-//     required this.type,
-//     required this.controller,
-//     required this.hint,
-//     required this.lable,
-//     this.forWhat = For.signup,
-//     this.confirmPassword = "k",
-//   });
-//   Type type;
-//   TextEditingController controller;
-//   String hint;
-//   String lable;
-//   For forWhat;
-//   String? confirmPassword;
-
-//   @override
-//   State<TextField> createState() => TtextFieldState();
-// }
-
-// class TtextFieldState extends State<TextField> {
-//   var obscureText = true;
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         lable(context),
-//         SizedBox(
-//           height: 15.h,
-//         ),
-//         TextFormField(
-//           autovalidateMode: AutovalidateMode.onUserInteraction,
-//           validator:
-//               widget.forWhat == For.signup ? validators() : signinValidators(),
-//           controller: widget.controller,
-//           decoration: decoration(context),
-//           obscureText: isPassword ? obscureText : false,
-//           keyboardType: keyboardType(),
-//           onChanged: (value) => print(widget.controller.text),
-//         ),
-//       ],
-//     );
-//   }
-
-//   Text lable(BuildContext context) => Text(widget.lable,
-//       style: kIsWeb
-//           ? Theme.of(context).textTheme.labelLarge
-//           : Theme.of(context).textTheme.headlineSmall);
-
-//   InputDecoration decoration(BuildContext context) {
-//     return InputDecoration(
-//       filled: true,
-//       fillColor: Palate.white,
-//       hintText: widget.hint,
-//       hintStyle: hintstyle(context),
-//       contentPadding: padding(),
-//       isDense: true,
-//       suffixIcon: isPassword ? suffix() : null,
-//       border: border(),
-//       focusedBorder: focusedborder(),
-//     );
-//   }
-
-//   TextStyle? hintstyle(BuildContext context) {
-//     return kIsWeb
-//         ? Theme.of(context).textTheme.labelMedium
-//         : Theme.of(context).textTheme.bodySmall;
-//   }
-
-//   EdgeInsets padding() {
-//     return const EdgeInsets.symmetric(vertical: 15, horizontal: 10);
-//   }
-
-//   OutlineInputBorder focusedborder() {
-//     return OutlineInputBorder(
-//         borderRadius: BorderRadius.circular(10),
-//         borderSide: const BorderSide(color: Colors.transparent, width: 0),
-//         gapPadding: 20);
-//   }
-
-//   OutlineInputBorder border() {
-//     return OutlineInputBorder(
-//       borderRadius: BorderRadius.circular(10),
-//       borderSide: const BorderSide(color: Colors.transparent, width: 0),
-//       gapPadding: 20,
-//     );
-//   }
-
-//   FormFieldValidator<String> signinValidators() {
-//     return FormBuilderValidators.compose([
-//       FormBuilderValidators.required(),
-//       isEmail
-//           ? FormBuilderValidators.email()
-//           : FormBuilderValidators.required(),
-//     ]);
-//   }
-
-//   FormFieldValidator<String> validators() {
-//     return FormBuilderValidators.compose([
-//       FormBuilderValidators.required(),
-//       isEmail
-//           ? FormBuilderValidators.email()
-//           : isPassword
-//               ? customisedValidator
-//               : isConfirm
-//                   ? confirmValidator
-//                   : FormBuilderValidators.required(),
-//     ]);
-//   }
-
-//   String customisedValidator(value) {
-//     if (!value!.contains(RegExp("(?=.*?[0-9])"))) {
-//       return "Include one digit at least";
-//     }
-//     if (!value.contains(RegExp("(?=.*?[A-Za-z])"))) {
-//       return "Include one letter at least";
-//     }
-//     if (!value.contains(RegExp(".{8,}"))) {
-//       return "Include more than 8 characters";
-//     }
-
-//     return "";
-//   }
-
-//   String confirmValidator(value) {
-//     if (value != passwordController.text) {
-//       print("v=$value c=${passwordController.text}");
-//       print("pc= ${passwordController.text}");
-//       print("fn= ${fnameController.text}");
-//       print("ln= ${lnameController.text}");
-//       print("db= ${dateController.text}");
-//       print("e= ${emailController.text}");
-//       return "Passwords must match";
-//     }
-
-//     return "";
-//   }
-
-//   InkWell suffix() {
-//     return InkWell(
-//         onTap: () {
-//           setState(() {
-//             obscureText = !obscureText;
-//           });
-//         },
-//         child: obscureText
-//             ? const Icon(Icons.visibility, color: Palate.black, size: 22)
-//             : const Icon(Icons.visibility_off, color: Palate.black, size: 22));
-//   }
-
-//   TextInputType keyboardType() {
-//     return isEmail
-//         ? TextInputType.emailAddress
-//         : isPassword
-//             ? TextInputType.visiblePassword
-//             : TextInputType.text;
-//   }
-
-//   bool get isEmail => widget.type == Type.email;
-
-//   bool get isPassword => widget.type == Type.password;
-//   bool get isConfirm => widget.type == Type.confirm;
-// }
-
-// enum Type { email, password, general, confirm }
-
-// enum For { signin, signup }

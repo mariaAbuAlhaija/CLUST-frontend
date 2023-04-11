@@ -40,17 +40,18 @@ class UserController {
 
   Future<bool> signin(email, password) async {
     try {
+      print("signin");
       dynamic jsonObject = await ApiHelper().post(
-        "{$path}login/",
-        body: json.encode({'email': email, 'password': password}),
+        "${path}login/",
+        body: ({'email': email, 'password': password}),
       );
-      // String type = jsonObject["type"];
-      // String token = jsonObject["token"];
-      // var storage = FlutterSecureStorage();
-      // await storage.write(key: "token", value: "$type $token");
+      print("passed");
+      String type = jsonObject["type"];
+      String token = jsonObject["token"];
+      var storage = FlutterSecureStorage();
+      await storage.write(key: "token", value: "$type $token");
       return true;
     } catch (ex) {
-      print("hahahah");
       print(ex);
       rethrow;
     }

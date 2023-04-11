@@ -1,3 +1,5 @@
+import 'package:clust/models/user_model.dart';
+import 'package:clust/screens/signup.dart';
 import 'package:clust/styles/palate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -47,6 +49,7 @@ class _ChipsState extends State<Chips> {
         if (selected) {
           setState(() {
             widget.selected = gender;
+            settingGender(gender);
           });
         }
       },
@@ -55,6 +58,14 @@ class _ChipsState extends State<Chips> {
       padding:
           EdgeInsets.fromLTRB(kIsWeb ? 40 : 25.w, 15, kIsWeb ? 40 : 25.w, 15),
     );
+  }
+
+  void settingGender(String gender) {
+    gender == Gender.female.toString()
+        ? genderController = Gender.female
+        : gender == Gender.male.toString()
+            ? genderController = Gender.male
+            : genderController = Gender.other;
   }
 
   Text lable(BuildContext context) => Text("Gender",

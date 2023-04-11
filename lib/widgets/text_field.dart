@@ -13,14 +13,12 @@ class TextField extends StatefulWidget {
     required this.hint,
     required this.lable,
     this.forWhat = For.signup,
-    this.confirmPassword = "k",
   });
   Type type;
   TextEditingController controller;
   String hint;
   String lable;
   For forWhat;
-  String? confirmPassword;
 
   @override
   State<TextField> createState() => TtextFieldState();
@@ -109,15 +107,17 @@ class TtextFieldState extends State<TextField> {
       FormBuilderValidators.required(),
       isEmail
           ? FormBuilderValidators.email()
-          : isPassword
-              ? customisedValidator
-              : isConfirm
-                  ? confirmValidator
-                  : FormBuilderValidators.required(),
+          :
+          // isPassword
+          //     ? customisedValidator
+          //     : isConfirm
+          //         ? confirmValidator
+          //         :
+          FormBuilderValidators.required(),
     ]);
   }
 
-  String customisedValidator(value) {
+  Object customisedValidator(value) {
     if (!value!.contains(RegExp("(?=.*?[0-9])"))) {
       return "Include one digit at least";
     }
@@ -128,7 +128,7 @@ class TtextFieldState extends State<TextField> {
       return "Include more than 8 characters";
     }
 
-    return "";
+    return FormBuilderValidators.email();
   }
 
   String confirmValidator(value) {
@@ -140,7 +140,7 @@ class TtextFieldState extends State<TextField> {
       print("ln= ${lnameController.text}");
       print("db= ${dateController.text}");
       print("e= ${emailController.text}");
-      print("g= ${selectedIndex}");
+      print("g= ${genderController}");
       return "Passwords must match";
     }
 
