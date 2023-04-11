@@ -2,15 +2,15 @@ import 'package:clust/styles/palate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-var largestTextSize = 70.0.sp;
-var largerTextSize = 50.0.sp;
-var largeTextSize = 45.0.sp;
-var mediumestTextSize = 33.0.sp;
-var mediumerTextSize = 27.0.sp;
-var mediumTextSize = 23.0.sp;
-var smallTextSize = 21.0.sp;
-var smallerTextSize = 19.0.sp;
-var smallestTextSize = 17.0.sp;
+var largestTextSize = 70.0;
+var largerTextSize = 50.0;
+var largeTextSize = 45.0;
+var mediumestTextSize = 33.0;
+var mediumerTextSize = 27.0;
+var mediumTextSize = 23.0;
+var smallTextSize = 21.0;
+var smallerTextSize = 19.0;
+var smallestTextSize = 17.0;
 
 displayLarge({color = Palate.white, weight = FontWeight.normal}) => TextStyle(
       fontWeight: weight,

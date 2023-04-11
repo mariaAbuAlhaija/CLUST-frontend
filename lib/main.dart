@@ -1,5 +1,7 @@
+import 'package:clust/screens/landingPage.dart';
 import 'package:clust/screens/logo.dart';
 import 'package:clust/screens/signin.dart';
+import 'package:clust/screens/signup.dart';
 import 'package:clust/screens/start.dart';
 import 'package:clust/styles/palate.dart';
 import 'package:clust/styles/web_styles.dart' as web;
@@ -54,12 +56,15 @@ class MyApp extends StatelessWidget {
           ),
           home: Scaffold(
             backgroundColor: Palate.black,
+            // body: kIsWeb ? landingScreen() : Logo(),
             body: Logo(),
           ),
           onGenerateRoute: (settings) {
             var routes = {
               "/start": (context) => start(),
-              "/signin": (context) => signin(),
+              "/signin": (context) => SignIn(),
+              "/landing": (context) => landingScreen(),
+              "/signup": (context) => Signup(),
             };
             WidgetBuilder builder = routes[settings.name]!;
             return MaterialPageRoute(builder: (ctx) => builder(ctx));

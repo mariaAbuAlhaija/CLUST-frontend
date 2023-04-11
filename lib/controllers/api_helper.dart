@@ -12,14 +12,15 @@ class ApiHelper {
     return responsing(response);
   }
 
-  Future post(String path, {Map? body}) async {
+  Future post(String path, {body}) async {
+    print(body.toString());
     Uri uri = Uri.http(domain, path);
-    var response = await http.post(uri, body: body);
+    var response = await http.post(uri,
+        headers: {"Content-Type": "application/json"}, body: body);
     return responsing(response);
   }
 
   Future put(String path, Map body) async {
-    print(body.toString());
     Uri uri = Uri.http(domain, path);
     var response = await http.put(uri, body: body);
     return responsing(response);
