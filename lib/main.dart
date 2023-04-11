@@ -56,8 +56,8 @@ class MyApp extends StatelessWidget {
           ),
           home: Scaffold(
             backgroundColor: Palate.black,
-            // body: kIsWeb ? landingScreen() : Logo(),
-            body: Logo(),
+            body: kIsWeb ? landingScreen() : Logo(),
+            // body: Logo(),
           ),
           onGenerateRoute: (settings) {
             var routes = {

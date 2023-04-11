@@ -32,7 +32,7 @@ class landingScreen extends StatelessWidget {
               Container(
                 width: 100,
                 height: 1024,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Palate.darker,
                 ),
                 child: Stack(
@@ -44,14 +44,14 @@ class landingScreen extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Align(
-                                alignment: AlignmentDirectional(0, -1),
+                                alignment: const AlignmentDirectional(0, -1),
                                 child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0, 304, 0, 304),
                                   child: Container(
                                     width: 854,
                                     height: 304,
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       color: Color(0xFF221F1F),
                                     ),
                                     child: Column(
@@ -60,7 +60,8 @@ class landingScreen extends StatelessWidget {
                                         Center(
                                           child: Align(
                                               alignment:
-                                                  AlignmentDirectional(0, -1),
+                                                  const AlignmentDirectional(
+                                                      0, -1),
                                               child: Text('You Are Invited!',
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.bold,
@@ -68,9 +69,8 @@ class landingScreen extends StatelessWidget {
                                                   ))),
                                         ),
                                         Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 48, 0, 0),
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(0, 48, 0, 0),
                                           child: Container(
                                             width: MediaQuery.of(context)
                                                     .size
@@ -92,7 +92,8 @@ class landingScreen extends StatelessWidget {
                                         Expanded(
                                           child: Align(
                                             alignment:
-                                                AlignmentDirectional(0, 1),
+                                                const AlignmentDirectional(
+                                                    0, 1),
                                             child: SizedBox(
                                               width: 258,
                                               height: 75,
@@ -100,7 +101,7 @@ class landingScreen extends StatelessWidget {
                                                 onPressed: () {
                                                   // Add your onPressed action here
                                                 },
-                                                child: Text(
+                                                child: const Text(
                                                   'Get started!',
                                                   style: TextStyle(
                                                     fontSize: 23,
@@ -126,7 +127,7 @@ class landingScreen extends StatelessWidget {
                           ],
                         ),
                         Align(
-                          alignment: AlignmentDirectional(0, -1),
+                          alignment: const AlignmentDirectional(0, -1),
                           child: ListView(
                             controller: _scrollController,
                             padding: EdgeInsets.zero,
@@ -135,7 +136,7 @@ class landingScreen extends StatelessWidget {
                             scrollDirection: Axis.vertical,
                             children: [
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     206, 0, 206, 62),
                                 child: Image.asset(
                                   'assets/images/landing.gif',
@@ -147,14 +148,14 @@ class landingScreen extends StatelessWidget {
                               Container(
                                 width: 100,
                                 height: 832,
-                                decoration: BoxDecoration(),
+                                decoration: const BoxDecoration(),
                               ),
                             ],
                           ),
                         ),
                         Padding(
-                          padding:
-                              EdgeInsetsDirectional.fromSTEB(180, 39, 0, 0),
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              180, 39, 0, 0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -163,7 +164,7 @@ class landingScreen extends StatelessWidget {
                                 width: 100,
                                 height: 45,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                   width:
                                       1), // add some space between the images
                               Image.asset(
@@ -175,10 +176,10 @@ class landingScreen extends StatelessWidget {
                           ),
                         ),
                         Align(
-                          alignment: AlignmentDirectional(1, -1),
+                          alignment: const AlignmentDirectional(1, -1),
                           child: Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(0, 51, 222, 0),
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                0, 51, 222, 0),
                             child: SizedBox(
                               width: 125,
                               height: 57,
@@ -186,7 +187,7 @@ class landingScreen extends StatelessWidget {
                                 onPressed: () {
                                   print('Button pressed ...');
                                 },
-                                child: Text(
+                                child: const Text(
                                   'Join',
                                   style: TextStyle(
                                     color: Colors.white,
@@ -194,7 +195,7 @@ class landingScreen extends StatelessWidget {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                backgroundColor: Color(0xFF454242),
+                                backgroundColor: const Color(0xFF454242),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
@@ -203,25 +204,21 @@ class landingScreen extends StatelessWidget {
                           ),
                         ),
                         Align(
-                          alignment: AlignmentDirectional(1, -1),
+                          alignment: const AlignmentDirectional(1, -1),
                           child: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 68, 373, 0),
-                              child: TextButton(
-                                onPressed: () => print("pressddd"),
-                                child: Text(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  0, 68, 373, 0),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(context, "/signin");
+                                },
+                                child: const Text(
                                   'Sign In',
                                   style: TextStyle(
                                     color: Palate.white,
                                     fontSize: 21,
                                     fontWeight: FontWeight.bold,
                                   ),
-                                ),
-                                style: TextButton.styleFrom(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 10),
-                                  backgroundColor: Colors.transparent,
-                                  shadowColor: Colors.transparent,
                                 ),
                               )),
                         )
@@ -233,19 +230,19 @@ class landingScreen extends StatelessWidget {
               Container(
                 width: 100,
                 height: 1024,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Color(0xFF221F1F),
                 ),
                 child: Column(mainAxisSize: MainAxisSize.max, children: [
                   Container(
                     width: 1920,
                     height: 500,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Color(0xFF1E1C1C),
                     ),
                     child: Stack(
                       children: [
-                        Align(
+                        const Align(
                           alignment: AlignmentDirectional(1, 0),
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(52, 50, 252, 79),
@@ -257,7 +254,7 @@ class landingScreen extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.fromLTRB(406, 151, 52, 42),
+                          padding: const EdgeInsets.fromLTRB(406, 151, 52, 42),
                           child: Text(
                             'An environment where to\nplan and manage events',
                             style: TextStyle(
@@ -267,8 +264,8 @@ class landingScreen extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding:
-                              EdgeInsetsDirectional.fromSTEB(406, 275, 52, 0),
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              406, 275, 52, 0),
                           child: Text(
                             'Browse events, reserve spots, enjoy your \ntime,\nMake extraordinary memories!',
                             style: TextStyle(
@@ -280,15 +277,15 @@ class landingScreen extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
                       child: Container(
                           width: 1920,
                           height: 511,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: Color(0xFF221F1F),
                           ),
                           child: Stack(children: [
-                            Align(
+                            const Align(
                               alignment: AlignmentDirectional(-1, 0),
                               child: Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
@@ -307,10 +304,11 @@ class landingScreen extends StatelessWidget {
                                 Column(
                                   children: [
                                     Align(
-                                      alignment: AlignmentDirectional(1, -1),
+                                      alignment:
+                                          const AlignmentDirectional(1, -1),
                                       child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            616, 200, 331, 44),
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(616, 200, 331, 44),
                                         child: Text(
                                           'Create Your own',
                                           style: TextStyle(
@@ -324,7 +322,8 @@ class landingScreen extends StatelessWidget {
                                       alignment:
                                           AlignmentDirectional.centerStart,
                                       child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                        padding: const EdgeInsetsDirectional
+                                                .fromSTEB(
                                             945, 0, 0, 44), //  0, 0, 331, 0),
                                         child: Text(
                                           'CLUST is designed to help you \ncustomize your own events',
@@ -347,7 +346,7 @@ class landingScreen extends StatelessWidget {
                 height: 1700,
                 child: Column(
                   children: [
-                    Align(
+                    const Align(
                       alignment: AlignmentDirectional(-1, 0),
                       child: Padding(
                         padding:
@@ -364,11 +363,11 @@ class landingScreen extends StatelessWidget {
                     Container(
                       child: Container(
                           height: 1000,
-                          decoration: BoxDecoration(color: Palate.darker),
-                          child:
-                              Container(width: 1000, child: StaggeredPage())),
+                          decoration: const BoxDecoration(color: Palate.darker),
+                          child: Container(
+                              width: 1000, child: const StaggeredPage())),
                     ),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(0, 170, 0, 0),
                       child: Text(
                         'Dive more?',
@@ -379,16 +378,17 @@ class landingScreen extends StatelessWidget {
                     ),
                     Expanded(
                       child: Align(
-                        alignment: AlignmentDirectional(0, -1),
+                        alignment: const AlignmentDirectional(0, -1),
                         child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 55, 0, 0),
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(0, 55, 0, 0),
                           child: SizedBox(
                             width: 258,
                             child: FloatingActionButton(
                               onPressed: () {
                                 // Add your onPressed action here
                               },
-                              child: Text(
+                              child: const Text(
                                 'Home Page',
                                 style: TextStyle(
                                   fontSize: 23,

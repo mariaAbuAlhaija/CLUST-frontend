@@ -8,9 +8,11 @@ class ApiHelper {
 //Maya: 192.168.100.51
   Future get(String path) async {
     Uri uri = Uri.http(domain, path);
-    var token = await getToken();
-    var headers = {"Authorization": token};
-    var response = await http.get(uri, headers: headers);
+    // var token = await getToken();
+    // var headers = {"Authorization": token};
+    var response = await http.get(
+      uri,
+    );
     return responsing(response);
   }
 
