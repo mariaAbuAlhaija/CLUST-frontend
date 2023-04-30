@@ -1,7 +1,9 @@
 import 'package:clust/controllers/user_controller.dart';
 import 'package:clust/screens/logo.dart';
 import 'package:clust/styles/palate.dart';
+import 'package:clust/widgets/sized_box.dart';
 import 'package:clust/widgets/text_field.dart' as txt_field;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -40,7 +42,7 @@ class _SignInState extends State<SignIn> {
       child: Scaffold(
         backgroundColor: Palate.black,
         body: Padding(
-          padding: EdgeInsets.only(top: 30.h, right: 30.w, left: 30.w),
+          padding: EdgeInsets.only(top: 150.h, right: 30.w, left: 30.w),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -51,10 +53,10 @@ class _SignInState extends State<SignIn> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         emailField(),
-                        sizedBox(context, kIsWeb ? 30.h : 20.h),
+                        Sized_Box().sizedBoxH(context, kIsWeb ? 30.h : 20.h),
                         passwordField(context),
                         submitButton(context),
-                        sizedBox(context, 10.h),
+                        Sized_Box().sizedBoxH(context, 10.h),
                         options(context)
                       ]),
                 ),
@@ -80,7 +82,7 @@ class _SignInState extends State<SignIn> {
                 ..onTap = () {
                   Navigator.pushNamed(context, "/signup");
                 },
-              style: TextStyle(color: Palate.sand),
+              style: const TextStyle(color: Palate.sand),
               text: kIsWeb ? "\nSign up" : "Sign up")
         ],
       ),
@@ -101,7 +103,7 @@ class _SignInState extends State<SignIn> {
             forWhat: txt_field.For.signin,
           ),
         ),
-        sizedBox(context, 7.h),
+        Sized_Box().sizedBoxH(context, 7.h),
         RichText(
           text: TextSpan(
               style: kIsWeb
@@ -128,10 +130,6 @@ class _SignInState extends State<SignIn> {
         forWhat: txt_field.For.signin,
       ),
     );
-  }
-
-  SizedBox sizedBox(BuildContext context, height) {
-    return SizedBox(height: height);
   }
 
   Padding submitButton(BuildContext context) {
@@ -162,7 +160,7 @@ class _SignInState extends State<SignIn> {
     );
   }
 
-  void onPress(BuildContext context) {
+  onPress(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       String email = emailController.text;
       String password = passwordController.text;
@@ -174,6 +172,22 @@ class _SignInState extends State<SignIn> {
         print("error");
         print(ex.toString());
         print(stacktrace);
+        const SnackBar(
+          content: Text("This is my content"),
+        );
+        // return CupertinoAlertDialog(
+        //   title: new Text("Dialog Title"),
+        //   content: new Text("This is my content"),
+        //   actions: <Widget>[
+        //     CupertinoDialogAction(
+        //       isDefaultAction: true,
+        //       child: Text("Yes"),
+        //     ),
+        //     CupertinoDialogAction(
+        //       child: Text("No"),
+        //     )
+        //   ],
+        // );
       });
     }
   }

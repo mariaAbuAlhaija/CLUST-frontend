@@ -1,5 +1,6 @@
 import 'package:clust/screens/signup.dart';
 import 'package:clust/styles/palate.dart';
+import 'package:clust/widgets/sized_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -32,9 +33,7 @@ class TtextFieldState extends State<TextField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         lable(context),
-        SizedBox(
-          height: 15.h,
-        ),
+        Sized_Box().sizedBoxH(context, 15.h),
         TextFormField(
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator:

@@ -1,3 +1,4 @@
+import 'package:clust/screens/start.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:clust/styles/palate.dart';
@@ -35,13 +36,18 @@ class Logo extends StatefulWidget {
 
 class _LogoState extends State<Logo> {
   Timer? timer;
+  var visible = false;
   @override
   void initState() {
     super.initState();
     timer = Timer(
       const Duration(seconds: 3),
       () {
-        Navigator.pushReplacementNamed(context, "/start");
+        setState(() {
+          visible = true;
+        });
+
+        // Navigator.pushReplacementNamed(context, "/start");
       },
     );
   }
@@ -54,7 +60,17 @@ class _LogoState extends State<Logo> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.logo();
+    return Scaffold(
+      backgroundColor: Palate.black,
+      body: widget.logo(),
+      bottomNavigationBar: Visibility(
+        visible: visible,
+        child: Padding(
+          padding: const EdgeInsets.all(50),
+          child: start(),
+        ),
+      ),
+    );
   }
 }
 

@@ -1,6 +1,7 @@
 import 'package:clust/models/user_model.dart';
 import 'package:clust/screens/signup.dart';
 import 'package:clust/styles/palate.dart';
+import 'package:clust/widgets/sized_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,9 +22,7 @@ class _ChipsState extends State<Chips> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         lable(context),
-        SizedBox(
-          height: 15.h,
-        ),
+        Sized_Box().sizedBoxH(context, 15.h),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: ['Female', 'Male', 'Other']

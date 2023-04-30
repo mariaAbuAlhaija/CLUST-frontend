@@ -1,3 +1,4 @@
+import 'package:clust/widgets/sized_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,9 +21,7 @@ class DatePickerState extends State<DatePicker> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           lable(context),
-          SizedBox(
-            height: 15.h,
-          ),
+          Sized_Box().sizedBoxH(context, 15.h),
           FormBuilderDateTimePicker(
             controller: widget.dateController,
             name: "Date",

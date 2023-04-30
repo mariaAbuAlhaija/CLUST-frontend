@@ -3,6 +3,7 @@ import 'package:clust/models/user_model.dart';
 import 'package:clust/screens/logo.dart';
 import 'package:clust/styles/palate.dart';
 import 'package:clust/widgets/chips.dart';
+import 'package:clust/widgets/sized_box.dart';
 import 'package:clust/widgets/text_field.dart' as txtField;
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
@@ -62,27 +63,27 @@ class _SignupState extends State<Signup> {
               child: Column(
                 children: [
                   // kIsWeb ? Logo().logo() :
-                  sizedBoxH(context, 40.h),
+                  Sized_Box().sizedBoxH(context, 40.h),
                   FormBuilder(
                     key: _formKey,
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           nameField(),
-                          sizedBoxH(context, 20.h),
+                          Sized_Box().sizedBoxH(context, 20.h),
                           DatePicker(
                             dateController: dateController,
                           ),
-                          sizedBoxH(context, 20.h),
+                          Sized_Box().sizedBoxH(context, 20.h),
                           Container(
                               width: 460,
                               child: Chips(selected: selectedIndex)),
-                          sizedBoxH(context, 20.h),
+                          Sized_Box().sizedBoxH(context, 20.h),
                           emailField(),
-                          sizedBoxH(context, 20.h),
+                          Sized_Box().sizedBoxH(context, 20.h),
                           passwordField(),
                           submitButton(context),
-                          sizedBoxH(context, 10.h),
+                          Sized_Box().sizedBoxH(context, 10.h),
                           options(context),
                         ]),
                   ),
@@ -175,14 +176,6 @@ class _SignupState extends State<Signup> {
         ],
       ),
     );
-  }
-
-  SizedBox sizedBoxH(BuildContext context, height) {
-    return SizedBox(height: height);
-  }
-
-  SizedBox sizedBoxW(BuildContext context, width) {
-    return SizedBox(width: width);
   }
 
   Padding submitButton(BuildContext context) {
