@@ -122,9 +122,9 @@ class _HomeState extends State<Home> {
                                     alignment: Alignment.centerLeft,
                                     child: Container(
                                       decoration: BoxDecoration(
+                                          color: Colors.black.withOpacity(0.5),
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(20))),
-                                      color: Colors.black.withOpacity(0.5),
                                       child: InkWell(
                                         onTap: () {
                                           _pageViewController.animateToPage(
@@ -170,9 +170,9 @@ class _HomeState extends State<Home> {
                                     alignment: Alignment.centerRight,
                                     child: Container(
                                       decoration: BoxDecoration(
+                                          color: Colors.black.withOpacity(0.5),
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(20))),
-                                      color: Colors.black.withOpacity(0.5),
                                       child: InkWell(
                                         onTap: () {
                                           _pageViewController.animateToPage(

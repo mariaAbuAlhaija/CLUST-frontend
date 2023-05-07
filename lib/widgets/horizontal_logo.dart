@@ -22,8 +22,8 @@ class HorizontalLogo extends StatelessWidget {
 
   Container logoBox() {
     return Container(
-      height: 120,
-      width: 120,
+      height: 50,
+      width: 50,
       decoration: const BoxDecoration(
         image: DecorationImage(
           image: AssetImage('assets/images/logo.png'),
@@ -37,8 +37,7 @@ class HorizontalLogo extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
       child: Container(
-        height: 54,
-        width: 150,
+        width: 130,
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/clust.png'),

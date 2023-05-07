@@ -11,16 +11,16 @@ class Responsive extends StatelessWidget {
   }) : super(key: key);
 
   static bool isMobile(BuildContext context) =>
-      MediaQuery.of(context).size.width < 360;
+      MediaQuery.of(context).size.width < 650;
 
   static bool isDesktop(BuildContext context) =>
-      MediaQuery.of(context).size.width >= 1336;
+      MediaQuery.of(context).size.width >= 650;
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (constraints.maxWidth >= 1336) {
+        if (constraints.maxWidth >= 650) {
           return desktop;
         } else {
           return mobile;

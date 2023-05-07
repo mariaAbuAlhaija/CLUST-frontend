@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:clust/screens/home.dart';
 import 'package:clust/screens/landingPage.dart';
 import 'package:clust/screens/logo.dart';
 import 'package:clust/screens/signin.dart';
 import 'package:clust/screens/signup.dart';
+import 'package:clust/screens/after_register.dart';
 import 'package:clust/screens/start.dart';
 import 'package:clust/styles/palate.dart';
 import 'package:clust/styles/web_styles.dart' as web;
@@ -11,8 +14,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:window_size/window_size.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(MyApp());
 }
 
@@ -55,7 +61,7 @@ class MyApp extends StatelessWidget {
                     ),
                   ),
           ),
-          home: kIsWeb ? Home() : Logo(),
+          home: kIsWeb ? Steps() : Steps(),
           // Scaffold(
           //   backgroundColor: Palate.black,
           //   body: kIsWeb ? landingScreen() : Logo(),
