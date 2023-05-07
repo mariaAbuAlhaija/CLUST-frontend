@@ -167,7 +167,7 @@ class _SignInState extends State<SignIn> {
       print("before");
       UserController().signin(email, password).then((value) {
         print("during");
-        Navigator.pushNamed(context, "/start");
+        Navigator.pushNamed(context, "/home");
       }).catchError((ex, stacktrace) {
         print("error");
         print(ex.toString());

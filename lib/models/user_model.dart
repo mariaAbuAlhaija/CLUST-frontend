@@ -49,7 +49,7 @@ class User {
     print(verified.runtimeType);
     return {
       "first_name": firstName,
-      "Last_name": lastName,
+      "last_name": lastName,
       "birth_date": birthDate,
       "gender": gender.name,
       "email": email,

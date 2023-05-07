@@ -199,7 +199,7 @@ class _SignupState extends State<Signup> {
               print("before");
               UserController().create(_user).then((value) {
                 print("during");
-                Navigator.pushNamed(context, "/start");
+                Navigator.pushReplacementNamed(context, "/afterRegister");
               }).catchError((ex, stacktrace) {
                 print("error");
                 print(ex.toString());

@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
                     ),
                   ),
           ),
-          home: kIsWeb ? Steps() : Steps(),
+          home: kIsWeb ? landingScreen() : Logo(),
           // Scaffold(
           //   backgroundColor: Palate.black,
           //   body: kIsWeb ? landingScreen() : Logo(),
@@ -74,6 +74,7 @@ class MyApp extends StatelessWidget {
               "/landing": (context) => landingScreen(),
               "/signup": (context) => Signup(),
               "/home": (context) => Home(),
+              "/afterRegister": (context) => Steps(),
             };
             WidgetBuilder builder = routes[settings.name]!;
             return MaterialPageRoute(builder: (ctx) => builder(ctx));

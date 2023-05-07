@@ -185,7 +185,7 @@ class landingScreen extends StatelessWidget {
                               height: 57,
                               child: FloatingActionButton(
                                 onPressed: () {
-                                  print('Button pressed ...');
+                                  Navigator.pushNamed(context, '/signup');
                                 },
                                 child: const Text(
                                   'Join',
