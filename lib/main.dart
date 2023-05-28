@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:clust/screens/categoryList.dart';
+import 'package:clust/screens/createevent.dart';
 import 'package:clust/screens/home.dart';
 import 'package:clust/screens/landingPage.dart';
 import 'package:clust/screens/logo.dart';
@@ -61,7 +63,7 @@ class MyApp extends StatelessWidget {
                     ),
                   ),
           ),
-          home: kIsWeb ? landingScreen() : Logo(),
+          home: kIsWeb ?EventSteps() : EventSteps(),
           // Scaffold(
           //   backgroundColor: Palate.black,
           //   body: kIsWeb ? landingScreen() : Logo(),

@@ -1,16 +1,19 @@
 import 'dart:convert';
+import 'dart:developer';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ApiHelper {
-  String domain = "192.168.1.24:3333";
-//Ayman: 192.168.93.1
+  String domain = "192.168.93.1:3333";
+//Ayman: 192.168.8.120 Wireless LAN adapter Wi-Fi:IP4
 //Maya: 192.168.100.51
   Future get(String path) async {
     Uri uri = Uri.http(domain, path);
     var token = await getToken();
-    var headers = {"Authorization": token};
-    var response = await http.get(uri, headers: headers);
+
+ 
+    var response = await http.get(uri);
     return responsing(response);
   }
 

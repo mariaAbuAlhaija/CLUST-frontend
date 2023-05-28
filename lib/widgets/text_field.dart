@@ -174,4 +174,4 @@ class TtextFieldState extends State<TextField> {
 
 enum Type { email, password, general, confirm }
 
-enum For { signin, signup }
+enum For { signin, signup,createEvent }

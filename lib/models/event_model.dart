@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 
 class Event {
-  int id;
+  int? id;
   String name;
   String description;
   int category_id;
@@ -9,38 +9,41 @@ class Event {
   DateTime start_date;
   DateTime end_date;
   String status;
-  int views;
-  int capacity;
-  String thanking_message;
+  int? views;
+  int ?capacity;
+  String? thanking_message;
 
-  Event(
-      this.id,
-      this.name,
-      this.description,
-      this.category_id,
-      this.organizer_id,
-      this.start_date,
-      this.end_date,
-      this.status,
+  Event({
+       this.id,
+     required this.name,
+    required  this.description,
+     required this.category_id,
+   required   this.organizer_id,
+   required   this.start_date,
+    required  this.end_date,
+   required   this.status,
       this.views,
       this.capacity,
-      this.thanking_message);
+      this.thanking_message});
   factory Event.fromJson(Map<String, dynamic> json) {
     DateTime st = DateTime.parse(json['start_date'] ?? '');
     DateTime en = DateTime.parse(json['end_date'] ?? '');
-    return Event(
-        json['id'] ?? 0,
-        json['name'] ?? '',
-        json['description'] ?? '',
-        json['category_id'] ?? 0,
-        json['organizer_id'] ?? 0,
-        st,
-        en,
-        json['status'] ?? '',
-        json['views'] ?? 0,
-        json['capacity'] ?? 0,
-        json['thanking_message'] ?? '');
-  }
+    Event _event=Event (
+      id: json['id'] ?? 0,
+    name:   json['name'] ?? '',
+     description:  json['description'] ?? '',
+      category_id:  json['category_id'] ?? 0,
+      organizer_id:  json['organizer_id'] ?? 0,
+       start_date:   st,
+       end_date:en,
+        status: json['status'] ?? '',
+       views: json['views'] ?? 0,
+       capacity:json['capacity'] ?? 0,
+        thanking_message: json['thanking_message'] ?? ''
+       );
+ 
+    
+    return _event; }
 
  Map<String, dynamic> toJson() {
   return {
