@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:clust/models/user_model.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert';
@@ -5,12 +7,10 @@ import 'api_helper.dart';
 
 class UserController {
   String path = "user/";
-  Future<List<User>> getAll() async {
+  Future<User> getAll() async {
     dynamic jsonObject = await ApiHelper().get(path);
-    List<User> result = [];
-    jsonObject.forEach((json) {
-      result.add(User.fromJson(json));
-    });
+    print(jsonObject);
+    User result = User.fromJson(jsonObject);
     return result;
   }
 
@@ -59,7 +59,7 @@ class UserController {
 
   Future<bool> signout() async {
     try {
-      dynamic jsonObject = await ApiHelper().post("$path/logout");
+      dynamic jsonObject = await ApiHelper().post("${path}logout");
       var storage = FlutterSecureStorage();
       await storage.delete(key: "token");
       return true;

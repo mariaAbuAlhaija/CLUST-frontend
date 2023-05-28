@@ -38,39 +38,43 @@ class _StepsState extends State<Steps> {
           leading: kIsWeb ? const HorizontalLogo() : null,
         ),
         body: Responsive(
-          mobile: Center(
-            child: Container(
-              padding: kIsWeb
-                  ? EdgeInsets.fromLTRB(300.w, 150.h, 100.w, 100.h)
-                  : EdgeInsets.fromLTRB(60.w, 100.h, 60.w, 50.h),
-              child: Stack(
-                children: [
-                  Column(
-                    children: [
-                      Text("Set up your account",
-                          textAlign: TextAlign.center,
-                          style: kIsWeb
-                              ? Theme.of(context).textTheme.headlineMedium
-                              : Theme.of(context).textTheme.displayLarge),
-                      Sized_Box().sizedBoxH(context, 50.0.h),
-                      mobileContent(context, activeStep),
-                    ],
-                  ),
-                  Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        skipButton(context),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
+          mobile: mobileLayout(context),
           desktop: webLayout(context),
         ));
+  }
+
+  Center mobileLayout(BuildContext context) {
+    return Center(
+      child: Container(
+        padding: kIsWeb
+            ? EdgeInsets.fromLTRB(300.w, 150.h, 100.w, 100.h)
+            : EdgeInsets.fromLTRB(60.w, 100.h, 60.w, 50.h),
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                Text("Set up your account",
+                    textAlign: TextAlign.center,
+                    style: kIsWeb
+                        ? Theme.of(context).textTheme.headlineMedium
+                        : Theme.of(context).textTheme.displayLarge),
+                Sized_Box().sizedBoxH(context, 50.0.h),
+                mobileContent(context, activeStep),
+              ],
+            ),
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  skipButton(context),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   Widget mobileContent(BuildContext context, int index) {

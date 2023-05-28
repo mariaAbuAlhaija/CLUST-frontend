@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:clust/screens/home.dart';
+import 'package:clust/screens/home_mob.dart';
 import 'package:clust/screens/landingPage.dart';
 import 'package:clust/screens/logo.dart';
+import 'package:clust/screens/navigation.dart';
 import 'package:clust/screens/signin.dart';
 import 'package:clust/screens/signup.dart';
 import 'package:clust/screens/after_register.dart';
@@ -61,20 +63,23 @@ class MyApp extends StatelessWidget {
                     ),
                   ),
           ),
-          home: kIsWeb ? landingScreen() : Logo(),
+          // home: kIsWeb ? Home() : Logo(),
           // Scaffold(
           //   backgroundColor: Palate.black,
           //   body: kIsWeb ? landingScreen() : Logo(),
           //   // body: Logo(),
           // ),
+          initialRoute: "/",
           onGenerateRoute: (settings) {
             var routes = {
+              "/": (context) => Logo(),
               "/start": (context) => start(),
               "/signin": (context) => SignIn(),
               "/landing": (context) => landingScreen(),
               "/signup": (context) => Signup(),
-              "/home": (context) => Home(),
+              "/home": (context) => HomeMob(),
               "/afterRegister": (context) => Steps(),
+              "/navigator": (context) => Navigation(),
             };
             WidgetBuilder builder = routes[settings.name]!;
             return MaterialPageRoute(builder: (ctx) => builder(ctx));
