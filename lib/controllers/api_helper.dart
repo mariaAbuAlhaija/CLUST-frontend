@@ -11,18 +11,15 @@ class ApiHelper {
   Future get(String path) async {
     Uri uri = Uri.http(domain, path);
     var token = await getToken();
-
- 
-    var response = await http.get(uri);
+    var headers = {"Authorization": token};
+    var response = await http.get(uri, headers: headers);
     return responsing(response);
   }
 
   Future post(String path, {body}) async {
     print(body.toString());
     Uri uri = Uri.http(domain, path);
-    var token = await getToken();
-    var headers = {"Authorization": token};
-    var response = await http.post(uri, headers: headers, body: body);
+    var response = await http.post(uri, body: body);
     return responsing(response);
   }
 

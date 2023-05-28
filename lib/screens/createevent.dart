@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_stepper/easy_stepper.dart' as stepper;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
- import 'package:intl/intl.dart';
+import 'package:intl/intl.dart';
 
 import '../controllers/category_contoller.dart';
 import '../widgets/date_picker.dart';
@@ -35,7 +35,7 @@ class _EventStepsState extends State<EventSteps> {
 
   late Future<List<Category>> _categoriesFuture;
   String? _selectedCategory;
-  
+
   DateTime dateTime = DateTime(2023, 6, 23, 3, 30);
   @override
   void initState() {
@@ -174,7 +174,6 @@ class _EventStepsState extends State<EventSteps> {
             Sized_Box().sizedBoxH(context, 10.0.h),
             formthank(),
             Sized_Box().sizedBoxH(context, 70.0.h),
-          
             submitButton(context),
           ],
         );
@@ -240,7 +239,7 @@ class _EventStepsState extends State<EventSteps> {
       unreachedStepTextColor: Palate.white,
       activeStepTextColor: Palate.white,
       showTitle: true,
-       enableStepTapping: true,
+      enableStepTapping: true,
       internalPadding: 0,
       showLoadingAnimation: false,
       stepRadius: 45,
@@ -631,14 +630,13 @@ class _EventStepsState extends State<EventSteps> {
             if (true) {
               print("inside");
               Event _user = Event(
-                name:  eventNameController.text,
-                description: eventDiscriptionController.text,
-                category_id: int.parse(categoryController.text),
-                    organizer_id: 1,
-                    start_date:dateFormat.parse(startDateController.text)  ,
+                  name: eventNameController.text,
+                  description: eventDiscriptionController.text,
+                  category_id: int.parse(categoryController.text),
+                  organizer_id: 1,
+                  start_date: dateFormat.parse(startDateController.text),
                   end_date: DateTime.parse(endDateController.text),
-                  status: ''
-                );
+                  status: '');
               print("before");
               EventController().create(_user).then((value) {
                 print("during");
