@@ -77,6 +77,7 @@ class _SignupState extends State<Signup> {
                           Sized_Box().sizedBoxH(context, 20.h),
                           Container(
                               width: 460,
+                              //!! change the selected index
                               child: Chips(selected: selectedIndex)),
                           Sized_Box().sizedBoxH(context, 20.h),
                           emailField(),
@@ -189,6 +190,12 @@ class _SignupState extends State<Signup> {
             print("pressed");
             if (_formKey.currentState!.validate()) {
               print("inside");
+              print("""firstName: ${fnameController.text},
+                  lastName: ${lnameController.text},
+                  birthDate: ${dateController.text},
+                  email: ${emailController.text},
+                  password: ${passwordController.text}
+                  gender: ${genderController}""");
               User _user = User(
                   firstName: fnameController.text,
                   lastName: lnameController.text,

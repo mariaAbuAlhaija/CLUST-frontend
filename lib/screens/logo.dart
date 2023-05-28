@@ -2,6 +2,7 @@ import 'package:clust/screens/start.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:clust/styles/palate.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../styles/responsive.dart';
 import 'landingPage.dart';
@@ -42,12 +43,15 @@ class _LogoState extends State<Logo> {
     super.initState();
     timer = Timer(
       const Duration(seconds: 3),
-      () {
-        setState(() {
-          visible = true;
-        });
-
-        // Navigator.pushReplacementNamed(context, "/start");
+      () async {
+        var storage = await FlutterSecureStorage();
+        var authirized = await storage.containsKey(key: "token");
+        print(authirized);
+        authirized
+            ? Navigator.pushReplacementNamed(context, "/navigator")
+            : setState(() {
+                visible = true;
+              });
       },
     );
   }
