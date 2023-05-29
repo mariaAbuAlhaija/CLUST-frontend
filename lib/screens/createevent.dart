@@ -10,10 +10,10 @@ import 'package:flutter/material.dart';
 import 'package:easy_stepper/easy_stepper.dart' as stepper;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
- import 'package:intl/intl.dart';
-
+ 
 import '../controllers/category_contoller.dart';
 import '../widgets/date_picker.dart';
+import '../widgets/datetimepicker.dart';
 
 class EventSteps extends StatefulWidget {
   const EventSteps({super.key});
@@ -31,8 +31,7 @@ class _EventStepsState extends State<EventSteps> {
   var startDateController = TextEditingController();
   var endDateController = TextEditingController();
   var categoryController = TextEditingController();
-  DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm");
-
+ 
   late Future<List<Category>> _categoriesFuture;
   String? _selectedCategory;
   
@@ -133,9 +132,9 @@ class _EventStepsState extends State<EventSteps> {
             Sized_Box().sizedBoxH(context, 10.0.h),
             Row(
               children: [
-                Expanded(child: dateTimePick(startDateController)),
+                Expanded(child: DateTimePicker(dateTimeController: startDateController,)),
                 SizedBox(width: 10.0.w),
-                Expanded(child: dateTimePick(endDateController)),
+                Expanded(child: DateTimePicker( dateTimeController: endDateController,)),
               ],
             ),
             DropdownButtonFormField(
@@ -166,8 +165,7 @@ class _EventStepsState extends State<EventSteps> {
       case 2:
         return Column(
           children: [
-            Sized_Box().sizedBoxH(context, 70.0.h),
-            Text(
+             Text(
               "Additional information",
               style: Theme.of(context).textTheme.headlineMedium,
             ),
@@ -328,10 +326,8 @@ class _EventStepsState extends State<EventSteps> {
             Sized_Box().sizedBoxH(context, 3.0.h),
             formdis(),
             Sized_Box().sizedBoxH(context, 10.0.h),
-            dateTimePick(startDateController),
-            Sized_Box().sizedBoxH(context, 10.0.h),
-            dateTimePick(endDateController),
-          ],
+             Sized_Box().sizedBoxH(context, 10.0.h),
+           ],
         );
       case 1:
         return Column(
@@ -350,8 +346,7 @@ class _EventStepsState extends State<EventSteps> {
       case 2:
         return Column(
           children: [
-            Sized_Box().sizedBoxH(context, 70.0.h),
-            Text(
+             Text(
               "Additional information",
               style: Theme.of(context).textTheme.headlineMedium,
             ),
@@ -547,36 +542,6 @@ class _EventStepsState extends State<EventSteps> {
     );
   }
 
-  ElevatedButton dateTimePick(TextEditingController controller) {
-    final hours = dateTime.hour.toString().padLeft(2, '0');
-    final minutes = dateTime.minute.toString().padLeft(2, '0');
-    return ElevatedButton(
-      child: Text(
-          '${dateTime.year}/${dateTime.month}/${dateTime.day} $hours:$minutes'),
-      onPressed: () => pickDateTime(controller),
-    );
-  }
-
-  Future pickDateTime(TextEditingController controller) async {
-    DateTime? date = await pickDate();
-    if (date == null) return;
-    TimeOfDay? time = await pickTime();
-    if (time == null) return;
-
-    final dateTime = DateTime(
-      date.year,
-      date.month,
-      date.day,
-      time.hour,
-      time.minute,
-    );
-
-    setState(() {
-      this.dateTime = dateTime;
-      controller.text =
-          '${dateTime.year}/${dateTime.month}/${dateTime.day} ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
-    });
-  }
 
   Future<DateTime?> pickDate() => showDatePicker(
         context: context,
@@ -635,9 +600,12 @@ class _EventStepsState extends State<EventSteps> {
                 description: eventDiscriptionController.text,
                 category_id: int.parse(categoryController.text),
                     organizer_id: 1,
-                    start_date:dateFormat.parse(startDateController.text)  ,
+                    start_date:DateTime.parse(startDateController.text ) ,
                   end_date: DateTime.parse(endDateController.text),
-                  status: ''
+                  status: 'available',
+                  views: 0,
+                  capacity:int.parse(eventNumController.text),
+                  thanking_message: eventThankController.text
                 );
               print("before");
               EventController().create(_user).then((value) {

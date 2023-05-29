@@ -47,7 +47,6 @@ dependencies:
   form_builder_validators: ^8.5.0
   google_fonts: ^4.0.3
   http: ^0.13.5
-  intl: ^0.18.1
   mysql1: ^0.20.0
   video_player: ^2.6.1
   window_size:

@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ApiHelper {
-  String domain = "192.168.1.104:3333";
+  String domain = "192.168.93.1:3333";
 //Ayman: 192.168.93.1
 //Maya: 192.168.100.51
   Future get(String path) async {
