@@ -20,7 +20,7 @@ class DateTimePicker extends StatefulWidget {
 
 class _DateTimePickerState extends State<DateTimePicker> {
   DateTime? dateTime;
-
+ 
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -34,7 +34,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
             onPressed: () => pickDateTime(),
             child: Text(
               dateTime != null
-                  ? '${dateTime!.year}/${dateTime!.month}/${dateTime!.day} ${dateTime!.hour.toString().padLeft(2, '0')}:${dateTime!.minute.toString().padLeft(2, '0')}'
+                  ? '${dateTime!.year.toString().padLeft(2, '0')}-${dateTime!.month.toString().padLeft(2, '0')}-${dateTime!.day.toString().padLeft(2, '0')} ${dateTime!.hour.toString().padLeft(2, '0')}:${dateTime!.minute.toString().padLeft(2, '0')}'
                   : 'Select Date and Time',
             ),
           ),
@@ -49,7 +49,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
       setState(() {
         dateTime = selectedDateTime;
         widget.dateTimeController.text =
-            '${dateTime!.year}/${dateTime!.month}/${dateTime!.day} ${dateTime!.hour.toString().padLeft(2, '0')}:${dateTime!.minute.toString().padLeft(2, '0')}';
+           '${dateTime!.year.toString().padLeft(2, '0')}-${dateTime!.month.toString().padLeft(2, '0')}-${dateTime!.day.toString().padLeft(2, '0')} ${dateTime!.hour.toString().padLeft(2, '0')}:${dateTime!.minute.toString().padLeft(2, '0')}';
       });
     }
   }

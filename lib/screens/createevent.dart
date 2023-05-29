@@ -2,6 +2,7 @@ import 'package:clust/controllers/event_controller.dart';
 import 'package:clust/models/event_model.dart';
 import 'package:clust/styles/palate.dart';
 import 'package:clust/styles/responsive.dart';
+import 'package:clust/widgets/categorySelect.dart';
 import 'package:clust/widgets/horizontal_logo.dart';
 import 'package:clust/widgets/sized_box.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -32,9 +33,7 @@ class _EventStepsState extends State<EventSteps> {
   var endDateController = TextEditingController();
   var categoryController = TextEditingController();
  
-  late Future<List<Category>> _categoriesFuture;
-  String? _selectedCategory;
-  
+ 
   DateTime dateTime = DateTime(2023, 6, 23, 3, 30);
   @override
   void initState() {
@@ -45,22 +44,8 @@ class _EventStepsState extends State<EventSteps> {
     eventDiscriptionController.addListener(() {
       setState(() {});
     });
-    _loadCategories();
   }
-
-  var _categories = <DropdownMenuItem>[];
-  _loadCategories() async {
-    var _categoryService = CategoryController();
-    var categories = await _categoryService.getAll();
-    categories.forEach((category) {
-      setState(() {
-        _categories.add(DropdownMenuItem(
-          child: Text(category.name),
-          value: category.id,
-        ));
-      });
-    });
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -111,6 +96,8 @@ class _EventStepsState extends State<EventSteps> {
   }
 
   Widget mobileContent(BuildContext context, int index) {
+    String selectedCategoryName = '';
+
     switch (index) {
       case 0:
         return Column(
@@ -120,32 +107,28 @@ class _EventStepsState extends State<EventSteps> {
               "Give your event a name",
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            Sized_Box().sizedBoxH(context, 2.0.h),
             formname(),
             Sized_Box().sizedBoxH(context, 2.0.h),
             Text(
               "Tell us about your event",
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            Sized_Box().sizedBoxH(context, 3.0.h),
+            Sized_Box().sizedBoxH(context, 2.0.h),
             formdis(),
-            Sized_Box().sizedBoxH(context, 10.0.h),
+            Sized_Box().sizedBoxH(context, 2.0.h),
             Row(
               children: [
                 Expanded(child: DateTimePicker(dateTimeController: startDateController,)),
                 SizedBox(width: 10.0.w),
                 Expanded(child: DateTimePicker( dateTimeController: endDateController,)),
               ],
+            ),  Text(
+              "Select a Category",
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
-            DropdownButtonFormField(
-                items: _categories,
-                onChanged: ((value) {
-                  setState(() {
-                    debugPrint(value.toString());
-                    _selectedCategory = value.toString();
-                    categoryController.text = value.toString();
-                  });
-                }))
+             Sized_Box().sizedBoxH(context, 2.0.h),
+            CategorySelector(categoryController: categoryController)
+            
           ],
         );
       case 1:
@@ -171,8 +154,10 @@ class _EventStepsState extends State<EventSteps> {
             ),
             Sized_Box().sizedBoxH(context, 10.0.h),
             formthank(),
-            Sized_Box().sizedBoxH(context, 70.0.h),
-          
+            Sized_Box().sizedBoxH(context, 10.0.h),
+           formnum(),
+            Sized_Box().sizedBoxH(context, 10.0.h),
+
             submitButton(context),
           ],
         );
