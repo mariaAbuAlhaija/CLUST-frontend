@@ -34,7 +34,7 @@ class _EventStepsState extends State<EventSteps> {
  
   late Future<List<Category>> _categoriesFuture;
   String? _selectedCategory;
-  
+
   DateTime dateTime = DateTime(2023, 6, 23, 3, 30);
   @override
   void initState() {
@@ -172,7 +172,6 @@ class _EventStepsState extends State<EventSteps> {
             Sized_Box().sizedBoxH(context, 10.0.h),
             formthank(),
             Sized_Box().sizedBoxH(context, 70.0.h),
-          
             submitButton(context),
           ],
         );
@@ -238,7 +237,7 @@ class _EventStepsState extends State<EventSteps> {
       unreachedStepTextColor: Palate.white,
       activeStepTextColor: Palate.white,
       showTitle: true,
-       enableStepTapping: true,
+      enableStepTapping: true,
       internalPadding: 0,
       showLoadingAnimation: false,
       stepRadius: 45,
@@ -600,12 +599,9 @@ class _EventStepsState extends State<EventSteps> {
                 description: eventDiscriptionController.text,
                 category_id: int.parse(categoryController.text),
                     organizer_id: 1,
-                    start_date:DateTime.parse(startDateController.text ) ,
+                    start_date:dateFormat.parse(startDateController.text)  ,
                   end_date: DateTime.parse(endDateController.text),
-                  status: 'available',
-                  views: 0,
-                  capacity:int.parse(eventNumController.text),
-                  thanking_message: eventThankController.text
+                  status: ''
                 );
               print("before");
               EventController().create(_user).then((value) {

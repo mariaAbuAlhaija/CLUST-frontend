@@ -17,8 +17,8 @@ class _NavigationState extends State<Navigation> {
   var _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
     HomeMob(),
-    HomeMob(),
-    HomeMob(),
+    Placeholder(),
+    Placeholder(),
   ];
 
   void _onItemTapped(int index) {
@@ -29,38 +29,24 @@ class _NavigationState extends State<Navigation> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: UserController().getAll(),
-        builder: (context, snapshot) {
-          print(snapshot.data!.gender);
-          return Scaffold(
-            backgroundColor: Colors.white,
-            appBar: AppBar(
-              backgroundColor: Colors.white,
-              scrolledUnderElevation: 0,
-              centerTitle: true,
-              elevation: 0,
-              title: Text(
-                "Welcome ${snapshot.data!.firstName}",
-                style: TextStyle(color: Palate.black),
-              ),
-            ),
-            body: _widgetOptions.elementAt(_selectedIndex),
-            bottomNavigationBar: BottomNavigationBar(
-                items: <BottomNavigationBarItem>[
-                  home(),
-                  orders(),
-                  profile(),
-                ],
-                type: BottomNavigationBarType.fixed,
-                currentIndex: _selectedIndex,
-                selectedItemColor: Colors.black,
-                unselectedItemColor: Colors.black54,
-                iconSize: 40,
-                onTap: _onItemTapped,
-                elevation: 5),
-          );
-        });
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: _widgetOptions.elementAt(_selectedIndex),
+      bottomNavigationBar: BottomNavigationBar(
+          items: <BottomNavigationBarItem>[
+            home(),
+            orders(),
+            profile(),
+          ],
+          type: BottomNavigationBarType.fixed,
+          showUnselectedLabels: false,
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.black,
+          unselectedItemColor: Colors.black54,
+          iconSize: 40,
+          onTap: _onItemTapped,
+          elevation: 5),
+    );
   }
 
   BottomNavigationBarItem profile() {
@@ -76,10 +62,10 @@ class _NavigationState extends State<Navigation> {
   BottomNavigationBarItem orders() {
     return const BottomNavigationBarItem(
       icon: Icon(
-        FontAwesomeIcons.box,
+        FontAwesomeIcons.search,
         size: 25,
       ),
-      label: 'Orders',
+      label: 'Search',
     );
   }
 

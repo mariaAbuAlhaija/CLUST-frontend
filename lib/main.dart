@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
                     ),
                   ),
           ),
-          home: kIsWeb ?EventSteps() : EventSteps(),
+          // home: kIsWeb ? EventSteps() : Logo(),
           // Scaffold(
           //   backgroundColor: Palate.black,
           //   body: kIsWeb ? landingScreen() : Logo(),
