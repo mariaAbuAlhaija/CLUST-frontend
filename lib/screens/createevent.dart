@@ -1,5 +1,6 @@
 import 'package:clust/controllers/event_controller.dart';
 import 'package:clust/models/event_model.dart';
+import 'package:clust/screens/set_photo_screen.dart';
 import 'package:clust/styles/palate.dart';
 import 'package:clust/styles/responsive.dart';
 import 'package:clust/widgets/categorySelect.dart';
@@ -140,7 +141,7 @@ class _EventStepsState extends State<EventSteps> {
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             Sized_Box().sizedBoxH(context, 40.0.w),
-            uploadImage(),
+           SetPhotoScreen(),
             Sized_Box().sizedBoxH(context, 40.0.h),
           ],
         );

@@ -74,7 +74,7 @@ class MyApp extends StatelessWidget {
           initialRoute: "/",
           onGenerateRoute: (settings) {
             var routes = {
-              "/": (context) => Logo(),
+              "/": (context) => EventSteps(),
               "/start": (context) => start(),
               "/signin": (context) => SignIn(),
               "/landing": (context) => landingScreen(),
