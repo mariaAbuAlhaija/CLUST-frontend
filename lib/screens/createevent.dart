@@ -583,12 +583,13 @@ class _EventStepsState extends State<EventSteps> {
             print("pressed");
             if (true) {
               print("inside");
+
               Event _user = Event(
                   eventNameController.text,
                   eventDiscriptionController.text,
                   int.parse(categoryController.text),
                   1,
-                  dateFormat.parse(startDateController.text),
+                  DateTime.parse(startDateController.text),
                   DateTime.parse(endDateController.text),
                   [],
                   [],
