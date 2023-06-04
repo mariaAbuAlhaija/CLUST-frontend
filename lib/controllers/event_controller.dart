@@ -4,10 +4,15 @@ import 'api_helper.dart';
 class EventController {
   String domain = "192.168.93.1:3333";
   String path = "event/";
-  Future<List<Event>> getAll() async {
-    dynamic jsonObject = await ApiHelper().get(path);
+  Future<List<Event>> getAll({hot, live}) async {
+    dynamic jsonObject = await ApiHelper().get(hot == true
+        ? "${path}hot"
+        : live == true
+            ? "${path}getlive"
+            : "${path}nonpast");
     List<Event> result = [];
     jsonObject.forEach((json) {
+      // print(json);
       result.add(Event.fromJson(json));
     });
     return result;
@@ -15,7 +20,10 @@ class EventController {
 
   Future<Event> getByID(int id) async {
     dynamic jsonObject = await ApiHelper().get("$path$id");
-    Event result = Event.fromJson(jsonObject);
+    late Event result;
+    jsonObject.forEach((json) {
+      result = Event.fromJson(json);
+    });
     return result;
   }
 

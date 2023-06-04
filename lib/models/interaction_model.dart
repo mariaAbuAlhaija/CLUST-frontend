@@ -11,13 +11,13 @@ class Interaction {
     return Interaction(
       json['id'] ?? 0,
       json['type'] ?? "",
-      json['answerId'] ?? 0,
+      json['answer_id'] ?? 0,
     );
   }
   Map<String, dynamic> toJson() {
     return {
       "type": type,
-      "answerId": answerId,
+      "answer_id": answerId,
       "id": id.toString(),
     };
   }

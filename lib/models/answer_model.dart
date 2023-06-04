@@ -8,12 +8,12 @@ class Answer {
   factory Answer.fromJson(Map<String, dynamic> json) {
     return Answer(
       json['id'] ?? 0,
-      json['textDescription'] ?? "",
+      json['text_description'] ?? "",
     );
   }
   Map<String, dynamic> toJson() {
     return {
-      "textDescription": textDescription,
+      "text_description": textDescription,
       "id": id.toString(),
     };
   }

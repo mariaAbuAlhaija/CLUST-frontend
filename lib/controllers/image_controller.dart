@@ -3,31 +3,31 @@ import 'api_helper.dart';
 
 class BelongImageController {
   String path = "image/";
-  Future<List<BelongImage>> getAll() async {
+  Future<List<Image>> getAll() async {
     dynamic jsonObject = await ApiHelper().get(path);
-    List<BelongImage> result = [];
+    List<Image> result = [];
     jsonObject.forEach((json) {
-      result.add(BelongImage.fromJson(json));
+      result.add(Image.fromJson(json));
     });
     return result;
   }
 
-  Future<BelongImage> getByID(int id) async {
+  Future<Image> getByID(int id) async {
     dynamic jsonObject = await ApiHelper().get("$path$id");
     print(jsonObject);
-    BelongImage result = BelongImage.fromJson(jsonObject);
+    Image result = Image.fromJson(jsonObject);
     return result;
   }
 
-  Future<BelongImage> create(BelongImage image) async {
+  Future<Image> create(Image image) async {
     dynamic jsonObject = await ApiHelper().post(path, body: image.toJson());
-    BelongImage result = BelongImage.fromJson(jsonObject);
+    Image result = Image.fromJson(jsonObject);
     return result;
   }
 
-  Future<BelongImage> update(BelongImage image) async {
+  Future<Image> update(Image image) async {
     dynamic jsonObject = await ApiHelper().put(path, image.toJson());
-    BelongImage result = BelongImage.fromJson(jsonObject);
+    Image result = Image.fromJson(jsonObject);
     return result;
   }
 

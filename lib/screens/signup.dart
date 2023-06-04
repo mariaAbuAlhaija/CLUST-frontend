@@ -197,11 +197,12 @@ class _SignupState extends State<Signup> {
                   password: ${passwordController.text}
                   gender: ${genderController}""");
               User _user = User(
-                  firstName: fnameController.text,
-                  lastName: lnameController.text,
-                  birthDate: dateController.text,
-                  email: emailController.text,
-                  password: passwordController.text,
+                  fnameController.text,
+                  lnameController.text,
+                  dateController.text,
+                  emailController.text,
+                  passwordController.text,
+                  0,
                   gender: genderController);
               print("before");
               UserController().create(_user).then((value) {

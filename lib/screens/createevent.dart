@@ -630,13 +630,17 @@ class _EventStepsState extends State<EventSteps> {
             if (true) {
               print("inside");
               Event _user = Event(
-                  name: eventNameController.text,
-                  description: eventDiscriptionController.text,
-                  category_id: int.parse(categoryController.text),
-                  organizer_id: 1,
-                  start_date: dateFormat.parse(startDateController.text),
-                  end_date: DateTime.parse(endDateController.text),
-                  status: '');
+                  eventNameController.text,
+                  eventDiscriptionController.text,
+                  int.parse(categoryController.text),
+                  1,
+                  dateFormat.parse(startDateController.text),
+                  DateTime.parse(endDateController.text),
+                  [],
+                  [],
+                  //!!!!!!!!!!!!!!!!
+                  organizer: null,
+                  status: Status.available);
               print("before");
               EventController().create(_user).then((value) {
                 print("during");
