@@ -1,6 +1,5 @@
 import 'package:clust/styles/palate.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 var largestTextSize = 27.0;
 var mediumestTextSize = 21.0;
@@ -19,6 +18,7 @@ headlineLarge({color = Palate.white, weight = FontWeight.normal}) => TextStyle(
       fontSize: mediumestTextSize,
       color: color,
     );
+
 headlineMedium({color = Palate.white, weight = FontWeight.normal}) => TextStyle(
       fontWeight: weight,
       fontSize: mediumerTextSize,

@@ -1,5 +1,5 @@
 class User {
-  int? id;
+  int id;
   String firstName;
   String lastName;
   String birthDate;
@@ -11,34 +11,34 @@ class User {
   int? sid;
   String email;
   String password;
-  User({
-    required this.firstName,
-    required this.lastName,
-    required this.birthDate,
+  User(
+    this.firstName,
+    this.lastName,
+    this.birthDate,
+    this.email,
+    this.password,
+    this.id, {
     this.gender = Gender.female,
-    required this.email,
-    required this.password,
     this.about,
     this.image,
     this.sid,
-    this.id,
   }) {
     accessRole = AccessRole.attendee;
     verified = 0;
   }
 
-  factory User.fromJson(Map<String, dynamic> json) {
+  factory User.fromJson(json) {
     User _user = User(
-        firstName: json['firstName'] ?? "",
-        lastName: json['lastName'] ?? "",
-        birthDate: json['birthDate'] ?? DateTime.now().toString(),
-        // gender: json['gender'] ?? Gender.,
-        email: json['email'] ?? "",
-        password: json['password'] ?? "",
-        about: json['about'] ?? "",
-        image: json['image'] ?? "",
-        sid: json['sid'] ?? 0,
-        id: json['id'] ?? 0);
+      json['first_name'] ?? "",
+      json['last_name'] ?? "",
+      json['birth_date'] ?? DateTime.now().toString(),
+      // gender: json['gender'] ?? Gender.,
+      json['email'] ?? "",
+      json['password'] ?? "", json['id'] ?? 0,
+      about: json['about'] ?? "",
+      image: json['image'] ?? "",
+      sid: json['sid'] ?? 0,
+    );
     _user.verified = json['verified'];
     return _user;
   }
