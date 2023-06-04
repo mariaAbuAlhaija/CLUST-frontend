@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:clust/screens/categoryList.dart';
 import 'package:clust/screens/createevent.dart';
+import 'package:clust/screens/fireBase.dart';
 import 'package:clust/screens/home.dart';
 import 'package:clust/screens/home_mob.dart';
 import 'package:clust/screens/landingPage.dart';
@@ -14,19 +16,28 @@ import 'package:clust/screens/start.dart';
 import 'package:clust/styles/palate.dart';
 import 'package:clust/styles/web_styles.dart' as web;
 import 'package:clust/styles/mobile_styles.dart' as mobile;
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:window_size/window_size.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  runApp(MyApp());
+Future<void> main()async {
+    WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+      appId:"1:841837928341:web:8a1f55ca3cf14067b4a09c",
+      apiKey: "AIzaSyBAIhs9yzse3UbV9nWls3XbaxvbSyEjMxM",
+      projectId:"clust-f4185" ,
+      storageBucket:"clust-f4185.appspot.com" ,
+      messagingSenderId: "841837928341",
+    ),
+  );
+  runApp( MyApp());
 }
-
 class MyApp extends StatelessWidget {
+  
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -74,7 +85,7 @@ class MyApp extends StatelessWidget {
           initialRoute: "/",
           onGenerateRoute: (settings) {
             var routes = {
-              "/": (context) => EventSteps(),
+              "/": (context) => Fire(),
               "/start": (context) => start(),
               "/signin": (context) => SignIn(),
               "/landing": (context) => landingScreen(),
@@ -89,5 +100,15 @@ class MyApp extends StatelessWidget {
         );
       },
     );
+  }
+    void  connectToFirestore () 
+  async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('events').get();
+    
+    if (snapshot != null) {
+      for (var doc in snapshot.docs) {
+        print(doc.data());
+      }
+    }
   }
 }
