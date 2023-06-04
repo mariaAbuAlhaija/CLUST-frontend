@@ -3,8 +3,9 @@ import 'api_helper.dart';
 
 class SpotController {
   String path = "spot/";
-  Future<List<Spot>> getAll() async {
-    dynamic jsonObject = await ApiHelper().get(path);
+  Future<List<Spot>> getAll({past}) async {
+    dynamic jsonObject =
+        await ApiHelper().get(past == true ? "${path}getpast/auth" : path);
     List<Spot> result = [];
     jsonObject.forEach((json) {
       result.add(Spot.fromJson(json));

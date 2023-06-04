@@ -10,7 +10,7 @@ class Report {
     return Report(
       json['id'] ?? 0,
       json['description'] ?? '',
-      json['eventId'] ?? 0,
+      json['event_Id'] ?? 0,
     );
   }
 

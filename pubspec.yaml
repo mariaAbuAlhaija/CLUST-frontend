@@ -32,6 +32,7 @@ dependencies:
   # Intl: ^0.17.0
   image_picker: ^0.8.3+1
   carousel_images: ^1.1.2
+  carousel_slider: ^4.2.1
   chewie: ^1.4.0
   cupertino_icons: ^1.0.2
   dotted_border: ^2.0.0+3
@@ -83,10 +84,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: MyFlutterApp
+      fonts:
+        - asset: icons/MyFlutterApp.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

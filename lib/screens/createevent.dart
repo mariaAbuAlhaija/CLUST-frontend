@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_stepper/easy_stepper.dart' as stepper;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
- 
+
 import '../controllers/category_contoller.dart';
 import '../widgets/date_picker.dart';
 import '../widgets/datetimepicker.dart';
@@ -33,8 +33,7 @@ class _EventStepsState extends State<EventSteps> {
   var startDateController = TextEditingController();
   var endDateController = TextEditingController();
   var categoryController = TextEditingController();
- 
- 
+
   DateTime dateTime = DateTime(2023, 6, 23, 3, 30);
   @override
   void initState() {
@@ -46,7 +45,6 @@ class _EventStepsState extends State<EventSteps> {
       setState(() {});
     });
   }
- 
 
   @override
   Widget build(BuildContext context) {
@@ -119,17 +117,23 @@ class _EventStepsState extends State<EventSteps> {
             Sized_Box().sizedBoxH(context, 2.0.h),
             Row(
               children: [
-                Expanded(child: DateTimePicker(dateTimeController: startDateController,)),
+                Expanded(
+                    child: DateTimePicker(
+                  dateTimeController: startDateController,
+                )),
                 SizedBox(width: 10.0.w),
-                Expanded(child: DateTimePicker( dateTimeController: endDateController,)),
+                Expanded(
+                    child: DateTimePicker(
+                  dateTimeController: endDateController,
+                )),
               ],
-            ),  Text(
+            ),
+            Text(
               "Select a Category",
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-             Sized_Box().sizedBoxH(context, 2.0.h),
+            Sized_Box().sizedBoxH(context, 2.0.h),
             CategorySelector(categoryController: categoryController)
-            
           ],
         );
       case 1:
@@ -141,7 +145,7 @@ class _EventStepsState extends State<EventSteps> {
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             Sized_Box().sizedBoxH(context, 40.0.w),
-           SetPhotoScreen(),
+            SetPhotoScreen(),
             Sized_Box().sizedBoxH(context, 40.0.h),
           ],
         );
@@ -149,16 +153,15 @@ class _EventStepsState extends State<EventSteps> {
       case 2:
         return Column(
           children: [
-             Text(
+            Text(
               "Additional information",
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             Sized_Box().sizedBoxH(context, 10.0.h),
             formthank(),
             Sized_Box().sizedBoxH(context, 10.0.h),
-           formnum(),
+            formnum(),
             Sized_Box().sizedBoxH(context, 10.0.h),
-
             submitButton(context),
           ],
         );
@@ -224,7 +227,7 @@ class _EventStepsState extends State<EventSteps> {
       unreachedStepTextColor: Palate.white,
       activeStepTextColor: Palate.white,
       showTitle: true,
-       enableStepTapping: true,
+      enableStepTapping: true,
       internalPadding: 0,
       showLoadingAnimation: false,
       stepRadius: 45,
@@ -312,8 +315,8 @@ class _EventStepsState extends State<EventSteps> {
             Sized_Box().sizedBoxH(context, 3.0.h),
             formdis(),
             Sized_Box().sizedBoxH(context, 10.0.h),
-             Sized_Box().sizedBoxH(context, 10.0.h),
-           ],
+            Sized_Box().sizedBoxH(context, 10.0.h),
+          ],
         );
       case 1:
         return Column(
@@ -332,7 +335,7 @@ class _EventStepsState extends State<EventSteps> {
       case 2:
         return Column(
           children: [
-             Text(
+            Text(
               "Additional information",
               style: Theme.of(context).textTheme.headlineMedium,
             ),
@@ -528,7 +531,6 @@ class _EventStepsState extends State<EventSteps> {
     );
   }
 
-
   Future<DateTime?> pickDate() => showDatePicker(
         context: context,
         initialDate: dateTime,
@@ -582,17 +584,17 @@ class _EventStepsState extends State<EventSteps> {
             if (true) {
               print("inside");
               Event _user = Event(
-                name:  eventNameController.text,
-                description: eventDiscriptionController.text,
-                category_id: int.parse(categoryController.text),
-                    organizer_id: 1,
-                    start_date:DateTime.parse(startDateController.text ) ,
-                  end_date: DateTime.parse(endDateController.text),
-                  status: 'available',
-                  views: 0,
-                  capacity:int.parse(eventNumController.text),
-                  thanking_message: eventThankController.text
-                );
+                  eventNameController.text,
+                  eventDiscriptionController.text,
+                  int.parse(categoryController.text),
+                  1,
+                  dateFormat.parse(startDateController.text),
+                  DateTime.parse(endDateController.text),
+                  [],
+                  [],
+                  //!!!!!!!!!!!!!!!!
+                  organizer: null,
+                  status: Status.available);
               print("before");
               EventController().create(_user).then((value) {
                 print("during");

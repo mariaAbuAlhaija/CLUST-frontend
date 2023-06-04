@@ -10,14 +10,14 @@ class BlockList {
   factory BlockList.fromJson(Map<String, dynamic> json) {
     return BlockList(
       json['id'] ?? 0,
-      json['blockedId'] ?? 0,
-      json['userId'] ?? 0,
+      json['blocked_id'] ?? 0,
+      json['user_id'] ?? 0,
     );
   }
   Map<String, dynamic> toJson() {
     return {
-      "blockedId": blockedId,
-      "userId": userId,
+      "blocked_id": blockedId,
+      "user_id": userId,
       "id": id.toString(),
     };
   }
