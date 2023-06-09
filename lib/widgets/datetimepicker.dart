@@ -10,8 +10,12 @@ import '../styles/palate.dart';
 
 class DateTimePicker extends StatefulWidget {
   final TextEditingController dateTimeController;
-
-  DateTimePicker({Key? key, required this.dateTimeController})
+  TextEditingController? startDateTimeController;
+  String txt;
+  DateTimePicker(this.txt,
+      {Key? key,
+      required this.dateTimeController,
+      this.startDateTimeController})
       : super(key: key);
 
   @override
@@ -20,7 +24,7 @@ class DateTimePicker extends StatefulWidget {
 
 class _DateTimePickerState extends State<DateTimePicker> {
   DateTime? dateTime;
- 
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,9 +32,13 @@ class _DateTimePickerState extends State<DateTimePicker> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          lable(context),
-          SizedBox(height: 15.h),
-          ElevatedButton(
+          lable(context, widget.txt),
+          SizedBox(height: 10.h),
+          MaterialButton(
+            color: Palate.white,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10))),
             onPressed: () => pickDateTime(),
             child: Text(
               dateTime != null
@@ -49,7 +57,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
       setState(() {
         dateTime = selectedDateTime;
         widget.dateTimeController.text =
-           '${dateTime!.year.toString().padLeft(2, '0')}-${dateTime!.month.toString().padLeft(2, '0')}-${dateTime!.day.toString().padLeft(2, '0')} ${dateTime!.hour.toString().padLeft(2, '0')}:${dateTime!.minute.toString().padLeft(2, '0')}';
+            '${dateTime!.year.toString().padLeft(2, '0')}-${dateTime!.month.toString().padLeft(2, '0')}-${dateTime!.day.toString().padLeft(2, '0')} ${dateTime!.hour.toString().padLeft(2, '0')}:${dateTime!.minute.toString().padLeft(2, '0')}';
       });
     }
   }
@@ -71,25 +79,28 @@ class _DateTimePickerState extends State<DateTimePicker> {
   }
 
   Future<DateTime?> pickDate() async {
+    print(DateTime.now());
+    print(TimeOfDay.now());
+    // print(DateTime.parse(widget.startDateTimeController!.text));
     return showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
+      initialDate: widget.startDateTimeController != null
+          ? DateTime.parse(widget.startDateTimeController!.text)
+          : DateTime.now(),
+      firstDate: widget.startDateTimeController != null
+          ? DateTime.parse(widget.startDateTimeController!.text)
+          : DateTime.now(),
+      lastDate: DateTime(2030),
     );
   }
 
   Future<TimeOfDay?> pickTime() async {
+    // var dateTime = DateTime.parse(widget.startDateTimeController!.text);
     return showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
     );
   }
 
-  Text lable(BuildContext context) => Text(
-        "Start Date",
-        style: kIsWeb
-            ? Theme.of(context).textTheme.labelLarge
-            : Theme.of(context).textTheme.headlineSmall,
-      );
+  Text lable(BuildContext context, txt) => Text(txt);
 }

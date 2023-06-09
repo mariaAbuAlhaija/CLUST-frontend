@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'dart:developer';
-import 'package:flutter/foundation.dart';
+import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -23,7 +23,9 @@ class ApiHelper {
 
   Future put(String path, Map body) async {
     Uri uri = Uri.http(domain, path);
-    var response = await http.put(uri, body: body);
+    var token = await getToken();
+    var headers = {"Authorization": token};
+    var response = await http.put(uri, body: body, headers: headers);
     return responsing(response);
   }
 
@@ -37,6 +39,25 @@ class ApiHelper {
     var storage = FlutterSecureStorage();
     String result = await storage.read(key: "token") as String;
     return result;
+  }
+
+  Future uploadImage(File file, urlPath) async {
+    final dio = Dio();
+
+    var token = await getToken();
+    var headers = {"Authorization": token};
+
+    FormData formData = FormData.fromMap({
+      "image_file": await MultipartFile.fromFile(file.path,
+          filename: file.path.split("/").last)
+    });
+    Response response = await dio.post(
+      'http://$domain$urlPath',
+      data: formData,
+      options: Options(
+        headers: headers,
+      ),
+    );
   }
 
   responsing(http.Response response) {

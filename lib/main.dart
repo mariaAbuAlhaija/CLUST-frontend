@@ -1,5 +1,9 @@
 import 'package:clust/models/event_model.dart';
+import 'package:clust/models/user_model.dart';
 import 'package:clust/providers/event_spot_provider.dart';
+import 'package:clust/providers/user_provider.dart';
+import 'package:clust/screens/become_organizer.dart';
+import 'package:clust/screens/create_event.dart';
 import 'package:clust/screens/createevent.dart';
 import 'package:clust/screens/display_event.dart';
 import 'package:clust/screens/home_mob.dart';
@@ -37,8 +41,12 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (BuildContext context, child) {
-        return ChangeNotifierProvider(
-          create: (context) => eventSpotProvider(),
+        return MultiProvider(
+          providers: [
+            ListenableProvider<eventSpotProvider>(
+                create: (_) => eventSpotProvider()),
+            ListenableProvider<UserProvider>(create: (_) => UserProvider()),
+          ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
@@ -88,9 +96,10 @@ class MyApp extends StatelessWidget {
                 "/home": (context) => HomeMob(),
                 "/afterRegister": (context) => Steps(),
                 "/navigator": (context) => Navigation(),
-                "/creatEvent": (context) => EventSteps(),
+                "/creatEvent": (context) => CreateEvent(),
                 "/spots": (context) => SpotsView(),
                 "/memories": (context) => Memories(),
+                "/becomeOrganizer": (context) => BecomeOrganizer(),
                 "/displayEvent": (context) =>
                     DisplayEvent(settings.arguments as Event),
                 "/displayEvents": (context) =>

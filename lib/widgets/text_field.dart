@@ -6,8 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-class TextField extends StatefulWidget {
-  TextField({
+class CustomTextField extends StatefulWidget {
+  CustomTextField({
     super.key,
     required this.type,
     required this.controller,
@@ -22,10 +22,10 @@ class TextField extends StatefulWidget {
   For forWhat;
 
   @override
-  State<TextField> createState() => TtextFieldState();
+  State<CustomTextField> createState() => TtextFieldState();
 }
 
-class TtextFieldState extends State<TextField> {
+class TtextFieldState extends State<CustomTextField> {
   var obscureText = true;
   @override
   Widget build(BuildContext context) {
@@ -174,4 +174,4 @@ class TtextFieldState extends State<TextField> {
 
 enum Type { email, password, general, confirm }
 
-enum For { signin, signup,createEvent }
+enum For { signin, signup, createEvent }

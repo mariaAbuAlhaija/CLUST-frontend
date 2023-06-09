@@ -1,7 +1,9 @@
+import 'dart:io';
+
 import '../models/image_model.dart';
 import 'api_helper.dart';
 
-class BelongImageController {
+class ImageController {
   String path = "image/";
   Future<List<Image>> getAll() async {
     dynamic jsonObject = await ApiHelper().get(path);
@@ -17,6 +19,17 @@ class BelongImageController {
     print(jsonObject);
     Image result = Image.fromJson(jsonObject);
     return result;
+  }
+
+  Future<String> Upload(File file) async {
+    try {
+      var result = await ApiHelper().uploadImage(file, "/${path}upload");
+      print(result);
+      return result["path"];
+    } catch (ex) {
+      print(ex);
+      rethrow;
+    }
   }
 
   Future<Image> create(Image image) async {

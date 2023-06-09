@@ -95,7 +95,7 @@ class _SignInState extends State<SignIn> {
       children: [
         Container(
           width: 460,
-          child: txt_field.TextField(
+          child: txt_field.CustomTextField(
             type: txt_field.Type.password,
             controller: passwordController,
             hint: "Password",
@@ -122,7 +122,7 @@ class _SignInState extends State<SignIn> {
   Container emailField() {
     return Container(
       width: 460,
-      child: txt_field.TextField(
+      child: txt_field.CustomTextField(
         type: txt_field.Type.email,
         controller: emailController,
         hint: "Email",

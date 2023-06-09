@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:easy_stepper/easy_stepper.dart' as stepper;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import '../controllers/category_contoller.dart';
 import '../widgets/date_picker.dart';
 import '../widgets/datetimepicker.dart';
@@ -119,11 +118,13 @@ class _EventStepsState extends State<EventSteps> {
               children: [
                 Expanded(
                     child: DateTimePicker(
+                  "Start Date",
                   dateTimeController: startDateController,
                 )),
                 SizedBox(width: 10.0.w),
                 Expanded(
                     child: DateTimePicker(
+                  "Start Date",
                   dateTimeController: endDateController,
                 )),
               ],

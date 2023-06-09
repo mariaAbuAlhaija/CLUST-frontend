@@ -10,19 +10,18 @@ import '../controllers/category_contoller.dart';
 import '../styles/palate.dart';
 
 class CategorySelector extends StatefulWidget {
- final  TextEditingController categoryController ;
+  final TextEditingController categoryController;
 
-     CategorySelector({Key?key,required this.categoryController}):super(key: key);
-     @override
+  CategorySelector({Key? key, required this.categoryController})
+      : super(key: key);
+  @override
   _CategorySelectorState createState() => _CategorySelectorState();
 }
 
- 
 class _CategorySelectorState extends State<CategorySelector> {
-    void initState() {
+  void initState() {
     // TODO: implement initState
-        _loadCategories();
-
+    _loadCategories();
   }
 
   late Future<List<Category>> _categoriesFuture;
@@ -35,7 +34,6 @@ class _CategorySelectorState extends State<CategorySelector> {
       setState(() {
         _categories.add(DropdownMenuItem(
           child: Text(category.name),
-          
           value: category.id,
         ));
       });
@@ -44,7 +42,7 @@ class _CategorySelectorState extends State<CategorySelector> {
 
   @override
   Widget build(BuildContext context) {
-        String selectedCategoryName = '';
+    String selectedCategoryName = '';
 
     return DropdownButtonFormField(
       hint: Text(selectedCategoryName),
@@ -61,25 +59,17 @@ class _CategorySelectorState extends State<CategorySelector> {
         });
       }),
       decoration: InputDecoration(
-        filled: true,
-        fillColor: Colors.white,
         contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         isDense: true,
-        hintStyle: TextStyle(color: Colors.white),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.transparent, width: 0),
-          gapPadding: 20,
-        ),
+        hintStyle: TextStyle(color: Colors.black),
+        hintText: "Select Category",
+        labelText: "Select Category",
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.transparent, width: 0),
           gapPadding: 20,
         ),
       ),
-      
-
     );
-    
   }
 }

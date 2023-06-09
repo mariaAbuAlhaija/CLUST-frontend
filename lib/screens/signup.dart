@@ -124,7 +124,7 @@ class _SignupState extends State<Signup> {
   Container emailField() {
     return Container(
       width: 460,
-      child: txtField.TextField(
+      child: txtField.CustomTextField(
         type: txtField.Type.email,
         controller: emailController,
         hint: "Email",
@@ -153,7 +153,7 @@ class _SignupState extends State<Signup> {
   Container splitedFields(controller, hint, lable, type) {
     return Container(
       width: kIsWeb ? 225 : 170,
-      child: txtField.TextField(
+      child: txtField.CustomTextField(
         type: type,
         controller: controller,
         hint: hint,

@@ -3,10 +3,12 @@ import 'package:clust/controllers/api_helper.dart';
 import 'package:clust/controllers/user_controller.dart';
 import 'package:clust/globals.dart';
 import 'package:clust/providers/event_spot_provider.dart';
+import 'package:clust/providers/user_provider.dart';
 import 'package:clust/styles/palate.dart';
 import 'package:clust/styles/responsive.dart';
 import 'package:clust/widgets/events_view.dart';
 import 'package:clust/widgets/image.dart';
+import 'package:clust/widgets/loading.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:clust/models/user_model.dart';
@@ -49,20 +51,17 @@ class _HomeMobState extends State<HomeMob> {
   }
 
   Widget mobileWidget() {
-    return FutureBuilder<User>(
-      future: UserController().getAll(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: Colors.black,
-            ),
-          );
+    return Consumer(
+      builder:
+          (BuildContext context, UserProvider userProvider, Widget? child) {
+        if (userProvider.user == null) {
+          return loading();
         }
+        print(userProvider.user!.accessRole);
         return Theme(
           data: !kIsWeb ? theme(context) : ThemeData(),
           child: Scaffold(
-            appBar: appBar(snapshot),
+            appBar: appBar(userProvider.user!),
             body: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,7 +72,7 @@ class _HomeMobState extends State<HomeMob> {
                       scrollDirection: Axis.horizontal,
                       itemCount: 4,
                       itemBuilder: (BuildContext context, int index) {
-                        return card(index);
+                        return card(index, userProvider, userProvider.user!);
                       },
                     ),
                   ),
@@ -193,14 +192,21 @@ class _HomeMobState extends State<HomeMob> {
     );
   }
 
-  SizedBox card(int index) {
+  SizedBox card(int index, UserProvider provider, user) {
     return SizedBox(
       width: 200.w,
       child: GestureDetector(
         onTap: () {
           switch (index) {
             case 0:
-              Navigator.pushNamed(context, "/creatEvent");
+              provider.fetchUser();
+              print(provider.user!.accessRole);
+              if (provider.user!.accessRole == AccessRole.organizer) {
+                Navigator.pushNamed(context, "/creatEvent");
+              } else {
+                Navigator.pushNamed(context, "/becomeOrganizer",
+                    arguments: provider.user);
+              }
               break;
             case 1:
               Navigator.pushNamed(context, "/displayEvents",
@@ -262,7 +268,7 @@ class _HomeMobState extends State<HomeMob> {
         ));
   }
 
-  PreferredSize appBar(AsyncSnapshot<User> snapshot) {
+  PreferredSize appBar(user) {
     return PreferredSize(
       preferredSize: Size.fromHeight(75.0.h),
       child: AppBar(
@@ -273,7 +279,7 @@ class _HomeMobState extends State<HomeMob> {
         title: Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: Text(
-            "Welcome ${snapshot.data!.firstName}",
+            "Welcome ${user.firstName}",
             style: GoogleFonts.kameron(
                 textStyle: mobile.displayLarge(color: Palate.black)),
           ),
