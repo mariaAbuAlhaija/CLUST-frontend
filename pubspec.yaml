@@ -55,6 +55,8 @@ dependencies:
     git:
       url: https://github.com/google/flutter-desktop-embedding
       path: plugins/window_size
+  firebase_core: ^2.13.1
+  cloud_firestore: ^4.8.0
   dio: ^5.2.0+1
 
 dev_dependencies:
