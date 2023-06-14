@@ -12,15 +12,17 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:clust/styles/mobile_styles.dart' as mobile;
 import 'package:provider/provider.dart';
-
+import 'package:qr_flutter/qr_flutter.dart';
 class SpotsView extends StatefulWidget {
-  const SpotsView({super.key});
+  const SpotsView({Key? key}) : super(key: key);
 
   @override
   State<SpotsView> createState() => _SpotsViewState();
 }
 
 class _SpotsViewState extends State<SpotsView> {
+  bool isQRCodeVisible = false;
+
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -31,48 +33,86 @@ class _SpotsViewState extends State<SpotsView> {
             ),
       child: Scaffold(
         appBar: AppBar(
-          title: Text("My Spots"),
+          title: const Text("My Spots"),
         ),
         body: Consumer(
-          builder: (BuildContext context, eventSpotProvider provider,
-              Widget? child) {
-            if (provider.spottedSpots.isEmpty)
-              return Center(
+          builder: (BuildContext context, eventSpotProvider provider, Widget? child) {
+            if (provider.spottedSpots.isEmpty) {
+              return const Center(
                 child: Text("No Spotted Spots!"),
               );
+            }
             return Container(
               child: ListView.builder(
-                  itemCount: provider.spottedSpots.length,
-                  itemBuilder: (context, index) {
-                    return FutureBuilder<Event>(
-                      future: EventController()
-                          .getByID(provider.spottedSpots[index].eventId),
-                      builder: (context, snapshott) {
-                        if (!snapshott.hasData) {
-                          return Container();
-                        }
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Items(event: snapshott.data!),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 20),
-                              child: IconButton(
+                itemCount: provider.spottedSpots.length,
+                itemBuilder: (context, index) {
+                  return FutureBuilder<Event>(
+                    future: EventController().getByID(provider.spottedSpots[index].eventId),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return Container();
+                      }
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Items(event: snapshot.data!),
+                          Column(
+                            children: [
+                              IconButton(
                                 onPressed: () {
-                                  provider
-                                      .removeSpot(provider.spottedSpots[index]);
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Dialog(
+                                        child: Container(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const Text("QR Code"),
+                                              const SizedBox(height: 16.0),
+                                             if(!provider.spottedSpots[index].checked)
+                                              QrImage(
+                                                data: '${provider.spottedSpots[index].id}',
+                                                version: QrVersions.auto,
+                                                size: 200.0,
+                                              ),
+                                              const SizedBox(height: 16.0),
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: const Text('Close'),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
                                 },
-                                icon: Icon(
+                                icon: const Icon(
+                                  Icons.qr_code,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  provider.removeSpot(provider.spottedSpots[index]);
+                                },
+                                icon: const Icon(
                                   Icons.close,
                                   color: Colors.red,
                                 ),
                               ),
-                            )
-                          ],
-                        );
-                      },
-                    );
-                  }),
+                            ],
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
             );
           },
         ),

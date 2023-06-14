@@ -12,6 +12,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 import 'package:provider/provider.dart';
 
 class BecomeOrganizer extends StatefulWidget {
@@ -28,6 +30,26 @@ class _BecomeOrganizerState extends State<BecomeOrganizer> {
   var validated = false;
   var scroll = true;
   bool visible = false;
+
+  Future<void> sendApprovalEmail() async {
+    String username = 'clustevents@gmail.com';
+    String password = 'ovqsvecbocresybx';
+
+    final smtpServer = gmail(username, password);
+
+    final message = Message()
+      ..from = Address(username, 'Clust Events')
+      ..recipients.add('aymancheese@hotmail.com')
+      ..subject = 'Approval Needed'
+      ..text = 'A user needs authentication to become an organizer. Please check the dashboard.';
+
+    try {
+      final sendReport = await send(message, smtpServer);
+      print('Email sent:');
+    } catch (e) {
+      print('Error sending email: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -183,12 +205,6 @@ class _BecomeOrganizerState extends State<BecomeOrganizer> {
               onPressed: (_pageIndex == 1 && !validated)
                   ? null
                   : () {
-                      // if (_pageIndex == 2) {
-
-                      //   User _user = _global!.user;
-
-                      //   // UserController().update(user)
-                      // }
                       _controller.nextPage(
                         duration: const Duration(milliseconds: 400),
                         curve: Curves.easeInOut,
@@ -220,6 +236,10 @@ class _BecomeOrganizerState extends State<BecomeOrganizer> {
                     "Requested!",
                     duration: Duration(seconds: 3),
                   );
+
+                  // Send approval email after success
+                  sendApprovalEmail();
+
                   Navigator.pushReplacementNamed(context, "/navigator");
                 } catch (error, stackTrace) {
                   print(error);
@@ -229,20 +249,6 @@ class _BecomeOrganizerState extends State<BecomeOrganizer> {
                     duration: Duration(seconds: 3),
                   );
                 }
-                // UserController().update(_user).then((value) {
-                //   EasyLoading.showSuccess(
-                //     "Requested!",
-                //     duration: Duration(seconds: 3),
-                //   );
-                //   Navigator.pushReplacementNamed(context, "/home");
-                // }).onError((error, stackTrace) {
-                //   print(error);
-                //   print(stackTrace);
-                //   EasyLoading.showError(
-                //     "${error.toString()}",
-                //     duration: Duration(seconds: 3),
-                //   );
-                // });
               },
               child: Text(
                 "Send Request",
@@ -282,7 +288,7 @@ class thirdPage extends StatelessWidget {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
           Text(
-            'Your request to be organizer will be reviewed',
+            'Your request to be an organizer will be reviewed',
             style: TextStyle(fontSize: 15),
             softWrap: true,
           ),
