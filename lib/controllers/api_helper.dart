@@ -5,7 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ApiHelper {
-  String domain = "192.168.1.104:3333";
+  String domain = "192.168.8.120:3333";
+  // 192.168.8.120 - 192.168.67.249
   Future get(String path) async {
     Uri uri = Uri.http(domain, path);
     var token = await getToken();
@@ -79,6 +80,7 @@ class ApiHelper {
         throw "${response.statusCode}: Server Error :(\nResponse Body\n${response.body}";
       default:
         throw "${response.statusCode}: Server Error :(\nResponse Body\n${response.body}";
+        
     }
   }
 }

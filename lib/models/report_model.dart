@@ -3,7 +3,7 @@ class Report {
 
   String description;
 
-  int eventId;
+  int? eventId;
 
   Report(this.id, this.description, this.eventId);
   factory Report.fromJson(Map<String, dynamic> json) {

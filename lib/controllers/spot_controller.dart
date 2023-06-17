@@ -36,4 +36,10 @@ class SpotController {
     // Spot result = Spot.fromJson(jsonObject);
     // return result;
   }
+
+  Future<void> updateSpotChecked(int spotId) async {
+    Spot spot = await getByID(spotId);
+    spot.checked = true;
+    await update(spot);
+  }
 }

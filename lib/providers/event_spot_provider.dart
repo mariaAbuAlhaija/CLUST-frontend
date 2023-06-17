@@ -10,14 +10,16 @@ class eventSpotProvider with ChangeNotifier {
   final List<Event> liveEvents = [];
   final List<Spot> spottedSpots = [];
   final List<Spot> pastSpots = [];
+  final List<Event> search = [];
+  final List<Event> filteredEvents = [];
 
   late Event defaultEvent;
 
-  static final eventSpotProvider _eventsProvider =
+  static final eventSpotProvider _eventSpotProvider =
       eventSpotProvider._internal();
 
   factory eventSpotProvider() {
-    return _eventsProvider;
+    return _eventSpotProvider;
   }
 
   eventSpotProvider._internal() {
@@ -33,7 +35,7 @@ class eventSpotProvider with ChangeNotifier {
     return allEvents.isEmpty;
   }
 
-  spotAdded(Event event, spot) {
+  spotAdded(Event event, Spot spot) {
     var index = allEvents.indexOf(event);
     allEvents[index].spotsCount++;
     addSpot(spot);
@@ -45,17 +47,14 @@ class eventSpotProvider with ChangeNotifier {
   }
 
   addSpot(Spot spot) {
-    print("added");
-    print(spot.toJson());
-    // if (!spottedSpots.contains(spot)) {
-    SpotController().create(spot);
-    spottedSpots.add(spot);
-    // }
+    if (!spottedSpots.contains(spot)) {
+      SpotController().create(spot);
+      spottedSpots.add(spot);
+    }
     notifyListeners();
   }
 
   removeSpot(Spot spot) {
-    print("deleted");
     SpotController().destroy(spot.id);
     spottedSpots.remove(spot);
     notifyListeners();
@@ -67,17 +66,13 @@ class eventSpotProvider with ChangeNotifier {
   }
 
   addEvent(Event event) {
-    print("added");
-    print(event.toJson());
     if (!allEvents.contains(event)) {
       allEvents.add(event);
     }
-    print(allEvents.length);
     notifyListeners();
   }
 
   removeEvent(Event event) {
-    print("deleted");
     allEvents.remove(event);
     notifyListeners();
   }
@@ -123,4 +118,25 @@ class eventSpotProvider with ChangeNotifier {
     notifyListeners();
     return liveEvents;
   }
+
+  Future<List<Event>> searchResults(String query) async {
+    search.clear();
+    for (Event event in allEvents) {
+      if (event.name.toLowerCase().contains(query.toLowerCase())) {
+        search.add(event);
+      }
+    }
+    return search;
+  }
+   Future<List<Event>> getEventsByCategoryIds(List<int> categoryIds) async {
+ filteredEvents.clear();
+
+  for (Event event in allEvents) {
+    if (categoryIds.contains(event.category_id)) {
+      filteredEvents.add(event);
+    }
+  }
+
+  return filteredEvents;
+}
 }
