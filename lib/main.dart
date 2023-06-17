@@ -5,7 +5,6 @@ import 'package:clust/providers/user_provider.dart';
 import 'package:clust/screens/become_organizer.dart';
 import 'package:clust/screens/create_event.dart';
 import 'package:clust/screens/createevent.dart';
-import 'package:clust/screens/fireBase.dart';
 import 'package:clust/screens/display_event.dart';
 import 'package:clust/screens/home_mob.dart';
 import 'package:clust/screens/landingPage.dart';
