@@ -24,7 +24,7 @@ class ImageController {
   Future<String> Upload(File file) async {
     try {
       var result = await ApiHelper().uploadImage(file, "/${path}upload");
-      print(result);
+      print(result["path"]);
       return result["path"];
     } catch (ex) {
       print(ex);

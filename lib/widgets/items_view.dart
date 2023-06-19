@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
- import 'package:qr_flutter/qr_flutter.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../controllers/report_controller.dart';
 import '../models/report_model.dart';
@@ -48,7 +48,6 @@ class Items extends StatelessWidget {
                         "${event!.organizer!.firstName} ${event!.organizer!.lastName}",
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
-                   
                     ],
                   ),
                 ),
@@ -80,7 +79,7 @@ class Items extends StatelessWidget {
       margin: EdgeInsets.all(10),
       height: 125.h,
       width: 150.w,
-      child: ImageView(event),
+      child: ImageView(event: event),
     );
   }
 
@@ -161,7 +160,7 @@ class Items extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return Dialog(
-           backgroundColor: Palate.white,
+          backgroundColor: Palate.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
@@ -179,43 +178,42 @@ class Items extends StatelessWidget {
                 ),
                 const SizedBox(height: 16.0),
                 TextField(
-                  
                   controller: reasonController,
-                    decoration: InputDecoration(
-                      labelStyle:  TextStyle(
-                    color: Palate.lighterBlack,
-                  ),
-                  labelText: 'Reason',
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(
+                  decoration: InputDecoration(
+                    labelStyle: TextStyle(
+                      color: Palate.lighterBlack,
+                    ),
+                    labelText: 'Reason',
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Palate.lighterBlack,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Palate.lighterBlack,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Palate.lighterBlack,
+                      ),
+                    ),
+                    hintText: 'Enter reason',
+                    hintStyle: TextStyle(
                       color: Palate.lighterBlack,
                     ),
                   ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Palate.lighterBlack,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Palate.lighterBlack,
-                    ),
-                  ),
-                  hintText: 'Enter reason',
-                  hintStyle: TextStyle(
-                    color: Palate.lighterBlack,
-                  ),
+                  maxLines: 3,
                 ),
-                maxLines: 3,
-              ),
-               const SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton(
                       child: const Text(
-                        
-                        'Submit',style: TextStyle(color: Palate.lightwine),
+                        'Submit',
+                        style: TextStyle(color: Palate.lightwine),
                       ),
                       onPressed: () async {
                         String reason = reasonController.text;
@@ -228,11 +226,14 @@ class Items extends StatelessWidget {
                         await ReportController().create(report);
                       },
                     ),
-                   const SizedBox(width: 8.0),
+                    const SizedBox(width: 8.0),
                     TextButton(
-                      child:const Text('Cancel',style:  TextStyle(
-                    color: Palate.lighterBlack,
-                  ),),
+                      child: const Text(
+                        'Cancel',
+                        style: TextStyle(
+                          color: Palate.lighterBlack,
+                        ),
+                      ),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },

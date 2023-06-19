@@ -42,7 +42,7 @@ class ProfilePage extends StatelessWidget {
                     child: Container(
                       width: 75,
                       height: 75,
-                      child: ImageView(user),
+                      child: ImageView(image: user!.image),
                     ),
                   ),
                   SizedBox(width: 16),
@@ -51,7 +51,7 @@ class ProfilePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '${user?.firstName} ${user?.lastName}',
+                          '${user.firstName} ${user.lastName}',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -90,7 +90,7 @@ class ProfilePage extends StatelessWidget {
               ),
               SizedBox(height: 30),
               Visibility(
-                visible: user?.about != null && user!.about!.isNotEmpty,
+                visible: user.about != null && user.about.isNotEmpty,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -98,7 +98,7 @@ class ProfilePage extends StatelessWidget {
                     if (user!.about.isNotEmpty)
                       Container(
                         width: MediaQuery.of(context).size.width * 2 / 3,
-                        child: Text(user!.about),
+                        child: Text(user.about),
                       ),
                     SizedBox(height: 20),
                   ],
@@ -131,7 +131,7 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
               Visibility(
-                visible: user?.accessRole == AccessRole.organizer,
+                visible: user.accessRole == AccessRole.organizer,
                 child: Container(
                   width: double.infinity,
                   margin: EdgeInsets.only(bottom: 16.0),

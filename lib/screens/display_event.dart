@@ -224,7 +224,7 @@ class _DisplayEventState extends State<DisplayEvent> {
     return Container(
       height: 350.h,
       width: double.infinity,
-      child: ImageView(widget._event),
+      child: ImageView(event: widget._event),
     );
   }
 

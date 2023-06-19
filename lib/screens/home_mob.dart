@@ -62,12 +62,10 @@ class _HomeMobState extends State<HomeMob> {
           data: !kIsWeb ? theme(context) : ThemeData(),
           child: Scaffold(
             appBar: appBar(userProvider.user!),
-           
             body: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  
                   SizedBox(
                     height: 150.h,
                     child: ListView.builder(
@@ -162,7 +160,7 @@ class _HomeMobState extends State<HomeMob> {
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
-                        ImageView(event),
+                        ImageView(event: event),
                         shadow(),
                         txt(provider, event),
                       ],

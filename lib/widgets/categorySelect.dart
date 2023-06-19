@@ -1,3 +1,4 @@
+import 'package:clust/controllers/country_controller.dart';
 import 'package:clust/widgets/sized_box.dart';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/foundation.dart';
@@ -10,9 +11,11 @@ import '../controllers/category_contoller.dart';
 import '../styles/palate.dart';
 
 class CategorySelector extends StatefulWidget {
-  final TextEditingController categoryController;
+  final TextEditingController controller;
+  final bool isCategory;
 
-  CategorySelector({Key? key, required this.categoryController})
+  CategorySelector(
+      {Key? key, required this.controller, required this.isCategory})
       : super(key: key);
   @override
   _CategorySelectorState createState() => _CategorySelectorState();
@@ -21,23 +24,36 @@ class CategorySelector extends StatefulWidget {
 class _CategorySelectorState extends State<CategorySelector> {
   void initState() {
     // TODO: implement initState
-    _loadCategories();
+    _loadData();
   }
 
   late Future<List<Category>> _categoriesFuture;
   String? _selectedCategory;
-  var _categories = <DropdownMenuItem>[];
-  _loadCategories() async {
-    var _categoryService = CategoryController();
-    var categories = await _categoryService.getAll();
-    categories.forEach((category) {
-      setState(() {
-        _categories.add(DropdownMenuItem(
-          child: Text(category.name),
-          value: category.id,
-        ));
+  var _items = <DropdownMenuItem>[];
+  _loadData() async {
+    if (widget.isCategory) {
+      var _categoryService = CategoryController();
+      var categories = await _categoryService.getAll();
+      categories.forEach((category) {
+        setState(() {
+          _items.add(DropdownMenuItem(
+            child: Text(category.name),
+            value: category.id,
+          ));
+        });
       });
-    });
+    } else {
+      var _countriesService = CountryController();
+      var countries = await _countriesService.getAll();
+      countries.forEach((country) {
+        setState(() {
+          _items.add(DropdownMenuItem(
+            child: Text(country.countryName),
+            value: country.id,
+          ));
+        });
+      });
+    }
   }
 
   @override
@@ -46,24 +62,22 @@ class _CategorySelectorState extends State<CategorySelector> {
 
     return DropdownButtonFormField(
       hint: Text(selectedCategoryName),
-      items: _categories,
+      items: _items,
       onChanged: ((value) {
         setState(() {
-          selectedCategoryName = _categories
-              .firstWhere((item) => item.value == value)
-              .child
-              .toString();
+          selectedCategoryName =
+              _items.firstWhere((item) => item.value == value).child.toString();
           debugPrint(value.toString());
           _selectedCategory = value.toString();
-          widget.categoryController.text = value.toString();
+          widget.controller.text = value.toString();
         });
       }),
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         isDense: true,
         hintStyle: TextStyle(color: Colors.black),
-        hintText: "Select Category",
-        labelText: "Select Category",
+        hintText: widget.isCategory ? "Select Category" : "Select Country",
+        labelText: widget.isCategory ? "Select Category" : "Select Country",
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.transparent, width: 0),
