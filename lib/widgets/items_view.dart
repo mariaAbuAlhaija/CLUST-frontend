@@ -30,7 +30,7 @@ class Items extends StatelessWidget {
         children: [
           leading(event!),
           SizedBox(
-            height: 100.h,
+            height: 110.h,
             width: 150.w,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,8 +51,16 @@ class Items extends StatelessWidget {
                     ],
                   ),
                 ),
-                Text(
-                  "${weekDay(event!.start_date.weekday)}, ${months(event!.start_date.month)} ${event!.start_date.day} ${event!.start_date.year} ${event!.start_date.hour}:${event!.start_date.minute} ",
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${event!.address}, ${event!.country!.countryName}",
+                    ),
+                    Text(
+                      "${weekDay(event!.start_date.weekday)}, ${months(event!.start_date.month)} ${event!.start_date.day} ${event!.start_date.year} ${event!.start_date.hour}:${event!.start_date.minute} ",
+                    ),
+                  ],
                 ),
               ],
             ),

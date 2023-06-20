@@ -27,10 +27,9 @@ class EventController {
     return result;
   }
 
-  Future<Event> create(Event event) async {
+  Future<bool> create(Event event) async {
     dynamic jsonObject = await ApiHelper().post(path, body: event.toJson());
-    dynamic result = Event.fromJson(jsonObject);
-    return result;
+    return true;
   }
 
   Future<Event> update(Event event) async {

@@ -154,8 +154,8 @@ class _DisplayEventState extends State<DisplayEvent> {
       child: Row(
         children: [
           Icon(Icons.location_on),
-          //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-          Text("  Location not added"),
+          Text(
+              " ${widget._event.address}, ${widget._event.country!.countryName}"),
         ],
       ),
     );

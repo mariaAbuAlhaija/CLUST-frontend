@@ -2,6 +2,7 @@ import 'package:clust/models/event_model.dart';
 import 'package:clust/widgets/image.dart';
 import 'package:clust/widgets/items_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:clust/models/user_model.dart';
 import 'package:clust/providers/user_provider.dart';
@@ -26,9 +27,7 @@ class ProfilePage extends StatelessWidget {
     DateFormat dateFormat = DateFormat('yyyy/MM/dd');
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Profile'),
-      ),
+      appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -36,81 +35,49 @@ class ProfilePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   ClipOval(
                     child: Container(
-                      width: 75,
-                      height: 75,
+                      width: 100,
+                      height: 100,
                       child: ImageView(image: user!.image),
                     ),
                   ),
                   SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${user.firstName} ${user.lastName}',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${user.firstName} ${user.lastName}',
+                        style: TextStyle(
+                          fontSize: 21,
+                          fontWeight: FontWeight.bold,
                         ),
-                        SizedBox(height: 5),
-                        Row(
-                          children: [
-                            Text(
-                              user?.email ?? '',
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            SizedBox(width: 8),
-                            Container(
-                              width: 1,
-                              height: 12,
-                              color: Colors.grey.withOpacity(0.7),
-                            ),
-                            SizedBox(width: 8),
-                            Text(
-                              '(${user!.accessRole.toString().split('.').last})',
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.grey.withOpacity(0.7),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                      ),
+                      Text(
+                        ' ${user.accessRole!.name}',
+                        style: TextStyle(fontSize: 14, color: Colors.grey),
+                      ),
+                      SizedBox(height: 25),
+                    ],
                   ),
                 ],
               ),
-              SizedBox(height: 30),
               Visibility(
-                visible: user.about != null && user.about.isNotEmpty,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 15),
-                    if (user!.about.isNotEmpty)
-                      Container(
-                        width: MediaQuery.of(context).size.width * 2 / 3,
-                        child: Text(user.about),
-                      ),
-                    SizedBox(height: 20),
-                  ],
+                visible: user.about != " ",
+                child: Container(
+                  margin: EdgeInsets.only(left: 10.w, top: 10.h, bottom: 20.h),
+                  width: MediaQuery.of(context).size.width * 2 / 3,
+                  child: Text(user.about),
                 ),
               ),
-              SizedBox(height: 30),
               Container(
                 width: double.infinity,
                 margin: EdgeInsets.only(bottom: 16.0),
                 child: TextButton.icon(
                   onPressed: () {
-                    // Handle edit profile button tap
+                    Navigator.pushNamed(context, "/edit");
                   },
                   style: TextButton.styleFrom(
                     primary: Colors.black,
@@ -120,7 +87,7 @@ class ProfilePage extends StatelessWidget {
                   icon: Icon(
                     Icons.edit,
                     size: 20,
-                    color: Colors.grey.withOpacity(0.7),
+                    // color: Colors.grey.withOpacity(0.7),
                   ),
                   label: Text(
                     'Edit Profile',
@@ -154,7 +121,7 @@ class ProfilePage extends StatelessWidget {
                     icon: Icon(
                       Icons.event,
                       size: 20,
-                      color: Colors.grey.withOpacity(0.7),
+                      // color: Colors.black.withOpacity(0.7),
                     ),
                     label: Text(
                       'Events',
@@ -185,7 +152,7 @@ class ProfilePage extends StatelessWidget {
                   icon: Icon(
                     Icons.logout,
                     size: 20,
-                    color: Colors.grey.withOpacity(0.7),
+                    // color: Colors.grey.withOpacity(0.7),
                   ),
                   label: Text(
                     'Sign Out',

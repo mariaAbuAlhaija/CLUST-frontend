@@ -6,6 +6,7 @@ import 'package:clust/screens/become_organizer.dart';
 import 'package:clust/screens/create_event.dart';
 import 'package:clust/screens/createevent.dart';
 import 'package:clust/screens/display_event.dart';
+import 'package:clust/screens/edit_profile.dart';
 import 'package:clust/screens/home_mob.dart';
 import 'package:clust/screens/landingPage.dart';
 import 'package:clust/screens/logo.dart';
@@ -99,6 +100,7 @@ class MyApp extends StatelessWidget {
                 "/creatEvent": (context) => CreateEvent(),
                 "/spots": (context) => SpotsView(),
                 "/memories": (context) => Memories(),
+                "/edit": (context) => EditProfile(),
                 "/becomeOrganizer": (context) => BecomeOrganizer(),
                 "/displayEvent": (context) =>
                     DisplayEvent(settings.arguments as Event),
