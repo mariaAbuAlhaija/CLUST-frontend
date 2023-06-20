@@ -1,23 +1,23 @@
 class Interaction {
   int id;
   String type;
-  int answerId;
+  int event_id;
   Interaction(
     this.id,
     this.type,
-    this.answerId,
+    this.event_id,
   );
   factory Interaction.fromJson(Map<String, dynamic> json) {
     return Interaction(
       json['id'] ?? 0,
       json['type'] ?? "",
-      json['answer_id'] ?? 0,
+      json['event_id'] ?? 0,
     );
   }
   Map<String, dynamic> toJson() {
     return {
       "type": type,
-      "answer_id": answerId,
+      "event_id": event_id,
       "id": id.toString(),
     };
   }

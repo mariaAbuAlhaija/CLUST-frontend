@@ -73,7 +73,7 @@ class _SpotsViewState extends State<SpotsView> {
                                               const SizedBox(height: 16.0),
                                              if(!provider.spottedSpots[index].checked)
                                               QrImage(
-                                                data: '${provider.spottedSpots[index].id}',
+                                                data: '${provider.spottedSpots[index].id},${provider.spottedSpots[index].eventId}',
                                                 version: QrVersions.auto,
                                                 size: 200.0,
                                               ),

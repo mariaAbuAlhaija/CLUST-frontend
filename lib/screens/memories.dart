@@ -7,7 +7,12 @@ import 'package:clust/widgets/events_view.dart' as EventsViewWidget;
 import 'package:clust/styles/palate.dart';
 import 'package:flutter/foundation.dart';
 import 'package:clust/styles/mobile_styles.dart' as mobile;
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 import 'package:provider/provider.dart';
+
+import '../controllers/report_controller.dart';
+import '../models/report_model.dart';
 
 class Memories extends StatefulWidget {
   const Memories({super.key});
@@ -31,6 +36,123 @@ class _MemoriesState extends State<Memories> {
                       child: ListView.builder(
                           itemCount: provider.pastSpots.length,
                           itemBuilder: (context, index) {
+                            void _showReportPopup(
+                                BuildContext context, String organizerEmail) {
+                              TextEditingController reasonController =
+                                  TextEditingController();
+
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Dialog(
+                                    backgroundColor: Palate.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    child: Container(
+                                      padding: EdgeInsets.all(16.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            'Report Event',
+                                            style: TextStyle(
+                                              fontSize: 18.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 16.0),
+                                          TextField(
+                                            controller: reasonController,
+                                            decoration: InputDecoration(
+                                              labelStyle: TextStyle(
+                                                color: Palate.lighterBlack,
+                                              ),
+                                              labelText: 'Reason',
+                                              border: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: Palate.lighterBlack,
+                                                ),
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: Palate.lighterBlack,
+                                                ),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: Palate.lighterBlack,
+                                                ),
+                                              ),
+                                              hintText: 'Enter reason',
+                                              hintStyle: TextStyle(
+                                                color: Palate.lighterBlack,
+                                              ),
+                                            ),
+                                            maxLines: 3,
+                                          ),
+                                          const SizedBox(height: 16.0),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              TextButton(
+                                                child: const Text(
+                                                  'Submit',
+                                                  style: TextStyle(
+                                                      color: Palate.lightwine),
+                                                ),
+                                                onPressed: () async {
+                                                  String reason =
+                                                      reasonController.text;
+                                                  eventSpotProvider provider =
+                                                      eventSpotProvider();
+
+                                                  Navigator.of(context).pop();
+                                                  sendReportEmail(
+                                                     organizerEmail,
+                                                      // provider.allEvents
+                                                      //     .firstWhere((x) =>
+                                                      //         x.id ==
+                                                      //         provider
+                                                      //             .pastSpots[
+                                                      //                 index]
+                                                      //             .eventId)
+                                                      //     .organizer!
+                                                      //     .firstName,
+                                                      reason);
+                                                  // Create a report object and save it to the database
+                                                  Report report = Report(
+                                                      0,
+                                                      reason,
+                                                      provider.pastSpots[index]
+                                                          .eventId);
+                                                  await ReportController()
+                                                      .create(report);
+                                                },
+                                              ),
+                                              const SizedBox(width: 8.0),
+                                              TextButton(
+                                                child: const Text(
+                                                  'Cancel',
+                                                  style: TextStyle(
+                                                    color: Palate.lighterBlack,
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            }
+
                             return FutureBuilder<Event>(
                               future: EventController()
                                   .getByID(provider.pastSpots[index].eventId),
@@ -38,7 +160,33 @@ class _MemoriesState extends State<Memories> {
                                 if (!snapshott.hasData) {
                                   return Container();
                                 }
-                                return Items(event: snapshott.data!);
+                                return Row(
+                                  children: [
+                                    Items(event: snapshott.data!),
+                                    Column(
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(Icons.flag_rounded),
+                                          color: Palate.wine,
+                                          onPressed: () async {
+                                            Event event =
+                                                await EventController().getByID(
+                                                    provider.pastSpots[index]
+                                                        .eventId);
+                                            String organizerEmail='';
+                                            if (event != null) {
+                                               organizerEmail =
+                                                  event.organizer!.email;
+                                              _showReportPopup(
+                                                  context, organizerEmail);
+                                            }
+                                            
+                                          },
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                );
                               },
                             );
                           }),
@@ -65,5 +213,28 @@ class _MemoriesState extends State<Memories> {
             labelSmall: mobile.labelSmall(color: Palate.black),
           ),
     );
+  }
+
+  void sendReportEmail(
+      String organizerEmail, //String eventName,
+       String reason) async {
+    String username = 'clustevents@gmail.com'; // your email address
+    String password = 'ovqsvecbocresybx'; // your email password
+
+    final smtpServer = gmail(username, password);
+
+    final message = Message()
+      ..from = Address(username, 'Your Name') // your name
+      ..recipients.add(organizerEmail) // organizer's email
+      ..subject = 'Event Report'
+      ..text =
+          'Event "your event has been reported with the following reason:\n\n$reason';
+
+    try {
+      final sendReport = await send(message, smtpServer);
+      print('Report email sent: $sendReport');
+    } catch (e) {
+      print('Error sending report email: $e');
+    }
   }
 }

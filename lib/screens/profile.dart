@@ -172,7 +172,7 @@ class ProfilePage extends StatelessWidget {
                   onPressed: () async {
                     bool signedOut = await userController.signout(user!.id);
                     if (signedOut) {
-                      // Handle successful signout
+                      Navigator.pushNamed(context, "/signin");
                     } else {
                       // Handle signout failure
                     }
