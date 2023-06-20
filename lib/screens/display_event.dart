@@ -20,6 +20,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:clust/styles/mobile_styles.dart' as mobile;
 
+import '../controllers/interaction_controller.dart';
+import '../models/interaction_model.dart';
+
 class DisplayEvent extends StatefulWidget {
   DisplayEvent(this._event, {super.key});
   final Event _event;
@@ -28,18 +31,24 @@ class DisplayEvent extends StatefulWidget {
 }
 
 class _DisplayEventState extends State<DisplayEvent> {
+  Interaction? _interaction;
+
   var spotted = false;
   @override
   Widget build(BuildContext context) {
+   
     return FutureBuilder<User>(
         future: UserController().getAll(),
         builder: (BuildContext context, snapshot) {
           if (!snapshot.hasData) {
             return loading();
           }
+         _interaction = widget._event.interaction;
+
           return Consumer(
             builder: (BuildContext context, eventSpotProvider provider,
                 Widget? child) {
+                  
               spotted =
                   provider.containsSpot(widget._event.id, snapshot.data!.id);
               return Scaffold(
@@ -65,6 +74,7 @@ class _DisplayEventState extends State<DisplayEvent> {
                               height: 10.h,
                             ),
                             description(),
+                            if (_interaction != null) interactionData(),
                           ],
                         ),
                       ),
@@ -89,7 +99,9 @@ class _DisplayEventState extends State<DisplayEvent> {
               );
             },
           );
+          
         });
+        
   }
 
   Container spotButton(
@@ -136,7 +148,32 @@ class _DisplayEventState extends State<DisplayEvent> {
       ),
     );
   }
-
+Widget interactionData() {
+  
+  return Container(
+    margin: EdgeInsets.fromLTRB(10, 20, 10, 10),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Interaction Details",
+          style: GoogleFonts.kameron(
+            textStyle: mobile.headlineMedium(color: Palate.black),
+          ),
+        ),
+        SizedBox(height: 10.h),
+         
+        Text(
+          "Question: ${_interaction!.type}",
+          style: GoogleFonts.kameron(
+            textStyle: mobile.bodySmall(color: Palate.black),
+          ),
+        ),
+        
+      ],
+    ),
+  );
+}
   Container date() {
     return Container(
       child: Row(

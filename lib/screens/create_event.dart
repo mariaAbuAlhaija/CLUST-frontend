@@ -2,10 +2,12 @@ import 'dart:io';
 
 import 'package:clust/controllers/event_controller.dart';
 import 'package:clust/controllers/image_controller.dart';
+import 'package:clust/controllers/interaction_controller.dart';
 import 'package:clust/controllers/user_controller.dart';
 import 'package:clust/globals.dart';
 import 'package:clust/models/event_model.dart';
 import 'package:clust/models/image_model.dart' as image_model;
+import 'package:clust/models/interaction_model.dart';
 import 'package:clust/models/user_model.dart';
 import 'package:clust/providers/user_provider.dart';
 import 'package:clust/styles/palate.dart';
@@ -168,7 +170,7 @@ class _CreateEventState extends State<CreateEvent> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "sentence sentencesentencesentencesentencesentencesentencesentence",
+            "Create your own event, gather with people you share intrests with, and don't forget to enjoy your time",
             textAlign: TextAlign.center,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
@@ -380,17 +382,18 @@ class _CreateEventState extends State<CreateEvent> {
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               onPressed: () {
                 print("""
-${eventNameController.text},
- ${eventDescriptionController.text},
-  ${int.parse(categoryController.text)},
-   ${provider.user!.id},
-    ${startDateController.text},
-     ${endDateController.text},
-      $uploadedImage,
-       
-        ${addressController.text},
-         ${int.parse(countryController.text)}
-""");
+                            ${eventNameController.text},
+                            ${eventDescriptionController.text},
+                              ${int.parse(categoryController.text)},
+                              ${provider.user!.id},
+                                ${startDateController.text},
+                                ${endDateController.text},
+                                  $uploadedImage,
+                                  
+                                    ${addressController.text},
+                                    ${int.parse(countryController.text)}
+                            """);
+
                 Event event = Event(
                     eventNameController.text,
                     eventDescriptionController.text,
@@ -409,7 +412,10 @@ ${eventNameController.text},
                     views: 0);
                 EventController().create(event).then((value) {
                   EasyLoading.showSuccess("Event request sent",
-                      duration: Duration(seconds: 3));
+                      duration: Duration(seconds: 3)); 
+                    if (questionController.text.isNotEmpty){ Interaction interaction =
+                    Interaction(0, questionController.text, event!.id);
+                InteractionController().create(interaction);}
                   Navigator.pushNamedAndRemoveUntil(
                     context,
                     "/navigator",
@@ -419,6 +425,8 @@ ${eventNameController.text},
                   print(error);
                   print(stackTrace);
                 });
+
+               
               },
               child: Text(
                 "Send Request",
@@ -520,9 +528,8 @@ ${eventNameController.text},
                       scroll = validated2;
                     });
                   },
-                  validator: FormBuilderValidators.required(),
                   decoration: const InputDecoration(
-                    hintText: "Add during events questions",
+                    hintText: "Add during events questions(optional)",
                     labelText: "Add during events questions",
                   ),
                 ),

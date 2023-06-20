@@ -1,7 +1,7 @@
 class Interaction {
-  int id;
+  int? id;
   String type;
-  int event_id;
+  int? event_id;
   Interaction(
     this.id,
     this.type,
@@ -11,14 +11,14 @@ class Interaction {
     return Interaction(
       json['id'] ?? 0,
       json['type'] ?? "",
-      json['event_id'] ?? 0,
+      json['eventId'] ?? 0,
     );
   }
   Map<String, dynamic> toJson() {
     return {
+      "id":id.toString(),
       "type": type,
-      "event_id": event_id,
-      "id": id.toString(),
-    };
+      "eventId": event_id.toString(),
+     };
   }
 }

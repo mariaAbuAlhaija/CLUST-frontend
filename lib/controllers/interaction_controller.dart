@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:clust/models/interaction_model.dart';
 
 import 'api_helper.dart';
@@ -18,13 +20,15 @@ class InteractionController {
     Interaction result = Interaction.fromJson(jsonObject);
     return result;
   }
+Future<Interaction> create(Interaction interaction) async {
+  dynamic jsonObject = await ApiHelper().get('event/getlateid');
+  int id = jsonObject['id'] as int;
+  interaction.event_id = id;
+  dynamic response = await ApiHelper().post(path, body: interaction.toJson());
+  Interaction result = Interaction.fromJson(response);
+  return result;
+}
 
-  Future<Interaction> create(Interaction interaction) async {
-    dynamic jsonObject =
-        await ApiHelper().post(path, body: interaction.toJson());
-    Interaction result = Interaction.fromJson(jsonObject);
-    return result;
-  }
 
   Future<Interaction> update(Interaction interaction) async {
     dynamic jsonObject = await ApiHelper().put(path, interaction.toJson());
