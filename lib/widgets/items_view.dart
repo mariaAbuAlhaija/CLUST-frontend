@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
- import 'package:qr_flutter/qr_flutter.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../controllers/report_controller.dart';
 import '../models/report_model.dart';
@@ -30,7 +30,7 @@ class Items extends StatelessWidget {
         children: [
           leading(event!),
           SizedBox(
-            height: 100.h,
+            height: 110.h,
             width: 150.w,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,12 +48,19 @@ class Items extends StatelessWidget {
                         "${event!.organizer!.firstName} ${event!.organizer!.lastName}",
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
-                   
                     ],
                   ),
                 ),
-                Text(
-                  "${weekDay(event!.start_date.weekday)}, ${months(event!.start_date.month)} ${event!.start_date.day} ${event!.start_date.year} ${event!.start_date.hour}:${event!.start_date.minute} ",
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${event!.address}, ${event!.country!.countryName}",
+                    ),
+                    Text(
+                      "${weekDay(event!.start_date.weekday)}, ${months(event!.start_date.month)} ${event!.start_date.day} ${event!.start_date.year} ${event!.start_date.hour}:${event!.start_date.minute} ",
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -73,7 +80,7 @@ class Items extends StatelessWidget {
       margin: EdgeInsets.all(10),
       height: 125.h,
       width: 150.w,
-      child: ImageView(event),
+      child: ImageView(event: event),
     );
   }
 

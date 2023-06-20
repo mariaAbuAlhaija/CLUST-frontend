@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ApiHelper {
-  String domain = "192.168.8.120:3333";
+  String domain = "192.168.1.104:3333";
   // 192.168.8.120 - 192.168.67.249
   Future get(String path) async {
     Uri uri = Uri.http(domain, path);
@@ -42,7 +42,7 @@ class ApiHelper {
     return result;
   }
 
-  Future uploadImage(File file, urlPath) async {
+  Future uploadImageDio(File file, urlPath) async {
     final dio = Dio();
 
     var token = await getToken();
@@ -52,13 +52,42 @@ class ApiHelper {
       "image_file": await MultipartFile.fromFile(file.path,
           filename: file.path.split("/").last)
     });
+    print("object");
     Response response = await dio.post(
       'http://$domain$urlPath',
       data: formData,
       options: Options(
+        followRedirects: false,
+        validateStatus: (status) {
+          return status! < 500;
+        },
         headers: headers,
       ),
     );
+    print("$response");
+  }
+
+  Future uploadImage(File file, urlPath) async {
+    var token = await getToken();
+    var headers = {"Authorization": token};
+
+    Uri uri = Uri.http(domain, urlPath);
+
+    // FormData formData = FormData.fromMap({
+    //   "image_file": await MultipartFile.fromFile(file.path,
+    //       filename: file.path.split("/").last)
+    // });
+    // var response = await http.post(
+    //   uri,
+    //   body: {'image': formData},
+    // );
+    var request = http.MultipartRequest('POST', uri);
+    request.files.add(await http.MultipartFile.fromPath('image', file.path));
+
+    var response = await request.send();
+    var responseBody = await response.stream.bytesToString();
+    print(responseBody);
+    return (jsonDecode(responseBody));
   }
 
   responsing(http.Response response) {
@@ -80,7 +109,6 @@ class ApiHelper {
         throw "${response.statusCode}: Server Error :(\nResponse Body\n${response.body}";
       default:
         throw "${response.statusCode}: Server Error :(\nResponse Body\n${response.body}";
-        
     }
   }
 }

@@ -1,13 +1,17 @@
 import 'dart:io';
 
+import 'package:clust/controllers/event_controller.dart';
 import 'package:clust/controllers/image_controller.dart';
 import 'package:clust/controllers/user_controller.dart';
 import 'package:clust/globals.dart';
+import 'package:clust/models/event_model.dart';
+import 'package:clust/models/image_model.dart' as image_model;
 import 'package:clust/models/user_model.dart';
 import 'package:clust/providers/user_provider.dart';
 import 'package:clust/styles/palate.dart';
 import 'package:clust/widgets/categorySelect.dart';
 import 'package:clust/widgets/datetimepicker.dart';
+import 'package:clust/widgets/image.dart';
 import 'package:clust/widgets/loading.dart';
 import 'package:clust/widgets/sized_box.dart';
 import 'package:clust/widgets/text_field.dart';
@@ -22,6 +26,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'package:intl/intl.dart';
 import 'package:clust/styles/mobile_styles.dart' as mobile;
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -36,16 +41,23 @@ class _CreateEventState extends State<CreateEvent> {
   final PageController _controller = PageController(initialPage: 0);
   File? _file;
   final _formKey = GlobalKey<FormBuilderState>();
+  final _formKey2 = GlobalKey<FormBuilderState>();
+  var addressController = TextEditingController();
   var eventNameController = TextEditingController();
-  var eventDiscriptionController = TextEditingController();
+  var eventDescriptionController = TextEditingController();
   var eventThankController = TextEditingController();
   var eventCapacityController = TextEditingController();
   var startDateController = TextEditingController();
   var endDateController = TextEditingController();
   var categoryController = TextEditingController();
+  var countryController = TextEditingController();
+  var questionController = TextEditingController();
   DateTime dateTime = DateTime(2023, 6, 23, 3, 30);
   int _pageIndex = 0;
+  var uploaded = false;
+  String? uploadedImage;
   var validated = false;
+  var validated2 = false;
   var scroll = true;
   bool visible = false;
 
@@ -55,7 +67,7 @@ class _CreateEventState extends State<CreateEvent> {
     eventNameController.addListener(() {
       setState(() {});
     });
-    eventDiscriptionController.addListener(() {
+    eventDescriptionController.addListener(() {
       setState(() {});
     });
   }
@@ -92,15 +104,17 @@ class _CreateEventState extends State<CreateEvent> {
                       physics: scroll ? null : NeverScrollableScrollPhysics(),
                       controller: _controller,
                       onPageChanged: (value) {
+                        print(categoryController.text);
                         setState(() {
                           _pageIndex = value;
                         });
-                        if (value == 1 && !validated) {
+                        if ((value == 1 || value == 2) &&
+                            (!validated || !validated2)) {
                           setState(() {
                             scroll = false;
                           });
                         }
-                        if (value == 2) {
+                        if (value == 3) {
                           setState(() {
                             visible = true;
                           });
@@ -113,8 +127,9 @@ class _CreateEventState extends State<CreateEvent> {
                       children: <Widget>[
                         firstPage(),
                         secondPage(),
-                        imageScreen(),
                         thirdPage(),
+                        imageScreen(),
+                        // fourthPage(),
                       ],
                     ),
                   ),
@@ -172,7 +187,7 @@ class _CreateEventState extends State<CreateEvent> {
         children: [
           Sized_Box().sizedBoxH(context, 60.0.w),
           Text(
-            "Upload event photos",
+            "Upload event image (optional)",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
           Sized_Box().sizedBoxH(context, 40.0.w),
@@ -187,77 +202,82 @@ class _CreateEventState extends State<CreateEvent> {
     return Center(
       child: FormBuilder(
         key: _formKey,
-        child: Column(
-          children: [
-            TextFormField(
-              controller: eventNameController,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: FormBuilderValidators.required(),
-              onChanged: (value) {
-                setState(() {
-                  validated = _formKey.currentState!.validate();
-                  scroll = validated;
-                });
-              },
-              decoration: InputDecoration(
-                  hintText: "Event Name", labelText: "Event Name"),
-            ),
-            Sized_Box().sizedBoxH(context, 15.h),
-            TextFormField(
-              controller: eventDiscriptionController,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              minLines: 1,
-              maxLines: 3,
-              maxLength: 250,
-              keyboardType: TextInputType.multiline,
-              onChanged: (value) {
-                setState(() {
-                  validated = _formKey.currentState!.validate();
-                  scroll = validated;
-                });
-              },
-              validator: FormBuilderValidators.required(),
-              decoration: InputDecoration(
-                hintText: "About Event",
-                labelText: "About Event",
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              TextFormField(
+                controller: eventNameController,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: FormBuilderValidators.required(),
+                onChanged: (value) {
+                  setState(() {
+                    validated = _formKey.currentState!.validate();
+                    scroll = validated;
+                  });
+                },
+                decoration: InputDecoration(
+                    hintText: "Event Name", labelText: "Event Name"),
               ),
-            ),
-            Sized_Box().sizedBoxH(context, 15.h),
-            TextFormField(
-              controller: eventCapacityController,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              keyboardType: TextInputType.number,
-              validator: FormBuilderValidators.required(),
-              onChanged: (value) {
-                setState(() {
-                  validated = _formKey.currentState!.validate();
-                  scroll = validated;
-                });
-              },
-              maxLength: 3,
-              decoration:
-                  InputDecoration(hintText: "Capacity", labelText: "Capacity"),
-            ),
-            Sized_Box().sizedBoxH(context, 15.h),
-            CategorySelector(categoryController: categoryController),
-            SizedBox(height: 15.h),
-            Row(
-              children: [
-                Expanded(
-                    child: DateTimePicker(
-                  "Start Date",
-                  dateTimeController: startDateController,
-                )),
-                SizedBox(width: 10.0.w),
-                Expanded(
-                    child: DateTimePicker(
-                  "End Date",
-                  dateTimeController: endDateController,
-                  startDateTimeController: startDateController,
-                )),
-              ],
-            ),
-          ],
+              Sized_Box().sizedBoxH(context, 15.h),
+              TextFormField(
+                controller: eventDescriptionController,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                minLines: 1,
+                maxLines: 3,
+                maxLength: 250,
+                keyboardType: TextInputType.multiline,
+                onChanged: (value) {
+                  setState(() {
+                    validated = _formKey.currentState!.validate();
+                    scroll = validated;
+                  });
+                },
+                validator: FormBuilderValidators.required(),
+                decoration: InputDecoration(
+                  hintText: "About Event",
+                  labelText: "About Event",
+                ),
+              ),
+              Sized_Box().sizedBoxH(context, 15.h),
+              TextFormField(
+                controller: eventCapacityController,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                keyboardType: TextInputType.number,
+                validator: FormBuilderValidators.required(),
+                onChanged: (value) {
+                  setState(() {
+                    validated = _formKey.currentState!.validate();
+                    scroll = validated;
+                  });
+                },
+                maxLength: 3,
+                decoration: InputDecoration(
+                    hintText: "Capacity", labelText: "Capacity"),
+              ),
+              Sized_Box().sizedBoxH(context, 15.h),
+              CategorySelector(
+                controller: categoryController,
+                isCategory: true,
+              ),
+              SizedBox(height: 15.h),
+              Row(
+                children: [
+                  Expanded(
+                      child: DateTimePicker(
+                    "Start Date",
+                    dateTimeController: startDateController,
+                  )),
+                  SizedBox(width: 10.0.w),
+                  Expanded(
+                      child: DateTimePicker(
+                    "End Date",
+                    dateTimeController: endDateController,
+                    startDateTimeController: startDateController,
+                  )),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -272,11 +292,22 @@ class _CreateEventState extends State<CreateEvent> {
         color: Palate.black,
         strokeWidth: 1,
         borderType: BorderType.Circle,
-        child: Container(
-          height: 120,
-          width: 120,
+        child: AnimatedContainer(
+          clipBehavior: Clip.hardEdge,
+          height: uploaded ? 250.h : 120.h,
+          width: uploaded ? 250.w : 120.w,
           decoration: const BoxDecoration(shape: BoxShape.circle),
-          child: Column(
+          duration: const Duration(milliseconds: 200),
+          child: uploadWidget(),
+        ),
+      ),
+    );
+  }
+
+  Widget uploadWidget() {
+    return uploaded
+        ? ImageView(image: uploadedImage)
+        : Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(FontAwesomeIcons.camera, color: Palate.black, size: 50.w),
@@ -285,6 +316,25 @@ class _CreateEventState extends State<CreateEvent> {
                 "Upload",
               )
             ],
+          );
+  }
+
+  InkWell addQuestion() {
+    return InkWell(
+      onTap: () {
+        handleGetImageAction();
+      },
+      child: DottedBorder(
+        color: Palate.black,
+        strokeWidth: 1,
+        child: Container(
+          clipBehavior: Clip.hardEdge,
+          height: 50.h,
+          width: 350.w,
+          decoration: const BoxDecoration(shape: BoxShape.circle),
+          child: Icon(
+            Icons.add,
+            size: 35,
           ),
         ),
       ),
@@ -297,7 +347,8 @@ class _CreateEventState extends State<CreateEvent> {
         Visibility(
           visible: !visible,
           child: IconButton(
-              onPressed: (_pageIndex == 1 && !validated)
+              onPressed: ((_pageIndex == 1 || _pageIndex == 2) &&
+                      (!validated || !validated2))
                   ? null
                   : () {
                       // if (_pageIndex == 2) {
@@ -306,6 +357,7 @@ class _CreateEventState extends State<CreateEvent> {
 
                       //   // UserController().update(user)
                       // }
+                      validated = false;
                       _controller.nextPage(
                         duration: const Duration(milliseconds: 400),
                         curve: Curves.easeInOut,
@@ -314,7 +366,8 @@ class _CreateEventState extends State<CreateEvent> {
               icon: Icon(
                 Icons.play_arrow_rounded,
                 size: 40,
-                color: (_pageIndex == 1 && !validated)
+                color: ((_pageIndex == 1 || _pageIndex == 2) &&
+                        (!validated || !validated2))
                     ? Palate.lighterBlack
                     : Palate.black,
               )),
@@ -325,7 +378,48 @@ class _CreateEventState extends State<CreateEvent> {
               color: Palate.wine,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10))),
-              onPressed: () {},
+              onPressed: () {
+                print("""
+${eventNameController.text},
+ ${eventDescriptionController.text},
+  ${int.parse(categoryController.text)},
+   ${provider.user!.id},
+    ${startDateController.text},
+     ${endDateController.text},
+      $uploadedImage,
+       
+        ${addressController.text},
+         ${int.parse(countryController.text)}
+""");
+                Event event = Event(
+                    eventNameController.text,
+                    eventDescriptionController.text,
+                    int.parse(categoryController.text),
+                    provider.user!.id,
+                    DateFormat("yyyy-MM-dd HH:mm")
+                        .parse(startDateController.text),
+                    DateFormat("yyyy-MM-dd HH:mm")
+                        .parse(endDateController.text),
+                    [],
+                    [],
+                    addressController.text,
+                    int.parse(countryController.text),
+                    id: 0,
+                    capacity: int.parse(eventCapacityController.text),
+                    views: 0);
+                EventController().create(event).then((value) {
+                  EasyLoading.showSuccess("Event request sent",
+                      duration: Duration(seconds: 3));
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    "/navigator",
+                    (Route<dynamic> route) => false,
+                  );
+                }).onError((error, stackTrace) {
+                  print(error);
+                  print(stackTrace);
+                });
+              },
               child: Text(
                 "Send Request",
                 style: TextStyle(color: Palate.white),
@@ -338,7 +432,7 @@ class _CreateEventState extends State<CreateEvent> {
   AnimatedContainer dotsIndicator(isActive) {
     return AnimatedContainer(
       decoration: BoxDecoration(
-          color: isActive ? Palate.black : Palate.lighterBlack,
+          color: isActive ? Color.fromRGBO(30, 28, 28, 1) : Palate.lighterBlack,
           borderRadius: BorderRadius.all(Radius.circular(10))),
       margin: EdgeInsets.all(2),
       height: isActive ? 20 : 10.h,
@@ -350,14 +444,22 @@ class _CreateEventState extends State<CreateEvent> {
   handleGetImageAction() async {
     if (Platform.isAndroid || Platform.isIOS) {
       ImagePicker picker = ImagePicker();
-      XFile? image = await picker.pickImage(source: ImageSource.gallery);
-      setState(() {
-        _file = File(image!.path);
-      });
+      final image = await picker.pickImage(source: ImageSource.gallery);
+      print("picked");
+      if (image != null) {
+        setState(() {
+          _file = File(image.path);
+        });
+      }
       EasyLoading.show(status: "Loading");
-      ImageController().Upload(File(image!.path)).then((value) {
+      print("load");
+      ImageController().Upload(File(_file!.path)).then((value) {
+        print("create");
         EasyLoading.dismiss();
-        EasyLoading.showSuccess(value);
+        setState(() {
+          uploadedImage = value;
+          uploaded = true;
+        });
       }).catchError((ex) {
         EasyLoading.dismiss();
         EasyLoading.showError(ex.toString());
@@ -366,28 +468,90 @@ class _CreateEventState extends State<CreateEvent> {
       EasyLoading.showError("Not Supported");
     }
   }
-}
 
-class thirdPage extends StatelessWidget {
-  const thirdPage({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
+  thirdPage() {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          CategorySelector(
+            controller: countryController,
+            isCategory: false,
+          ),
+          SizedBox(
+            height: 25.h,
+          ),
+          FormBuilder(
+            key: _formKey2,
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: addressController,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  minLines: 1,
+                  maxLines: 3,
+                  maxLength: 100,
+                  keyboardType: TextInputType.multiline,
+                  onChanged: (value) {
+                    setState(() {
+                      validated2 = _formKey2.currentState!.validate();
+                      scroll = validated2;
+                    });
+                  },
+                  validator: FormBuilderValidators.required(),
+                  decoration: InputDecoration(
+                    hintText: "Event Address",
+                    labelText: "Event Address",
+                  ),
+                ),
+                SizedBox(
+                  height: 25.h,
+                ),
+                TextFormField(
+                  controller: questionController,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  minLines: 1,
+                  maxLines: 3,
+                  maxLength: 100,
+                  keyboardType: TextInputType.multiline,
+                  onChanged: (value) {
+                    setState(() {
+                      validated2 = _formKey2.currentState!.validate();
+                      scroll = validated2;
+                    });
+                  },
+                  validator: FormBuilderValidators.required(),
+                  decoration: const InputDecoration(
+                    hintText: "Add during events questions",
+                    labelText: "Add during events questions",
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  fourthPage() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Sized_Box().sizedBoxH(context, 60.0.w),
           Text(
-            'Pending',
+            "Add during events questions",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
           Text(
-            'Your request to be organizer will be reviewed',
-            style: TextStyle(fontSize: 15),
-            softWrap: true,
+            "(optional)",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
+          Sized_Box().sizedBoxH(context, 40.0.w),
+          addQuestion(),
+          Sized_Box().sizedBoxH(context, 40.0.h),
         ],
       ),
     );

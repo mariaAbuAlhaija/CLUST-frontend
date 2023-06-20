@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:clust/models/spot_model.dart';
 import 'package:clust/models/user_model.dart';
+import 'package:clust/models/country_model.dart';
 
 import 'image_model.dart';
 
@@ -8,8 +9,10 @@ class Event {
   int? id;
   String name;
   String description;
+  String address;
   int category_id;
   int organizer_id;
+  int country_id;
   DateTime start_date;
   DateTime end_date;
   Status status;
@@ -22,6 +25,7 @@ class Event {
   List<Spot> spots = [];
   var spotsCount;
   User? organizer;
+  Country? country;
 
   Event(
     this.name,
@@ -31,22 +35,27 @@ class Event {
     this.start_date,
     this.end_date,
     this.dynamicImages,
-    this.dynamicSpots, {
+    this.dynamicSpots,
+    this.address,
+    this.country_id, {
     this.organizer,
     this.status = Status.available,
     this.id,
     this.views,
     this.capacity,
     this.thanking_message,
+    this.country,
   }) {
-    if (dynamicImages != null)
+    if (dynamicImages != null) {
       dynamicImages.forEach((json) {
         images.add(Image.fromJson(json).path);
       });
-    if (dynamicSpots != null)
+    }
+    if (dynamicSpots != null) {
       dynamicSpots.forEach((json) {
         spots.add(Spot.fromJson(json));
       });
+    }
     spotsCount = spots.length;
   }
   factory Event.fromJson(json) {
@@ -54,23 +63,25 @@ class Event {
     DateTime en = DateTime.parse(json['end_date'] ?? '');
 
     Event _event = Event(
-      json['name'] ?? '',
-      json['description'] ?? '',
-      json['category_id'] ?? 0,
-      json['organizer_id'] ?? 0,
-      st,
-      en,
-      json["images"],
-      json["spot"],
-      organizer: User.fromJson(json["organizer"]) ?? null,
-      status: json['status'] == Status.available.toString()
-          ? Status.available
-          : Status.unavailable,
-      id: json['id'] ?? 0,
-      views: json['views'] ?? 0,
-      capacity: json['capacity'] ?? 0,
-      thanking_message: json['thanking_message'] ?? '',
-    );
+        json['name'] ?? '',
+        json['description'] ?? '',
+        json['category_id'] ?? 0,
+        json['organizer_id'] ?? 0,
+        st,
+        en,
+        json["images"],
+        json["spot"],
+        json["address"],
+        json["country_id"],
+        organizer: User.fromJson(json["organizer"]),
+        status: json['status'] == Status.available.toString()
+            ? Status.available
+            : Status.unavailable,
+        id: json['id'] ?? 0,
+        views: json['views'] ?? 0,
+        capacity: json['capacity'] ?? 0,
+        thanking_message: json['thanking_message'] ?? '',
+        country: Country.fromJson(json['country']));
 
     return _event;
   }
@@ -82,12 +93,13 @@ class Event {
       "description": description,
       "category_id": category_id.toString(),
       "organizer_id": organizer_id.toString(),
+      "country_id": organizer_id.toString(),
+      "address": organizer_id.toString(),
       "start_date": start_date.toIso8601String(),
       "end_date": end_date.toIso8601String(),
-      "status": status,
+      "status": status.name,
       "views": views.toString(),
       "capacity": capacity.toString(),
-      "thanking_message": thanking_message,
     };
   }
 
