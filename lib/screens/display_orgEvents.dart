@@ -27,7 +27,9 @@ class OrgEventsScreen extends StatelessWidget {
             List<Event> events = snapshot.data!;
             return Theme(
               data: theme(context),
-              child: EventsView(events),
+              child: SingleChildScrollView(
+                child: EventsView(events),
+              ),
             );
           } else {
             return Center(child: Text('No events found.'));
@@ -36,7 +38,7 @@ class OrgEventsScreen extends StatelessWidget {
       ),
     );
   }
-  
+
   ThemeData theme(BuildContext context) {
     return ThemeData(
       useMaterial3: true,

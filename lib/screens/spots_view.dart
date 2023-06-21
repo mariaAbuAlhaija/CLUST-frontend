@@ -106,12 +106,10 @@ class _SpotsViewState extends State<SpotsView> {
                                provider.liveEvents
                           .any((event) => event.interaction!=null&&event.id! == provider.spottedSpots[index].eventId)
                             ;
-                    bool isnotCheckedAndLive =
+                    bool isnotChecked =
                           !provider.spottedSpots[index].checked &&
                               provider.liveEvents
-                          .any((event) => event.id == provider.spottedSpots[index].eventId)&&
-                               provider.liveEvents
-                          .any((event) => event.interaction!=null&&event.id! == provider.spottedSpots[index].eventId)
+                          .any((event) => event.id == provider.spottedSpots[index].eventId)
                             ;
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -120,7 +118,7 @@ class _SpotsViewState extends State<SpotsView> {
                           Column(
                             children: [
                               Visibility(
-                                visible: isnotCheckedAndLive,
+                                visible: isnotChecked,
                                 child: IconButton(
                                   onPressed: () {
                                     showDialog(
