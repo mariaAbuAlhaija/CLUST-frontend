@@ -6,6 +6,7 @@ import 'package:clust/models/spot_model.dart';
 import 'package:clust/models/user_model.dart';
 import 'package:clust/providers/event_spot_provider.dart';
 import 'package:clust/screens/home_mob.dart';
+import 'package:clust/screens/intractions.dart';
 import 'package:clust/styles/palate.dart';
 import 'package:clust/widgets/image.dart';
 import 'package:clust/widgets/events_view.dart';
@@ -22,7 +23,7 @@ import 'package:clust/styles/mobile_styles.dart' as mobile;
 
 import '../controllers/interaction_controller.dart';
 import '../models/interaction_model.dart';
-
+ 
 class DisplayEvent extends StatefulWidget {
   DisplayEvent(this._event, {super.key});
   final Event _event;
@@ -147,33 +148,38 @@ class _DisplayEventState extends State<DisplayEvent> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
     );
-  }
-Widget interactionData() {
-  
-  return Container(
-    margin: EdgeInsets.fromLTRB(10, 20, 10, 10),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+  }Widget interactionData() {
+  return GestureDetector(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => QuestionScreen(interactionId: _interaction!.id!)),
+      );
+    },
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          "Interaction Details",
-          style: GoogleFonts.kameron(
-            textStyle: mobile.headlineMedium(color: Palate.black),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Interaction Details",
+                style: GoogleFonts.kameron(
+                  textStyle: mobile.headlineMedium(color: Palate.black),
+                ),
+              ),
+             
+            ],
           ),
         ),
-        SizedBox(height: 10.h),
-         
-        Text(
-          "Question: ${_interaction!.type}",
-          style: GoogleFonts.kameron(
-            textStyle: mobile.bodySmall(color: Palate.black),
-          ),
-        ),
-        
+        Icon(Icons.arrow_forward),
       ],
     ),
   );
 }
+
+
   Container date() {
     return Container(
       child: Row(
