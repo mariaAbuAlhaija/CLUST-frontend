@@ -6,8 +6,6 @@ import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-import '../controllers/report_controller.dart';
-import '../models/report_model.dart';
 import 'image.dart';
 
 class Items extends StatelessWidget {
@@ -32,8 +30,8 @@ class Items extends StatelessWidget {
           children: [
             leading(event!),
             SizedBox(
-              height: 100.h,
-              width: 200.w,
+              height: 112.h,
+              width: 180.w,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -67,14 +65,6 @@ class Items extends StatelessWidget {
                 ],
               ),
             ),
-            if (event!.end_date.isBefore(DateTime.now()))
-              IconButton(
-                icon: Icon(Icons.report_outlined),
-                color: Color.fromARGB(255, 192, 192, 192),
-                onPressed: () {
-                  // _showReportPopup(context);
-                },
-              ),
           ],
         ),
       ),
