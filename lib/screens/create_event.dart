@@ -78,7 +78,8 @@ class _CreateEventState extends State<CreateEvent> {
   @override
   Widget build(BuildContext context) {
     return Consumer(
-      (BuildContext context, eventSpotProvider provider, Widget? child) {
+      builder:
+          (BuildContext context, eventSpotProvider provider, Widget? child) {
         return Consumer(
           builder:
               (BuildContext context, UserProvider userProvider, Widget? child) {

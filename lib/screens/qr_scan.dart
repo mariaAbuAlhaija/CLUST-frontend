@@ -67,30 +67,43 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
       setState(() {});
       EasyLoading.showSuccess(
         "Error!",
-    // Extract spotId and eventId from the scanned QR code result
-    List<String> qrResult = barcodeScanResult.split(',');
-    if (qrResult.length == 2) {
-      int spotId = int.tryParse(qrResult[0].trim()) ?? -1;
-      int eventId = int.tryParse(qrResult[1].trim()) ?? -1;
-      if (spotId != -1 && eventId != -1) {
-        // Check if the event ID exists for the organizer
-        List<int> eventIds = await EventController().getEventIdsByOrganizer(UserProvider().user!.id); // Replace `organizerId` with the actual organizer ID
-        if (eventIds.contains(eventId)) {
-          // Update the spot with checked = true
-          SpotController().updateSpotChecked(spotId);
-          setState(() {
-            scannedResult = 'Spot ID $spotId has been checked';
-          });
-          EasyLoading.showSuccess(
-            "Checked!",
-            duration: Duration(seconds: 3),
-          );
+      );
+      // Extract spotId and eventId from the scanned QR code result
+      List<String> qrResult = barcodeScanResult.split(',');
+      if (qrResult.length == 2) {
+        int spotId = int.tryParse(qrResult[0].trim()) ?? -1;
+        int eventId = int.tryParse(qrResult[1].trim()) ?? -1;
+        if (spotId != -1 && eventId != -1) {
+          // Check if the event ID exists for the organizer
+          List<int> eventIds = await EventController().getEventIdsByOrganizer(
+              UserProvider()
+                  .user!
+                  .id); // Replace `organizerId` with the actual organizer ID
+          if (eventIds.contains(eventId)) {
+            // Update the spot with checked = true
+            SpotController().updateSpotChecked(spotId);
+            setState(() {
+              scannedResult = 'Spot ID $spotId has been checked';
+            });
+            EasyLoading.showSuccess(
+              "Checked!",
+              duration: Duration(seconds: 3),
+            );
+          } else {
+            setState(() {
+              scannedResult = 'Wrong event';
+            });
+            EasyLoading.showError(
+              "Wrong event",
+              duration: Duration(seconds: 3),
+            );
+          }
         } else {
           setState(() {
-            scannedResult = 'Wrong event';
+            scannedResult = 'Invalid QR code';
           });
           EasyLoading.showError(
-            "Wrong event",
+            "Invalid QR code",
             duration: Duration(seconds: 3),
           );
         }
@@ -103,14 +116,6 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
           duration: Duration(seconds: 3),
         );
       }
-    } else {
-      setState(() {
-        scannedResult = 'Invalid QR code';
-      });
-      EasyLoading.showError(
-        "Invalid QR code",
-        duration: Duration(seconds: 3),
-      );
     }
   }
 }
