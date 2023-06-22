@@ -179,19 +179,7 @@ class _SignInState extends State<SignIn> {
         const SnackBar(
           content: Text("This is my content"),
         );
-        // return CupertinoAlertDialog(
-        //   title: new Text("Dialog Title"),
-        //   content: new Text("This is my content"),
-        //   actions: <Widget>[
-        //     CupertinoDialogAction(
-        //       isDefaultAction: true,
-        //       child: Text("Yes"),
-        //     ),
-        //     CupertinoDialogAction(
-        //       child: Text("No"),
-        //     )
-        //   ],
-        // );
+
       });
     }
   }

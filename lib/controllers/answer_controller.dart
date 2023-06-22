@@ -36,4 +36,13 @@ class AnswerController {
     // Answer result = Answer.fromJson(jsonObject);
     // return result;
   }
+    Future<List<Answer>> getByInteractionId(int interactionId) async {
+    dynamic jsonObject = await ApiHelper().get("$path""intraction/$interactionId");
+    List<Answer> result = [];
+    jsonObject.forEach((json) {
+      result.add(Answer.fromJson(json));
+    });
+    return result;
+  }
+
 }

@@ -44,6 +44,15 @@ class EventController {
     // return result;
   }
 
+  Future<List<int>> getEventIdsByOrganizer(int? organizerId) async {
+    String endpoint = "event/orgids/$organizerId";
+    dynamic jsonObject = await ApiHelper().get(endpoint);
+    List<int> eventIds = [];
+    jsonObject.forEach((json) {
+      eventIds.add(json["id"]);
+    });
+    return eventIds;
+  }
   Future<List<Event>> getAllByOrganizer(int? organizerId) async {
     String endpoint = "${path}org/$organizerId";
     dynamic jsonObject = await ApiHelper().get(endpoint);

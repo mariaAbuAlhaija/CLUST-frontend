@@ -4,6 +4,7 @@ import 'package:clust/models/user_model.dart';
 import 'package:clust/models/country_model.dart';
 
 import 'image_model.dart';
+import 'interaction_model.dart';
 
 class Event {
   int? id;
@@ -26,6 +27,7 @@ class Event {
   var spotsCount;
   User? organizer;
   Country? country;
+  Interaction? interaction; // New field
 
   Event(
     this.name,
@@ -45,6 +47,7 @@ class Event {
     this.capacity,
     this.thanking_message,
     this.country,
+    this.interaction, // Initialize the interaction field
   }) {
     if (dynamicImages != null) {
       dynamicImages.forEach((json) {
@@ -63,25 +66,29 @@ class Event {
     DateTime en = DateTime.parse(json['end_date'] ?? '');
 
     Event _event = Event(
-        json['name'] ?? '',
-        json['description'] ?? '',
-        json['category_id'] ?? 0,
-        json['organizer_id'] ?? 0,
-        st,
-        en,
-        json["images"],
-        json["spot"],
-        json["address"],
-        json["country_id"],
-        organizer: User.fromJson(json["organizer"]),
-        status: json['status'] == Status.available.toString()
-            ? Status.available
-            : Status.unavailable,
-        id: json['id'] ?? 0,
-        views: json['views'] ?? 0,
-        capacity: json['capacity'] ?? 0,
-        thanking_message: json['thanking_message'] ?? '',
-        country: Country.fromJson(json['country']));
+      json['name'] ?? '',
+      json['description'] ?? '',
+      json['category_id'] ?? 0,
+      json['organizer_id'] ?? 0,
+      st,
+      en,
+      json["images"],
+      json["spot"],
+      json["address"],
+      json["country_id"],
+      organizer: User.fromJson(json["organizer"]),
+      status: json['status'] == Status.available.toString()
+          ? Status.available
+          : Status.unavailable,
+      id: json['id'] ?? 0,
+      views: json['views'] ?? 0,
+      capacity: json['capacity'] ?? 0,
+      thanking_message: json['thanking_message'] ?? '',
+      country: Country.fromJson(json['country']),
+      interaction: json['interaction'] != null
+          ? Interaction.fromJson(json['interaction'])
+          : null, // Parse the interaction field only if it's not null
+    );
 
     return _event;
   }
@@ -100,6 +107,7 @@ class Event {
       "status": status.name,
       "views": views.toString(),
       "capacity": capacity.toString(),
+      "interaction": interaction?.toJson(), // Include the interaction field in the JSON if it's not null
     };
   }
 

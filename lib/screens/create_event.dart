@@ -2,10 +2,12 @@ import 'dart:io';
 
 import 'package:clust/controllers/event_controller.dart';
 import 'package:clust/controllers/image_controller.dart';
+import 'package:clust/controllers/interaction_controller.dart';
 import 'package:clust/controllers/user_controller.dart';
 import 'package:clust/globals.dart';
 import 'package:clust/models/event_model.dart';
 import 'package:clust/models/image_model.dart' as image_model;
+import 'package:clust/models/interaction_model.dart';
 import 'package:clust/models/user_model.dart';
 import 'package:clust/providers/event_spot_provider.dart';
 import 'package:clust/providers/user_provider.dart';
@@ -76,8 +78,7 @@ class _CreateEventState extends State<CreateEvent> {
   @override
   Widget build(BuildContext context) {
     return Consumer(
-      builder:
-          (BuildContext context, eventSpotProvider provider, Widget? child) {
+      (BuildContext context, eventSpotProvider provider, Widget? child) {
         return Consumer(
           builder:
               (BuildContext context, UserProvider userProvider, Widget? child) {
@@ -179,7 +180,7 @@ class _CreateEventState extends State<CreateEvent> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "sentence sentencesentencesentencesentencesentencesentencesentence",
+            "Create your own event, gather with people you share intrests with, and don't forget to enjoy your time",
             textAlign: TextAlign.center,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
@@ -391,6 +392,11 @@ class _CreateEventState extends State<CreateEvent> {
                 ImageController().create(eventImage).then((value) {
                   EasyLoading.showSuccess("Event request sent",
                       duration: Duration(seconds: 3));
+                  if (questionController.text.isNotEmpty) {
+                    Interaction interaction =
+                        Interaction(0, questionController.text, event!.id);
+                    InteractionController().create(interaction);
+                  }
                   Navigator.pushNamedAndRemoveUntil(
                     context,
                     "/navigator",
@@ -495,7 +501,7 @@ class _CreateEventState extends State<CreateEvent> {
                   maxLength: 100,
                   keyboardType: TextInputType.multiline,
                   decoration: const InputDecoration(
-                    hintText: "Add during events questions",
+                    hintText: "Add during events questions(optional)",
                     labelText: "Add during events questions",
                   ),
                 ),
