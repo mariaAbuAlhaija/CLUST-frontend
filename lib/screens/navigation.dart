@@ -21,9 +21,7 @@ class _NavigationState extends State<Navigation> {
   static List<Widget> _widgetOptions = <Widget>[
     HomeMob(),
     SearchPage(),
-     ScanQRScreen(),
-     ProfilePage(),
-   
+    ProfilePage(),
   ];
 
   void _onItemTapped(int index) {
@@ -41,9 +39,7 @@ class _NavigationState extends State<Navigation> {
           items: <BottomNavigationBarItem>[
             home(),
             orders(),
-            scan(),
             profile(),
-            
           ],
           type: BottomNavigationBarType.fixed,
           showUnselectedLabels: false,
@@ -85,15 +81,7 @@ class _NavigationState extends State<Navigation> {
       label: 'Home',
     );
   }
-  BottomNavigationBarItem scan() {
-    return const BottomNavigationBarItem(
-      icon: Icon(
-        Icons.qr_code_scanner_rounded,
-        size: 30,
-      ),
-      label: 'Qr',
-    );
-  }
+
   Padding cart() {
     return Padding(
       padding: EdgeInsets.only(right: 20.w),

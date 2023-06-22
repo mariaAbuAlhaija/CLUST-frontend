@@ -17,6 +17,9 @@ import 'package:clust/icons/my_flutter_app_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:clust/styles/mobile_styles.dart' as mobile;
 import 'package:provider/provider.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import '../controllers/spot_controller.dart';
 
 class HomeMob extends StatefulWidget {
   HomeMob({super.key});
@@ -100,6 +103,22 @@ class _HomeMobState extends State<HomeMob> {
                 ],
               ),
             ),
+            floatingActionButton:
+                userProvider.user!.accessRole == AccessRole.organizer
+                    ? FloatingActionButton(
+                        onPressed: () {
+                          // Navigator.pushNamed(context, "/scanner");
+
+                          _scanQRCode();
+                        },
+                        backgroundColor: Palate.sand,
+                        child: Icon(
+                          Icons.qr_code_scanner_rounded,
+                          size: 30,
+                          color: Palate.black,
+                        ),
+                      )
+                    : null,
           ),
         );
       },
@@ -327,5 +346,31 @@ class _HomeMobState extends State<HomeMob> {
             tileMode: TileMode.clamp,
           )),
         ));
+  }
+
+  Future<void> _scanQRCode() async {
+    String barcodeScanResult = await FlutterBarcodeScanner.scanBarcode(
+      '#ff6666',
+      'Cancel',
+      true,
+      ScanMode.QR,
+    );
+
+    // Update the spot with checked = true
+    int spotId = int.tryParse(barcodeScanResult) ?? -1;
+    if (spotId != -1) {
+      SpotController().updateSpotChecked(spotId);
+      setState(() {});
+      EasyLoading.showSuccess(
+        "Checked!",
+        duration: Duration(seconds: 3),
+      );
+    } else {
+      setState(() {});
+      EasyLoading.showSuccess(
+        "Error!",
+        duration: Duration(seconds: 3),
+      );
+    }
   }
 }

@@ -42,7 +42,7 @@ class TtextFieldState extends State<CustomTextField> {
           decoration: decoration(context),
           obscureText: isPassword ? obscureText : false,
           keyboardType: keyboardType(),
-          onChanged: (value) => print(widget.controller.text),
+          // onChanged: (value) => print(widget.controller.text),
         ),
       ],
     );
@@ -94,29 +94,36 @@ class TtextFieldState extends State<CustomTextField> {
 
   FormFieldValidator<String> signinValidators() {
     return FormBuilderValidators.compose([
-      FormBuilderValidators.required(),
+      FormBuilderValidators.required(errorText: "required field"),
       isEmail
           ? FormBuilderValidators.email()
-          : FormBuilderValidators.required(),
+          : FormBuilderValidators.required(errorText: "required field"),
     ]);
   }
 
   FormFieldValidator<String> validators() {
     return FormBuilderValidators.compose([
-      FormBuilderValidators.required(),
+      FormBuilderValidators.required(errorText: "required field"),
       isEmail
           ? FormBuilderValidators.email()
-          :
-          // isPassword
-          //     ? customisedValidator
-          //     : isConfirm
-          //         ? confirmValidator
-          //         :
-          FormBuilderValidators.required(),
+          : isPassword
+              ? (value) {
+                  if (!value!.contains(RegExp("(?=.*?[0-9])"))) {
+                    return "Include one digit at least";
+                  }
+                  if (!value.contains(RegExp("(?=.*?[A-Za-z])"))) {
+                    return "Include one letter at least";
+                  }
+                  if (!value.contains(RegExp(".{8,}"))) {
+                    return "Include more than 8 characters";
+                  }
+                  return null;
+                }
+              : FormBuilderValidators.required(errorText: "required field"),
     ]);
   }
 
-  Object customisedValidator(value) {
+  customisedValidator(value) {
     if (!value!.contains(RegExp("(?=.*?[0-9])"))) {
       return "Include one digit at least";
     }

@@ -33,7 +33,10 @@ class ImageController {
   }
 
   Future<Image> create(Image image) async {
+    print("creating");
     dynamic jsonObject = await ApiHelper().post(path, body: image.toJson());
+    print("done");
+    print(jsonObject);
     Image result = Image.fromJson(jsonObject);
     return result;
   }

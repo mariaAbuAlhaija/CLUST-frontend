@@ -1,6 +1,9 @@
+import 'package:clust/models/user_model.dart';
+import 'package:clust/providers/user_provider.dart';
 import 'package:clust/styles/palate.dart';
 import 'package:clust/styles/responsive.dart';
 import 'package:clust/widgets/horizontal_logo.dart';
+import 'package:clust/widgets/image.dart';
 import 'package:clust/widgets/sized_box.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
@@ -8,10 +11,16 @@ import 'package:flutter/material.dart';
 import 'package:easy_stepper/easy_stepper.dart' as stepper;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'dart:io';
+
+import 'package:clust/controllers/image_controller.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Steps extends StatefulWidget {
-  const Steps({super.key});
-
+  Steps(this.user, {super.key});
+  User user;
   @override
   State<Steps> createState() => _StepsState();
 }
@@ -19,6 +28,9 @@ class Steps extends StatefulWidget {
 class _StepsState extends State<Steps> {
   var activeStep = 0;
   var aboutController = TextEditingController();
+  File? _file;
+  var uploaded = false;
+  String? uploadedImage;
   @override
   void initState() {
     super.initState();
@@ -29,21 +41,32 @@ class _StepsState extends State<Steps> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Palate.black,
-        appBar: AppBar(
+    return Consumer(
+        builder: (BuildContext context, UserProvider provider, Widget? child) {
+      // if (provider.user == null) {
+      //   return Center(
+      //     child: CircularProgressIndicator(color: Colors.black),
+      //   );
+      // }
+      return Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: Palate.black,
-          leadingWidth: 350,
-          leading: kIsWeb ? const HorizontalLogo() : null,
-        ),
-        body: Responsive(
-          mobile: mobileLayout(context),
-          desktop: webLayout(context),
-        ));
+          appBar: AppBar(
+            backgroundColor: Palate.black,
+            leadingWidth: 350,
+            leading: kIsWeb ? const HorizontalLogo() : null,
+          ),
+          body: Responsive(
+            mobile: mobileLayout(context, provider),
+            desktop: Center(
+              child: Text("Not Supported"),
+            ),
+            // desktop: webLayout(context),
+          ));
+    });
   }
 
-  Center mobileLayout(BuildContext context) {
+  Center mobileLayout(BuildContext context, UserProvider provider) {
     return Center(
       child: Container(
         padding: kIsWeb
@@ -59,7 +82,7 @@ class _StepsState extends State<Steps> {
                         ? Theme.of(context).textTheme.headlineMedium
                         : Theme.of(context).textTheme.displayLarge),
                 Sized_Box().sizedBoxH(context, 50.0.h),
-                mobileContent(context, activeStep),
+                mobileContent(provider, context, activeStep),
               ],
             ),
             Align(
@@ -77,7 +100,7 @@ class _StepsState extends State<Steps> {
     );
   }
 
-  Widget mobileContent(BuildContext context, int index) {
+  Widget mobileContent(UserProvider provider, BuildContext context, int index) {
     switch (index) {
       case 0:
         return Column(
@@ -107,7 +130,7 @@ class _StepsState extends State<Steps> {
                       : Theme.of(context).textTheme.headlineLarge,
                 ),
                 Sized_Box().sizedBoxH(context, 50.0.h),
-                form()
+                form(provider)
               ],
             ),
           ],
@@ -117,47 +140,47 @@ class _StepsState extends State<Steps> {
     }
   }
 
-  Padding webLayout(BuildContext context) {
-    return Padding(
-      padding: padding(),
-      child: Wrap(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [steps(), skipButton(context)],
-              ),
-              stepContent(context)
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+  // Padding webLayout(BuildContext context) {
+  //   return Padding(
+  //     padding: padding(),
+  //     child: Wrap(
+  //       children: [
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           crossAxisAlignment: CrossAxisAlignment.center,
+  //           children: [
+  //             Column(
+  //               mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //               children: [steps(), skipButton(context)],
+  //             ),
+  //             stepContent(context)
+  //           ],
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  Container stepContent(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.fromLTRB(150.w, 50.h, 150.w, 20.h),
-      height: 700.h,
-      width: 830.01.w,
-      decoration: BoxDecoration(
-          color: Palate.white.withOpacity(0.1),
-          borderRadius: const BorderRadius.all(Radius.circular(10))),
-      child: Center(
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-        Text(
-          "Set up your account",
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headlineLarge,
-        ),
-        content(activeStep),
-      ])),
-    );
-  }
+  // Container stepContent(BuildContext context) {
+  //   return Container(
+  //     padding: EdgeInsets.fromLTRB(150.w, 50.h, 150.w, 20.h),
+  //     height: 700.h,
+  //     width: 830.01.w,
+  //     decoration: BoxDecoration(
+  //         color: Palate.white.withOpacity(0.1),
+  //         borderRadius: const BorderRadius.all(Radius.circular(10))),
+  //     child: Center(
+  //         child:
+  //             Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+  //       Text(
+  //         "Set up your account",
+  //         textAlign: TextAlign.center,
+  //         style: Theme.of(context).textTheme.headlineLarge,
+  //       ),
+  //       content(activeStep),
+  //     ])),
+  //   );
+  // }
 
   stepper.EasyStepper steps() {
     return stepper.EasyStepper(
@@ -229,40 +252,40 @@ class _StepsState extends State<Steps> {
 
   EdgeInsets padding() => EdgeInsets.fromLTRB(180.w, 100.h, 500.w, 150.h);
 
-  Widget content(int index) {
-    switch (index) {
-      case 0:
-        return Column(
-          children: [
-            Sized_Box().sizedBoxH(context, 60.0.w),
-            Text(
-              "Smile!!",
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            Sized_Box().sizedBoxH(context, 40.0.w),
-            uploadImage(),
-            Sized_Box().sizedBoxH(context, 40.0.h),
-            nextButton()
-          ],
-        );
-      case 1:
-        return Column(
-          children: [
-            Sized_Box().sizedBoxH(context, 70.0.h),
-            Text(
-              "Tell us about you",
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            Sized_Box().sizedBoxH(context, 10.0.h),
-            form()
-          ],
-        );
-      default:
-        return const Text("");
-    }
-  }
+  // Widget content(int index) {
+  //   switch (index) {
+  //     case 0:
+  //       return Column(
+  //         children: [
+  //           Sized_Box().sizedBoxH(context, 60.0.w),
+  //           Text(
+  //             "Smile!!",
+  //             style: Theme.of(context).textTheme.headlineMedium,
+  //           ),
+  //           Sized_Box().sizedBoxH(context, 40.0.w),
+  //           uploadImage(),
+  //           Sized_Box().sizedBoxH(context, 40.0.h),
+  //           nextButton()
+  //         ],
+  //       );
+  //     case 1:
+  //       return Column(
+  //         children: [
+  //           Sized_Box().sizedBoxH(context, 70.0.h),
+  //           Text(
+  //             "Tell us about you",
+  //             style: Theme.of(context).textTheme.headlineMedium,
+  //           ),
+  //           Sized_Box().sizedBoxH(context, 10.0.h),
+  //           form(provider)
+  //         ],
+  //       );
+  //     default:
+  //       return const Text("");
+  //   }
+  // }
 
-  Form form() {
+  Form form(UserProvider provider) {
     return Form(
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -294,40 +317,76 @@ class _StepsState extends State<Steps> {
           ),
         ),
         Sized_Box().sizedBoxH(context, 20.0.h),
-        prevNextButtons(),
+        prevNextButtons(provider),
       ],
     ));
   }
 
   InkWell uploadImage() {
     return InkWell(
+      onTap: () {
+        handleGetImageAction();
+      },
       child: DottedBorder(
         color: Palate.sand,
         strokeWidth: 1,
         borderType: BorderType.Circle,
-        child: Container(
-          height: 120,
-          width: 120,
+        child: AnimatedContainer(
+          clipBehavior: Clip.hardEdge,
+          duration: const Duration(milliseconds: 200),
+          height: uploaded ? 250.h : 120.h,
+          width: uploaded ? 250.w : 120.w,
           decoration: const BoxDecoration(shape: BoxShape.circle),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(FontAwesomeIcons.camera, color: Palate.white, size: 50.w),
-              Sized_Box().sizedBoxH(context, 10.0.h),
-              Text(
-                "Upload",
-                style: kIsWeb
-                    ? Theme.of(context).textTheme.labelLarge
-                    : Theme.of(context).textTheme.headlineLarge,
-              )
-            ],
-          ),
+          child: uploaded
+              ? ImageView(image: uploadedImage)
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(FontAwesomeIcons.camera,
+                        color: Palate.white, size: 50.w),
+                    Sized_Box().sizedBoxH(context, 10.0.h),
+                    Text(
+                      "Upload",
+                      style: kIsWeb
+                          ? Theme.of(context).textTheme.labelLarge
+                          : Theme.of(context).textTheme.headlineLarge,
+                    )
+                  ],
+                ),
         ),
       ),
     );
   }
 
-  Row prevNextButtons() {
+  handleGetImageAction() async {
+    if (Platform.isAndroid || Platform.isIOS) {
+      ImagePicker picker = ImagePicker();
+      final image = await picker.pickImage(source: ImageSource.gallery);
+      print("picked");
+      if (image != null) {
+        setState(() {
+          _file = File(image.path);
+        });
+      }
+      EasyLoading.show(status: "Loading");
+      print("load");
+      ImageController().Upload(File(_file!.path)).then((value) {
+        print("create");
+        EasyLoading.dismiss();
+        setState(() {
+          uploadedImage = value;
+          uploaded = true;
+        });
+      }).catchError((ex) {
+        EasyLoading.dismiss();
+        EasyLoading.showError(ex.toString());
+      });
+    } else {
+      EasyLoading.showError("Not Supported");
+    }
+  }
+
+  Row prevNextButtons(UserProvider provider) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -345,8 +404,17 @@ class _StepsState extends State<Steps> {
           ),
         ),
         MaterialButton(
-          //!!!!!!!!!!!
-          onPressed: () {},
+          onPressed: () {
+            User user = User.fromObj(widget.user,
+                about: aboutController.text, image: uploadedImage);
+
+            provider.updateUser(user);
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              "/navigator",
+              (Route<dynamic> route) => false,
+            );
+          },
           color: Palate.sand,
           child: const Text("Next"),
         ),

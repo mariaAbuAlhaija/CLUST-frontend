@@ -23,11 +23,9 @@ class UserController {
   Future<User> create(User user) async {
     user.accessRole = AccessRole.attendee;
     dynamic jsonObject = await ApiHelper().post(path, body: user.toJson());
+    print(jsonObject);
     User result = User.fromJson(jsonObject);
-    String type = jsonObject["type"];
-    String token = jsonObject["token"];
-    var storage = FlutterSecureStorage();
-    await storage.write(key: "token", value: "$type $token");
+    signin(user.email, user.password);
     return result;
   }
 
@@ -46,12 +44,10 @@ class UserController {
 
   Future<bool> signin(email, password) async {
     try {
-      print("signin");
       dynamic jsonObject = await ApiHelper().post(
         "${path}login/",
         body: ({'email': email, 'password': password}),
       );
-      print("passed");
       String type = jsonObject["type"];
       String token = jsonObject["token"];
       var storage = FlutterSecureStorage();
@@ -63,12 +59,11 @@ class UserController {
     }
   }
 
-  Future<bool> signout(int id) async {
+  Future<bool> signout() async {
     try {
-      print(path);
-      dynamic jsonObject = await ApiHelper().post("${path}logout/${id}");
+      dynamic jsonObject = await ApiHelper().postAuth("${path}logout");
+      print(jsonObject);
       var storage = FlutterSecureStorage();
-
       await storage.delete(key: "token");
       return true;
     } catch (ex) {

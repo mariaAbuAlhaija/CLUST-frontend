@@ -65,10 +65,13 @@ class eventSpotProvider with ChangeNotifier {
     return spottedSpots.contains(spot);
   }
 
-  addEvent(Event event) {
-    if (!allEvents.contains(event)) {
-      allEvents.add(event);
-    }
+  Future<Event> createEvent(Event event) async {
+    Event createdEvent = await EventController().create(event);
+    return createdEvent;
+  }
+
+  addEvent(Event event) async {
+    allEvents.add(event);
     notifyListeners();
   }
 
@@ -128,15 +131,16 @@ class eventSpotProvider with ChangeNotifier {
     }
     return search;
   }
-   Future<List<Event>> getEventsByCategoryIds(List<int> categoryIds) async {
- filteredEvents.clear();
 
-  for (Event event in allEvents) {
-    if (categoryIds.contains(event.category_id)) {
-      filteredEvents.add(event);
+  Future<List<Event>> getEventsByCategoryIds(List<int> categoryIds) async {
+    filteredEvents.clear();
+
+    for (Event event in allEvents) {
+      if (categoryIds.contains(event.category_id)) {
+        filteredEvents.add(event);
+      }
     }
-  }
 
-  return filteredEvents;
-}
+    return filteredEvents;
+  }
 }

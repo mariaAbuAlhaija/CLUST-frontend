@@ -22,6 +22,15 @@ class ApiHelper {
     return responsing(response);
   }
 
+  Future postAuth(String path, {Map<String, dynamic>? body}) async {
+    Uri uri = Uri.http(domain, path);
+
+    var token = await getToken();
+    var headers = {"Authorization": token};
+    var response = await http.post(uri, body: body, headers: headers);
+    return responsing(response);
+  }
+
   Future put(String path, Map body) async {
     Uri uri = Uri.http(domain, path);
     var token = await getToken();

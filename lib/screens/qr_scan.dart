@@ -22,7 +22,6 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-           
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
@@ -54,16 +53,14 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
     int spotId = int.tryParse(barcodeScanResult) ?? -1;
     if (spotId != -1) {
       SpotController().updateSpotChecked(spotId);
-      setState(() {
-       });
+      setState(() {});
       EasyLoading.showSuccess(
         "Checked!",
         duration: Duration(seconds: 3),
       );
     } else {
-      setState(() {
-       });
-       EasyLoading.showSuccess(
+      setState(() {});
+      EasyLoading.showSuccess(
         "Error!",
         duration: Duration(seconds: 3),
       );

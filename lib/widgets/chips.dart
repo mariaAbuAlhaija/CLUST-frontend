@@ -1,5 +1,5 @@
 import 'package:clust/models/user_model.dart';
-import 'package:clust/screens/signup.dart';
+import 'package:clust/screens/signup.dart' as signup_screen;
 import 'package:clust/styles/palate.dart';
 import 'package:clust/widgets/sized_box.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,7 @@ class Chips extends StatefulWidget {
 
 class _ChipsState extends State<Chips> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(context) {
     Color lableColor = Palate.white;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,6 +49,8 @@ class _ChipsState extends State<Chips> {
           setState(() {
             widget.selected = gender;
             settingGender(gender);
+            print(gender);
+            print(signup_screen.genderController);
           });
         }
       },
@@ -60,11 +62,11 @@ class _ChipsState extends State<Chips> {
   }
 
   void settingGender(String gender) {
-    gender == Gender.female.toString()
-        ? genderController = Gender.female
-        : gender == Gender.male.toString()
-            ? genderController = Gender.male
-            : genderController = Gender.other;
+    gender == "Female"
+        ? signup_screen.genderController = Gender.female
+        : gender == "Male"
+            ? signup_screen.genderController = Gender.male
+            : signup_screen.genderController = Gender.other;
   }
 
   Text lable(BuildContext context) => Text("Gender",

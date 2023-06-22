@@ -69,7 +69,7 @@ class ProfilePage extends StatelessWidget {
                 child: Container(
                   margin: EdgeInsets.only(left: 10.w, top: 10.h, bottom: 20.h),
                   width: MediaQuery.of(context).size.width * 2 / 3,
-                  child: Text(user.about),
+                  child: Text(user.about!),
                 ),
               ),
               Container(
@@ -90,7 +90,7 @@ class ProfilePage extends StatelessWidget {
                     // color: Colors.grey.withOpacity(0.7),
                   ),
                   label: Text(
-                    'Edit Profile',
+                    'Account info',
                     style: TextStyle(
                       fontSize: 18,
                     ),
@@ -137,12 +137,12 @@ class ProfilePage extends StatelessWidget {
                 margin: EdgeInsets.only(bottom: 16.0),
                 child: TextButton.icon(
                   onPressed: () async {
-                    bool signedOut = await userController.signout(user!.id);
-                    if (signedOut) {
-                      // Handle successful signout
-                    } else {
-                      // Handle signout failure
-                    }
+                    userController.signout().then((value) {
+                      Navigator.pushReplacementNamed(context, "/signin");
+                    }).onError((error, stackTrace) {
+                      print(error);
+                      print(stackTrace);
+                    });
                   },
                   style: TextButton.styleFrom(
                     primary: Colors.black,

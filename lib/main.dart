@@ -12,6 +12,7 @@ import 'package:clust/screens/landingPage.dart';
 import 'package:clust/screens/logo.dart';
 import 'package:clust/screens/memories.dart';
 import 'package:clust/screens/navigation.dart';
+import 'package:clust/screens/qr_scan.dart';
 import 'package:clust/screens/signin.dart';
 import 'package:clust/screens/signup.dart';
 import 'package:clust/screens/live_events.dart';
@@ -95,10 +96,12 @@ class MyApp extends StatelessWidget {
                 "/landing": (context) => landingScreen(),
                 "/signup": (context) => Signup(),
                 "/home": (context) => HomeMob(),
-                "/afterRegister": (context) => Steps(),
+                "/afterRegister": (context) =>
+                    Steps(settings.arguments as User),
                 "/navigator": (context) => Navigation(),
                 "/creatEvent": (context) => CreateEvent(),
                 "/spots": (context) => SpotsView(),
+                "/scanner": (context) => ScanQRScreen(),
                 "/memories": (context) => Memories(),
                 "/edit": (context) => EditProfile(),
                 "/becomeOrganizer": (context) => BecomeOrganizer(),

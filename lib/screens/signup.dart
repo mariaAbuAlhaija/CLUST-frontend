@@ -10,6 +10,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:clust/styles/web_styles.dart' as web;
 import 'package:clust/styles/mobile_styles.dart' as mobile;
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:clust/widgets/date_picker.dart';
@@ -62,7 +63,6 @@ class _SignupState extends State<Signup> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // kIsWeb ? Logo().logo() :
                   Sized_Box().sizedBoxH(context, 40.h),
                   FormBuilder(
                     key: _formKey,
@@ -77,7 +77,6 @@ class _SignupState extends State<Signup> {
                           Sized_Box().sizedBoxH(context, 20.h),
                           Container(
                               width: 460,
-                              //!! change the selected index
                               child: Chips(selected: selectedIndex)),
                           Sized_Box().sizedBoxH(context, 20.h),
                           emailField(),
@@ -166,15 +165,12 @@ class _SignupState extends State<Signup> {
   Container passwordField() {
     return Container(
       width: 460,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          splitedFields(passwordController, "Password", "Password",
-              txtField.Type.password),
-          // sizedBoxW(context, 10.w),
-          splitedFields(confirmPasswordController, "Confirm", "Confirm",
-              txtField.Type.confirm),
-        ],
+      child: txtField.CustomTextField(
+        type: txtField.Type.password,
+        controller: passwordController,
+        hint: "Password",
+        lable: "Password",
+        forWhat: txtField.For.signup,
       ),
     );
   }
@@ -197,20 +193,24 @@ class _SignupState extends State<Signup> {
                   password: ${passwordController.text}
                   gender: ${genderController}""");
               User _user = User(
-                  fnameController.text,
-                  lnameController.text,
-                  dateController.text,
-                  emailController.text,
-                  passwordController.text,
-                  0,
-                  gender: genderController);
-              print("before");
+                fnameController.text,
+                lnameController.text,
+                dateController.text,
+                emailController.text,
+                passwordController.text,
+                0,
+                genderController,
+                accessRole: AccessRole.attendee,
+                verified: 0,
+              );
               UserController().create(_user).then((value) {
                 print("during");
-                Navigator.pushReplacementNamed(context, "/afterRegister");
-              }).catchError((ex, stacktrace) {
+                Navigator.pushReplacementNamed(context, "/afterRegister",
+                    arguments: value);
+              }).catchError((error, stacktrace) {
+                EasyLoading.showError("${error}");
                 print("error");
-                print(ex.toString());
+                print(error.toString());
                 print(stacktrace);
               });
             }

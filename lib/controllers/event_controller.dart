@@ -2,7 +2,6 @@ import '../models/event_model.dart';
 import 'api_helper.dart';
 
 class EventController {
-  String domain = "192.168.93.1:3333";
   String path = "event/";
   Future<List<Event>> getAll({hot, live}) async {
     dynamic jsonObject = await ApiHelper().get(hot == true
@@ -27,9 +26,10 @@ class EventController {
     return result;
   }
 
-  Future<bool> create(Event event) async {
+  Future<Event> create(Event event) async {
     dynamic jsonObject = await ApiHelper().post(path, body: event.toJson());
-    return true;
+    Event result = Event.fromJson(jsonObject[0]);
+    return result;
   }
 
   Future<Event> update(Event event) async {

@@ -26,54 +26,57 @@ class Items extends StatelessWidget {
       onTap: () {
         Navigator.pushNamed(context, "/displayEvent", arguments: event);
       },
-      child: Row(
-        children: [
-          leading(event!),
-          SizedBox(
-            height: 110.h,
-            width: 150.w,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  child: Column(
+      child: Container(
+        // height: 130,
+        child: Row(
+          children: [
+            leading(event!),
+            SizedBox(
+              height: 100.h,
+              width: 200.w,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          event!.name,
+                          style: Theme.of(context).textTheme.headlineMedium,
+                        ),
+                        Text(
+                          "${event!.organizer!.firstName} ${event!.organizer!.lastName}",
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        event!.name,
-                        style: Theme.of(context).textTheme.headlineMedium,
+                        "${event!.address}, ${event!.country!.countryName}",
                       ),
                       Text(
-                        "${event!.organizer!.firstName} ${event!.organizer!.lastName}",
-                        style: Theme.of(context).textTheme.bodySmall,
+                        "${weekDay(event!.start_date.weekday)}, ${months(event!.start_date.month)} ${event!.start_date.day} ${event!.start_date.year} ${event!.start_date.hour}:${event!.start_date.minute} ",
                       ),
                     ],
                   ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "${event!.address}, ${event!.country!.countryName}",
-                    ),
-                    Text(
-                      "${weekDay(event!.start_date.weekday)}, ${months(event!.start_date.month)} ${event!.start_date.day} ${event!.start_date.year} ${event!.start_date.hour}:${event!.start_date.minute} ",
-                    ),
-                  ],
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          if (event!.end_date.isBefore(DateTime.now()))
-            IconButton(
-              icon: Icon(Icons.report_outlined),
-              color: Color.fromARGB(255, 192, 192, 192),
-              onPressed: () {
-                _showReportPopup(context);
-              },
-            ),
-        ],
+            if (event!.end_date.isBefore(DateTime.now()))
+              IconButton(
+                icon: Icon(Icons.report_outlined),
+                color: Color.fromARGB(255, 192, 192, 192),
+                onPressed: () {
+                  _showReportPopup(context);
+                },
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -85,7 +88,7 @@ class Items extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       margin: EdgeInsets.all(10),
-      height: 125.h,
+      height: 110.h,
       width: 150.w,
       child: ImageView(event: event),
     );

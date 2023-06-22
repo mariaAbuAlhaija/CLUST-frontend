@@ -4,8 +4,8 @@ class User {
   String lastName;
   String birthDate;
   Gender gender;
-  String about = " ";
-  String image = " ";
+  String? about = " ";
+  String? image = " ";
   var verified;
   AccessRole? accessRole;
   int? sid;
@@ -17,10 +17,10 @@ class User {
     this.birthDate,
     this.email,
     this.password,
-    this.id, {
-    this.gender = Gender.female,
-    this.about = " ",
-    this.image = " ",
+    this.id,
+    this.gender, {
+    this.about,
+    this.image,
     this.sid,
     this.verified,
     this.accessRole,
@@ -33,10 +33,14 @@ class User {
         json['first_name'] ?? "",
         json['last_name'] ?? "",
         json['birth_date'] ?? DateTime.now().toString(),
-        // gender: json['gender'] ?? Gender.,
         json['email'] ?? "",
         json['password'] ?? "",
         json['id'] ?? 0,
+        json['gender'] == Gender.female
+            ? Gender.female
+            : json['gender'] == Gender.male
+                ? Gender.male
+                : Gender.other,
         about: json['about'] ?? "",
         image: json['image'] ?? "",
         sid: json['SID'] ?? 0,
@@ -62,7 +66,7 @@ class User {
       sid,
       verified,
       accessRole}) {
-    print("${accessRole} to obj");
+    print("${image} to obj");
     User _user = User(
       firstName ?? user.firstName,
       lastName ?? user.lastName,
@@ -70,22 +74,18 @@ class User {
       email ?? user.email,
       password ?? user.password,
       id ?? user.id,
-      gender: gender ?? user.gender,
+      gender ?? user.gender,
       about: about ?? user.about,
       image: image ?? user.image,
       sid: sid ?? user.sid,
       verified: verified ?? user.verified,
-      accessRole: accessRole,
+      accessRole: user.accessRole ?? accessRole,
     );
-    print("${_user.accessRole} obj");
+    print("${_user.about} obj");
     return _user;
   }
 
   Map<String, dynamic> toJson() {
-    // print(accessRole.name);
-    print(accessRole!.name);
-    print(accessRole!.name.toString());
-    print(accessRole!.name.runtimeType);
     return {
       "first_name": firstName,
       "last_name": lastName,
@@ -97,8 +97,8 @@ class User {
       "verified": "0",
       "access_role": accessRole!.name,
       "id": id.toString(),
-      "about": " $about",
-      "image": " $image",
+      "about": "$about",
+      "image": "$image",
     };
   }
 }

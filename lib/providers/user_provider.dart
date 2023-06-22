@@ -23,14 +23,12 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-//!!!! it updates user and retrive the past update,, home_mob wont update the accessrole
   updateUser(User user2) async {
     UserController().update(user2);
 
-    print("updating1 ${user!.sid}");
     user = user2;
-    print("updating ${user2.sid}");
-    print("updating1 ${user!.sid}");
+    print("updating ${user2.accessRole}");
+    print("updating1 ${user!.accessRole}");
     // fetchUser();
     notifyListeners();
   }
