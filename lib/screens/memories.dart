@@ -110,7 +110,7 @@ class _MemoriesState extends State<Memories> {
 
                                                   Navigator.of(context).pop();
                                                   sendReportEmail(
-                                                     organizerEmail,
+                                                      organizerEmail,
                                                       // provider.allEvents
                                                       //     .firstWhere((x) =>
                                                       //         x.id ==
@@ -173,14 +173,13 @@ class _MemoriesState extends State<Memories> {
                                                 await EventController().getByID(
                                                     provider.pastSpots[index]
                                                         .eventId);
-                                            String organizerEmail='';
+                                            String organizerEmail = '';
                                             if (event != null) {
-                                               organizerEmail =
+                                              organizerEmail =
                                                   event.organizer!.email;
                                               _showReportPopup(
                                                   context, organizerEmail);
                                             }
-                                            
                                           },
                                         ),
                                       ],
@@ -217,7 +216,7 @@ class _MemoriesState extends State<Memories> {
 
   void sendReportEmail(
       String organizerEmail, //String eventName,
-       String reason) async {
+      String reason) async {
     String username = 'clustevents@gmail.com'; // your email address
     String password = 'ovqsvecbocresybx'; // your email password
 

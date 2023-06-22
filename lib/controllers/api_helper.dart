@@ -5,10 +5,10 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ApiHelper {
-  String domain = "192.168.8.120:3333";
+  String domain = "192.168.1.104:3333";
   // 192.168.8.120 - 192.168.67.249
-  Future get(String path) async {
-    Uri uri = Uri.http(domain, path);
+  Future get(String path, {body}) async {
+    Uri uri = Uri.http(domain, path, body);
     var token = await getToken();
     var headers = {"Authorization": token};
     var response = await http.get(uri, headers: headers);

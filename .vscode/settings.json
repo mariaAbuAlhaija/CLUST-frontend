@@ -1,6 +1,6 @@
 {
     "cmake.configureOnOpen": false,
     "java.configuration.updateBuildConfiguration": "interactive",
-    "cmake.sourceDirectory": "C:/Users/Admin/clustt/linux",
+    "cmake.sourceDirectory": "D:/VSCode/flutter/clust/linux",
     "dart.flutterSdkPath": "C:\\Users\\Admin\\Documents\\flutter"
 }
