@@ -23,7 +23,7 @@ import 'package:clust/styles/mobile_styles.dart' as mobile;
 
 import '../controllers/interaction_controller.dart';
 import '../models/interaction_model.dart';
- 
+
 class DisplayEvent extends StatefulWidget {
   DisplayEvent(this._event, {super.key});
   final Event _event;
@@ -37,19 +37,17 @@ class _DisplayEventState extends State<DisplayEvent> {
   var spotted = false;
   @override
   Widget build(BuildContext context) {
-   
     return FutureBuilder<User>(
         future: UserController().getAll(),
         builder: (BuildContext context, snapshot) {
           if (!snapshot.hasData) {
             return loading();
           }
-         _interaction = widget._event.interaction;
+          _interaction = widget._event.interaction;
 
           return Consumer(
             builder: (BuildContext context, eventSpotProvider provider,
                 Widget? child) {
-                  
               spotted =
                   provider.containsSpot(widget._event.id, snapshot.data!.id);
               return Scaffold(
@@ -83,7 +81,7 @@ class _DisplayEventState extends State<DisplayEvent> {
                   ),
                 ),
                 bottomNavigationBar: Container(
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.fromLTRB(8, 10, 8, 10),
                   height: 110.h,
                   color: Colors.white,
                   child: Column(
@@ -100,9 +98,7 @@ class _DisplayEventState extends State<DisplayEvent> {
               );
             },
           );
-          
         });
-        
   }
 
   Container spotButton(
@@ -148,37 +144,39 @@ class _DisplayEventState extends State<DisplayEvent> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
     );
-  }Widget interactionData() {
-  return GestureDetector(
-    onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => QuestionScreen(interactionId: _interaction!.id!)),
-      );
-    },
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Interaction Details",
-                style: GoogleFonts.kameron(
-                  textStyle: mobile.headlineMedium(color: Palate.black),
-                ),
-              ),
-             
-            ],
-          ),
-        ),
-        Icon(Icons.arrow_forward),
-      ],
-    ),
-  );
-}
+  }
 
+  Widget interactionData() {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  QuestionScreen(interactionId: _interaction!.id!)),
+        );
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Interaction Details",
+                  style: GoogleFonts.kameron(
+                    textStyle: mobile.headlineMedium(color: Palate.black),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Icon(Icons.arrow_forward),
+        ],
+      ),
+    );
+  }
 
   Container date() {
     return Container(

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:clust/styles/mobile_styles.dart' as mobile;
 import 'package:clust/styles/palate.dart';
@@ -13,58 +14,170 @@ class QuestionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Interactions'),
-      ),
-      body: FutureBuilder<Interaction>(
-        future: InteractionController().getByID(interactionId),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (snapshot.hasData) {
-            Interaction interaction = snapshot.data!;
-            return Padding(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.campaign_rounded,
-                        size: 40,
-                        color: Palate.sand,
-                      ),
-                      SizedBox(width: 8),
-                      Flexible(
-                        child: Text(
-                          interaction.type,
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          maxLines: null,
+    
+  ThemeData theme(BuildContext context) {
+    return ThemeData(
+      textTheme: Theme.of(context).textTheme.copyWith(
+            displayLarge: mobile.displayLarge(color: Colors.amber),
+            headlineLarge: mobile.headlineLarge(color: Palate.black),
+            headlineMedium: mobile.headlineMedium(color: Palate.black),
+            headlineSmall: mobile.headlineSmall(color: Palate.black),
+            bodySmall: mobile.bodySmall(color: Palate.black),
+            labelSmall: mobile.labelSmall(color: Palate.black),
+          ),
+    );
+  }
+    return Theme(
+      data: !kIsWeb ? theme(context) : ThemeData(), 
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Interactions'),
+          backgroundColor: Palate.sand,
+        ),
+        body: FutureBuilder<Interaction>(
+          future: InteractionController().getByID(interactionId),
+          builder: (context, snapshot) {
+            
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (snapshot.hasData) {
+              Interaction interaction = snapshot.data!;
+              return Padding(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.campaign_rounded,
+                          size: 40,
+                          color: Palate.sand,
                         ),
+                        SizedBox(width: 8),
+                        Flexible(
+                          child: Text(
+                            interaction.type,
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            maxLines: null,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Expanded(
+                      child: AnswerList(interactionId: interactionId),
+                    ),
+                  ],
+                ),
+              );
+            } else {
+              return Center(child: Text('No question found.'));
+            }
+          },
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            _showAnswerDialog(context);
+          },
+          backgroundColor: Palate.sand,
+          child: Icon(
+            Icons.chat,
+            color: Palate.black,
+          ),
+        ),
+      ),
+    );
+    
+  }
+
+ void _showAnswerDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      TextEditingController answerController = TextEditingController();
+
+      return Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                'Enter your answer',
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              SizedBox(height: 16.0),
+              TextField(
+                controller: answerController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              SizedBox(height: 16.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(
+                        color: Colors.grey,
                       ),
-                    ],
+                    ),
                   ),
-                  SizedBox(height: 20),
-                  Expanded(
-                    child: AnswerList(interactionId: interactionId),
+                  SizedBox(width: 8.0),
+                  TextButton(
+                    onPressed: () async {
+                      String answerText = answerController.text;
+                      if (answerText.isNotEmpty) {
+                        Answer answer = Answer(
+                          0, // Provide the actual answer ID
+                          answerText,
+                          interactionId,
+                        );
+                        await AnswerController().create(answer);
+
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: Text(
+                      'Save',
+                      style: TextStyle(
+                        color: Colors.green,
+                      ),
+                    ),
                   ),
                 ],
               ),
-            );
-          } else {
-            return Center(child: Text('No question found.'));
-          }
-        },
-      ),
-    );
-  }
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
 }
 
 class AnswerList extends StatefulWidget {
@@ -110,7 +223,6 @@ class _AnswerListState extends State<AnswerList> {
       return Center(
         child: CircularProgressIndicator(),
       );
-      ;
     }
 
     return RefreshIndicator(

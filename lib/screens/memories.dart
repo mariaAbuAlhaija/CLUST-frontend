@@ -103,23 +103,20 @@ class _MemoriesState extends State<Memories> {
                                                       color: Palate.lightwine),
                                                 ),
                                                 onPressed: () async {
-                                                  String reason =
-                                                      reasonController.text;
                                                   eventSpotProvider provider =
                                                       eventSpotProvider();
+                                                  Event event =
+                                                      await EventController()
+                                                          .getByID(provider
+                                                              .pastSpots[index]
+                                                              .eventId);
+                                                  String reason =
+                                                      reasonController.text;
 
                                                   Navigator.of(context).pop();
                                                   sendReportEmail(
-                                                     organizerEmail,
-                                                      // provider.allEvents
-                                                      //     .firstWhere((x) =>
-                                                      //         x.id ==
-                                                      //         provider
-                                                      //             .pastSpots[
-                                                      //                 index]
-                                                      //             .eventId)
-                                                      //     .organizer!
-                                                      //     .firstName,
+                                                      organizerEmail,
+                                                      event.name,
                                                       reason);
                                                   // Create a report object and save it to the database
                                                   Report report = Report(
@@ -163,27 +160,29 @@ class _MemoriesState extends State<Memories> {
                                 return Row(
                                   children: [
                                     Items(event: snapshott.data!),
-                                    Column(
-                                      children: [
-                                        IconButton(
-                                          icon: Icon(Icons.flag_rounded),
-                                          color: Palate.wine,
-                                          onPressed: () async {
-                                            Event event =
-                                                await EventController().getByID(
-                                                    provider.pastSpots[index]
-                                                        .eventId);
-                                            String organizerEmail='';
-                                            if (event != null) {
-                                               organizerEmail =
-                                                  event.organizer!.email;
-                                              _showReportPopup(
-                                                  context, organizerEmail);
-                                            }
-                                            
-                                          },
-                                        ),
-                                      ],
+                                    Expanded(
+                                      child: Column(
+                                        children: [
+                                          IconButton(
+                                            icon: Icon(Icons.flag_rounded),
+                                            color: Palate.wine,
+                                            onPressed: () async {
+                                              Event event =
+                                                  await EventController()
+                                                      .getByID(provider
+                                                          .pastSpots[index]
+                                                          .eventId);
+                                              String organizerEmail = '';
+                                              if (event != null) {
+                                                organizerEmail =
+                                                    event.organizer!.email;
+                                                _showReportPopup(
+                                                    context, organizerEmail);
+                                              }
+                                            },
+                                          ),
+                                        ],
+                                      ),
                                     )
                                   ],
                                 );
@@ -217,7 +216,8 @@ class _MemoriesState extends State<Memories> {
 
   void sendReportEmail(
       String organizerEmail, //String eventName,
-       String reason) async {
+      String name,
+      String reason) async {
     String username = 'clustevents@gmail.com'; // your email address
     String password = 'ovqsvecbocresybx'; // your email password
 
@@ -228,7 +228,7 @@ class _MemoriesState extends State<Memories> {
       ..recipients.add(organizerEmail) // organizer's email
       ..subject = 'Event Report'
       ..text =
-          'Event "your event has been reported with the following reason:\n\n$reason';
+          'your event $name has been reported with the following reason:\n\n$reason';
 
     try {
       final sendReport = await send(message, smtpServer);
