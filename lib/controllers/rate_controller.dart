@@ -13,11 +13,16 @@ class RateController {
     return result;
   }
 
-  Future<double> getRate({productId}) async {
+  Future<double> getRate(eventId) async {
     var jsonObject = await ApiHelper()
-        .get("${path}rating/", body: {"product_id": productId});
-    var result = double.parse(jsonObject[0]["avg(`rating`)"]);
+        .get("${path}rating/", body: {"event_id": eventId.toString()});
+    var result = double.parse(jsonObject[0]["avg(`rate`)"]);
 
     return result;
+  }
+
+  Future<bool> create(Rate rate) async {
+    dynamic jsonObject = await ApiHelper().post(path, body: rate.toJson());
+    return true;
   }
 }

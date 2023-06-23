@@ -2,14 +2,16 @@ import 'package:clust/controllers/spot_controller.dart';
 import 'package:clust/controllers/user_controller.dart';
 import 'package:clust/main.dart';
 import 'package:clust/models/event_model.dart';
+import 'package:clust/models/rate_model.dart';
 import 'package:clust/models/spot_model.dart';
 import 'package:clust/models/user_model.dart';
 import 'package:clust/providers/event_spot_provider.dart';
+import 'package:clust/providers/rate_provider.dart';
 import 'package:clust/screens/home_mob.dart';
 import 'package:clust/screens/intractions.dart';
 import 'package:clust/styles/palate.dart';
 import 'package:clust/widgets/image.dart';
-import 'package:clust/widgets/events_view.dart';
+import 'package:clust/widgets/rate_chip.dart';
 import 'package:clust/widgets/items_view.dart';
 import 'package:clust/widgets/loading.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +37,9 @@ class _DisplayEventState extends State<DisplayEvent> {
   Interaction? _interaction;
 
   var spotted = false;
+  var rated = false;
+  int _rating = 0;
+  String eventRate = "0";
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<User>(
@@ -45,59 +50,66 @@ class _DisplayEventState extends State<DisplayEvent> {
           }
           _interaction = widget._event.interaction;
 
-          return Consumer(
-            builder: (BuildContext context, eventSpotProvider provider,
-                Widget? child) {
-              spotted =
-                  provider.containsSpot(widget._event.id, snapshot.data!.id);
-              return Scaffold(
-                extendBodyBehindAppBar: true,
-                appBar: appbar(),
-                body: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      image(),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(10, 20, 10, 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            eventData(provider),
-                            organizerData(),
-                            SizedBox(
-                              height: 20.h,
-                            ),
-                            descriptionLable(),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            description(),
-                            if (_interaction != null) interactionData(),
-                          ],
+          return Consumer(builder:
+              (BuildContext context, RateProvider rateProvider, Widget? child) {
+            return Consumer(
+              builder: (BuildContext context, eventSpotProvider provider,
+                  Widget? child) {
+                rated = rateProvider.checkRated(
+                    widget._event.id, snapshot.data!.id);
+                spotted =
+                    provider.containsSpot(widget._event.id, snapshot.data!.id);
+                // eventRate =
+                //     .toStringAsFixed(2);
+                return Scaffold(
+                  extendBodyBehindAppBar: true,
+                  appBar: appbar(rateProvider),
+                  body: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        image(),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(10, 20, 10, 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              eventData(provider),
+                              organizerData(),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              descriptionLable(),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              description(),
+                              if (_interaction != null) interactionData(),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                bottomNavigationBar: Container(
-                  padding: EdgeInsets.fromLTRB(8, 10, 8, 10),
-                  height: 110.h,
-                  color: Colors.white,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [date(), location()],
-                      ),
-                      spotButton(snapshot, provider),
-                    ],
+                  bottomNavigationBar: Container(
+                    padding: EdgeInsets.fromLTRB(8, 10, 8, 10),
+                    height: 110.h,
+                    color: Colors.white,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [date(), location()],
+                        ),
+                        spotButton(snapshot, provider),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
-          );
+                );
+              },
+            );
+          });
         });
   }
 
@@ -108,40 +120,49 @@ class _DisplayEventState extends State<DisplayEvent> {
       height: 50.h,
       child: MaterialButton(
         onPressed: (widget._event.spotsCount >= widget._event.capacity) ||
-                spotted
+                spotted ||
+                rated
             ? null
-            : () {
-                try {
-                  if (widget._event.spotsCount < widget._event.capacity) {
-                    Spot spot =
-                        Spot(0, widget._event.id!, snapshot.data!.id, false);
-                    provider.spotAdded(widget._event, spot);
-
-                    EasyLoading.showSuccess(
-                      "Spotted!",
-                      duration: Duration(seconds: 3),
-                    );
-                  } else {
-                    throw ("Full Capacity");
+            : !rated
+                ? () {
+                    bottomSheet(snapshot.data!);
                   }
-                } catch (error) {
-                  EasyLoading.showError(
-                    "${error.toString()}",
-                    duration: Duration(seconds: 3),
-                  );
-                }
-              },
-        child: Text(
-          widget._event.spotsCount >= widget._event.capacity
-              ? "Full Capacity"
-              : spotted
-                  ? "Spotted!"
-                  : "Spot",
-          style: TextStyle(color: Colors.white),
-        ),
+                : () {
+                    try {
+                      if (widget._event.spotsCount < widget._event.capacity) {
+                        Spot spot = Spot(
+                            0, widget._event.id!, snapshot.data!.id, false);
+                        provider.spotAdded(widget._event, spot);
+
+                        EasyLoading.showSuccess(
+                          "Spotted!",
+                          duration: Duration(seconds: 3),
+                        );
+                      } else {
+                        throw ("Full Capacity");
+                      }
+                    } catch (error) {
+                      EasyLoading.showError(
+                        "${error.toString()}",
+                        duration: Duration(seconds: 3),
+                      );
+                    }
+                  },
         color: Palate.wine,
         disabledColor: Palate.lighterBlack,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        child: Text(
+          rated
+              ? "Rated"
+              : provider.isPastEvent(widget._event.id, snapshot.data!.id)
+                  ? "Rate"
+                  : widget._event.spotsCount >= widget._event.capacity
+                      ? "Full Capacity"
+                      : spotted
+                          ? "Spotted!"
+                          : "Spot",
+          style: TextStyle(color: Colors.white),
+        ),
       ),
     );
   }
@@ -245,7 +266,7 @@ class _DisplayEventState extends State<DisplayEvent> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Going: ${provider.allEvents[provider.eventIndex(widget._event)].spotsCount}",
+                "Going: ${(widget._event).spotsCount}",
                 style: GoogleFonts.kameron(
                     textStyle: mobile.bodySmall(color: Palate.black)),
               ),
@@ -269,12 +290,125 @@ class _DisplayEventState extends State<DisplayEvent> {
     );
   }
 
-  AppBar appbar() {
+  AppBar appbar(RateProvider provider) {
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 1,
       iconTheme: IconThemeData(
         color: Colors.white,
+      ),
+      actions: [
+        Padding(
+          padding: EdgeInsets.only(right: 20),
+          child: chip(txt: widget._event.rate.toStringAsFixed(2)),
+        )
+      ],
+    );
+  }
+
+  bottomSheet(user) {
+    return showModalBottomSheet(
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(builder: (context, setModalState) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Stack(
+                children: [
+                  bottomSheetContent(setModalState, user, context),
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Icon(
+                          Icons.close,
+                          size: 30,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ],
+          );
+        });
+      },
+    );
+  }
+
+  Container bottomSheetContent(
+      StateSetter setModalState, user, BuildContext context) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(40.w, 50.h, 30.w, 30.h),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(5, (index) {
+                  final filledIcon =
+                      _rating >= index + 1 ? Icons.star : Icons.star_border;
+                  final color =
+                      _rating >= index + 1 ? Colors.yellow : Colors.grey;
+
+                  return IconButton(
+                    icon: Icon(
+                      filledIcon,
+                      color: color,
+                      size: 50,
+                    ),
+                    onPressed: () {
+                      setModalState(() {
+                        if (_rating == index + 1) {
+                          _rating =
+                              index; // If the same star is clicked again, unselect it
+                        } else {
+                          _rating = index + 1;
+                        }
+                      });
+                    },
+                  );
+                })),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          MaterialButton(
+            onPressed: () async {
+              print("""
+                ${user.id},
+                ${widget._event.id},""");
+              Rate rate = Rate(
+                0,
+                widget._event.id,
+                user.id,
+                _rating,
+              );
+              await Provider.of<RateProvider>(context, listen: false)
+                  .addRate(rate);
+              Provider.of<RateProvider>(context, listen: false)
+                  .getEventRates(widget._event);
+
+              Navigator.pop(context);
+            },
+            color: Colors.black,
+            child: Text(
+              "Submit",
+              style: TextStyle(color: Colors.white),
+            ),
+          )
+        ],
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:clust/models/event_model.dart';
 import 'package:clust/models/user_model.dart';
 import 'package:clust/providers/event_spot_provider.dart';
+import 'package:clust/providers/rate_provider.dart';
 import 'package:clust/providers/user_provider.dart';
 import 'package:clust/screens/become_organizer.dart';
 import 'package:clust/screens/create_event.dart';
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
             ListenableProvider<eventSpotProvider>(
                 create: (_) => eventSpotProvider()),
             ListenableProvider<UserProvider>(create: (_) => UserProvider()),
+            ListenableProvider<RateProvider>(create: (_) => RateProvider()),
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,

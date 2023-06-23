@@ -65,6 +65,11 @@ class eventSpotProvider with ChangeNotifier {
     return spottedSpots.contains(spot);
   }
 
+  isPastEvent(eventId, userId) {
+    Spot spot = Spot(0, eventId, userId, false);
+    return pastSpots.contains(spot);
+  }
+
   Future<Event> createEvent(Event event) async {
     Event createdEvent = await EventController().create(event);
     return createdEvent;

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:clust/models/user_model.dart';
+import 'package:clust/providers/user_provider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert';
 import 'api_helper.dart';
@@ -52,6 +53,7 @@ class UserController {
       String token = jsonObject["token"];
       var storage = FlutterSecureStorage();
       await storage.write(key: "token", value: "$type $token");
+      await UserProvider().fetchUser();
       return true;
     } catch (ex) {
       print(ex);

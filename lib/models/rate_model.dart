@@ -20,9 +20,17 @@ class Rate {
   Map<String, dynamic> toJson() {
     return {
       "id": id.toString(),
-      'event_id': eventId,
-      'user_id': userId,
-      'rate': rate,
+      'event_id': eventId.toString(),
+      'user_id': userId.toString(),
+      'rate': rate.toString(),
     };
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Rate &&
+          runtimeType == other.runtimeType &&
+          userId == other.userId &&
+          eventId == other.eventId;
 }

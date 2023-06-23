@@ -37,6 +37,6 @@ class Spot {
       identical(this, other) ||
       other is Spot &&
           runtimeType == other.runtimeType &&
-          eventId == other.eventId &&
-          userId == other.userId;
+          userId == other.userId &&
+          eventId == other.eventId;
 }

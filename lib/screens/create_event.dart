@@ -338,16 +338,10 @@ class _CreateEventState extends State<CreateEvent> {
         Visibility(
           visible: !visible,
           child: IconButton(
-              onPressed: ((_pageIndex == 1 || _pageIndex == 2) &&
-                      (!validated || !validated2))
+              onPressed: ((_pageIndex == 1 && !validated) ||
+                      (_pageIndex == 2 && !validated2))
                   ? null
                   : () {
-                      // if (_pageIndex == 2) {
-
-                      //   User _user = _global!.user;
-
-                      //   // UserController().update(user)
-                      // }
                       validated = false;
                       _controller.nextPage(
                         duration: const Duration(milliseconds: 400),
@@ -357,8 +351,8 @@ class _CreateEventState extends State<CreateEvent> {
               icon: Icon(
                 Icons.play_arrow_rounded,
                 size: 40,
-                color: ((_pageIndex == 1 || _pageIndex == 2) &&
-                        (!validated || !validated2))
+                color: ((_pageIndex == 1 && !validated) ||
+                        (_pageIndex == 2 && !validated2))
                     ? Palate.lighterBlack
                     : Palate.black,
               )),
@@ -383,7 +377,7 @@ class _CreateEventState extends State<CreateEvent> {
                     [],
                     addressController.text,
                     int.parse(countryController.text),
-                    id: 0,
+                    0,
                     capacity: int.parse(eventCapacityController.text),
                     views: 0);
 

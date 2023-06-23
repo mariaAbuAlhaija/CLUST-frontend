@@ -2,12 +2,13 @@ import 'dart:ui';
 import 'package:clust/models/spot_model.dart';
 import 'package:clust/models/user_model.dart';
 import 'package:clust/models/country_model.dart';
-
+import 'package:clust/providers/rate_provider.dart';
+import 'package:provider/provider.dart';
 import 'image_model.dart';
 import 'interaction_model.dart';
 
 class Event {
-  int? id;
+  int id;
   String name;
   String description;
   String address;
@@ -25,6 +26,7 @@ class Event {
   var dynamicSpots;
   List<Spot> spots = [];
   var spotsCount;
+  var rate;
   User? organizer;
   Country? country;
   Interaction? interaction; // New field
@@ -39,10 +41,10 @@ class Event {
     this.dynamicImages,
     this.dynamicSpots,
     this.address,
-    this.country_id, {
+    this.country_id,
+    this.id, {
     this.organizer,
     this.status = Status.available,
-    this.id,
     this.views,
     this.capacity,
     this.thanking_message,
@@ -60,6 +62,7 @@ class Event {
       });
     }
     spotsCount = spots.length;
+    getRate();
   }
   factory Event.fromJson(json) {
     DateTime st = DateTime.parse(json['start_date'] ?? '');
@@ -75,12 +78,12 @@ class Event {
       json["images"],
       json["spot"],
       json["address"],
-      json["country_id"],
+      json["country_id"], json['id'] ?? 0,
       organizer: User.fromJson(json["organizer"]),
       status: json['status'] == Status.available.toString()
           ? Status.available
           : Status.unavailable,
-      id: json['id'] ?? 0,
+
       views: json['views'] ?? 0,
       capacity: json['capacity'] ?? 0,
       thanking_message: json['thanking_message'] ?? '',
@@ -107,7 +110,8 @@ class Event {
       "status": status.name,
       "views": views.toString(),
       "capacity": capacity.toString(),
-      "interaction": interaction?.toJson(), // Include the interaction field in the JSON if it's not null
+      "interaction": interaction
+          ?.toJson(), // Include the interaction field in the JSON if it's not null
     };
   }
 
@@ -118,6 +122,14 @@ class Event {
           runtimeType == other.runtimeType &&
           name == other.name &&
           id == other.id;
+
+  void getRate() async {
+    try {
+      rate = await RateProvider().getEventRates(this);
+    } catch (ex) {
+      rate ??= 0;
+    }
+  }
 }
 
 enum Status { available, unavailable }
