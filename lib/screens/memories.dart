@@ -116,16 +116,7 @@ class _MemoriesState extends State<Memories> {
                                                   Navigator.of(context).pop();
                                                   sendReportEmail(
                                                       organizerEmail,
-                                                      // provider.allEvents
-                                                      //     .firstWhere((x) =>
-                                                      //         x.id ==
-                                                      //         provider
-                                                      //             .pastSpots[
-                                                      //                 index]
-                                                      //             .eventId)
-                                                      //     .organizer!
-                                                      //     .firstName,
-                                                      organizerEmail,
+                                                  
                                                       event.name,
                                                       reason);
                                                   // Create a report object and save it to the database
@@ -223,7 +214,7 @@ class _MemoriesState extends State<Memories> {
 
   void sendReportEmail(
       String organizerEmail, //String eventName,
-      String reason) async {
+    String name,  String reason) async {
     String username = 'clustevents@gmail.com'; // your email address
     String password = 'ovqsvecbocresybx'; // your email password
 

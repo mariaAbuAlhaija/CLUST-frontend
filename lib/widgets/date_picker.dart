@@ -4,6 +4,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:clust/styles/palate.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:intl/intl.dart';
 
 class DatePicker extends StatefulWidget {
   DatePicker({super.key, required this.dateController});
@@ -26,7 +27,12 @@ class DatePickerState extends State<DatePicker> {
             controller: widget.dateController,
             name: "Date",
             inputType: InputType.date,
+                initialValue: widget.dateController.text.isNotEmpty
+              ? DateFormat("MM/dd/yyyy").parse(widget.dateController.text)
+                : null,
             decoration: InputDecoration(
+              label: widget.dateController.text.isNotEmpty
+              ?  Text("Birth Date"):null,
               hintText: "Date of birth",
               filled: true,
               fillColor: Palate.white,
