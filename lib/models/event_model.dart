@@ -87,7 +87,7 @@ class Event {
       country: Country.fromJson(json['country']),
       interaction: json['interaction'] != null
           ? Interaction.fromJson(json['interaction'])
-          : null, // Parse the interaction field only if it's not null
+          : null,
     );
 
     return _event;
@@ -107,7 +107,7 @@ class Event {
       "status": status.name,
       "views": views.toString(),
       "capacity": capacity.toString(),
-      "interaction": interaction?.toJson(), // Include the interaction field in the JSON if it's not null
+      "interaction":interaction==null?"": interaction?.toJson(), // Include the interaction field in the JSON if it's not null
     };
   }
 

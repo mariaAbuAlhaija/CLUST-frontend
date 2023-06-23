@@ -1,3 +1,4 @@
+import 'package:clust/controllers/event_controller.dart';
 import 'package:clust/models/event_model.dart';
 import 'package:clust/styles/palate.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,8 @@ class Items extends StatelessWidget {
     final bool showReportIcon = event!.end_date.isAfter(DateTime.now());
 
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
+         EventController().updateViews(event!);
         Navigator.pushNamed(context, "/displayEvent", arguments: event);
       },
       child: Container(
