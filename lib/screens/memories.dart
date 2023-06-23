@@ -31,162 +31,182 @@ class _MemoriesState extends State<Memories> {
           child: Consumer(
             builder: (BuildContext context, eventSpotProvider provider,
                 Widget? child) {
+              Future<void> refresh() async {
+                setState(() {
+                  provider.pastSpots.clear();
+                });
+              var event=  provider.pastEventsGenerate();
+                await event;
+              }
+
               return provider.pastSpots.isNotEmpty
-                  ? Container(
-                      child: ListView.builder(
-                          itemCount: provider.pastSpots.length,
-                          itemBuilder: (context, index) {
-                            void _showReportPopup(
-                                BuildContext context, String organizerEmail) {
-                              TextEditingController reasonController =
-                                  TextEditingController();
+                  ? RefreshIndicator(
+                      onRefresh: refresh,
+                      child: Container(
+                        child: ListView.builder(
+                            itemCount: provider.pastSpots.length,
+                            itemBuilder: (context, index) {
+                              void _showReportPopup(
+                                  BuildContext context, String organizerEmail) {
+                                TextEditingController reasonController =
+                                    TextEditingController();
 
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return Dialog(
-                                    backgroundColor: Palate.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    child: Container(
-                                      padding: EdgeInsets.all(16.0),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Text(
-                                            'Report Event',
-                                            style: TextStyle(
-                                              fontSize: 18.0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 16.0),
-                                          TextField(
-                                            controller: reasonController,
-                                            decoration: InputDecoration(
-                                              labelStyle: TextStyle(
-                                                color: Palate.lighterBlack,
-                                              ),
-                                              labelText: 'Reason',
-                                              border: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  color: Palate.lighterBlack,
-                                                ),
-                                              ),
-                                              enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  color: Palate.lighterBlack,
-                                                ),
-                                              ),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  color: Palate.lighterBlack,
-                                                ),
-                                              ),
-                                              hintText: 'Enter reason',
-                                              hintStyle: TextStyle(
-                                                color: Palate.lighterBlack,
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Dialog(
+                                      backgroundColor: Palate.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      child: Container(
+                                        padding: EdgeInsets.all(16.0),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              'Report Event',
+                                              style: TextStyle(
+                                                fontSize: 18.0,
+                                                fontWeight: FontWeight.bold,
                                               ),
                                             ),
-                                            maxLines: 3,
-                                          ),
-                                          const SizedBox(height: 16.0),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              TextButton(
-                                                child: const Text(
-                                                  'Submit',
-                                                  style: TextStyle(
-                                                      color: Palate.lightwine),
+                                            const SizedBox(height: 16.0),
+                                            TextField(
+                                              controller: reasonController,
+                                              decoration: InputDecoration(
+                                                labelStyle: TextStyle(
+                                                  color: Palate.lighterBlack,
                                                 ),
-                                                onPressed: () async {
-                                                  eventSpotProvider provider =
-                                                      eventSpotProvider();
-                                                  Event event =
-                                                      await EventController()
-                                                          .getByID(provider
-                                                              .pastSpots[index]
-                                                              .eventId);
-                                                  String reason =
-                                                      reasonController.text;
-
-                                                  Navigator.of(context).pop();
-                                                  sendReportEmail(
-                                                      organizerEmail,
-                                                  
-                                                      event.name,
-                                                      reason);
-                                                  // Create a report object and save it to the database
-                                                  Report report = Report(
-                                                      0,
-                                                      reason,
-                                                      provider.pastSpots[index]
-                                                          .eventId);
-                                                  await ReportController()
-                                                      .create(report);
-                                                },
-                                              ),
-                                              const SizedBox(width: 8.0),
-                                              TextButton(
-                                                child: const Text(
-                                                  'Cancel',
-                                                  style: TextStyle(
+                                                labelText: 'Reason',
+                                                border: OutlineInputBorder(
+                                                  borderSide: BorderSide(
                                                     color: Palate.lighterBlack,
                                                   ),
                                                 ),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
+                                                enabledBorder:
+                                                    OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                    color: Palate.lighterBlack,
+                                                  ),
+                                                ),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                    color: Palate.lighterBlack,
+                                                  ),
+                                                ),
+                                                hintText: 'Enter reason',
+                                                hintStyle: TextStyle(
+                                                  color: Palate.lighterBlack,
+                                                ),
                                               ),
-                                            ],
-                                          ),
-                                        ],
+                                              maxLines: 3,
+                                            ),
+                                            const SizedBox(height: 16.0),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                TextButton(
+                                                  child: const Text(
+                                                    'Submit',
+                                                    style: TextStyle(
+                                                        color:
+                                                            Palate.lightwine),
+                                                  ),
+                                                  onPressed: () async {
+                                                    eventSpotProvider provider =
+                                                        eventSpotProvider();
+                                                    Event event =
+                                                        await EventController()
+                                                            .getByID(provider
+                                                                .pastSpots[
+                                                                    index]
+                                                                .eventId);
+                                                    String reason =
+                                                        reasonController.text;
+
+                                                    Navigator.of(context).pop();
+                                                    sendReportEmail(
+                                                        organizerEmail,
+                                                        event.name,
+                                                        reason);
+                                                    // Create a report object and save it to the database
+                                                    Report report = Report(
+                                                        0,
+                                                        reason,
+                                                        provider
+                                                            .pastSpots[index]
+                                                            .eventId);
+                                                    await ReportController()
+                                                        .create(report);
+                                                  },
+                                                ),
+                                                const SizedBox(width: 8.0),
+                                                TextButton(
+                                                  child: const Text(
+                                                    'Cancel',
+                                                    style: TextStyle(
+                                                      color:
+                                                          Palate.lighterBlack,
+                                                    ),
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
+                                    );
+                                  },
+                                );
+                              }
+
+                              return FutureBuilder<Event>(
+                                future: EventController()
+                                    .getByID(provider.pastSpots[index].eventId),
+                                builder: (context, snapshott) {
+                                  if (!snapshott.hasData) {
+                                    return Container();
+                                  }
+                                  return Row(
+                                    children: [
+                                      Items(event: snapshott.data!),
+                                      Expanded(
+                                        child: Column(
+                                          children: [
+                                            IconButton(
+                                              icon: Icon(Icons.flag_rounded),
+                                              color: Palate.wine,
+                                              onPressed: () async {
+                                                Event event =
+                                                    await EventController()
+                                                        .getByID(provider
+                                                            .pastSpots[index]
+                                                            .eventId);
+                                                String organizerEmail = '';
+                                                if (event != null) {
+                                                  organizerEmail =
+                                                      event.organizer!.email;
+                                                  _showReportPopup(
+                                                      context, organizerEmail);
+                                                }
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
                                   );
                                 },
                               );
-                            }
-
-                            return FutureBuilder<Event>(
-                              future: EventController()
-                                  .getByID(provider.pastSpots[index].eventId),
-                              builder: (context, snapshott) {
-                                if (!snapshott.hasData) {
-                                  return Container();
-                                }
-                                return Row(
-                                  children: [
-                                    Items(event: snapshott.data!),
-                                    Column(
-                                      children: [
-                                        IconButton(
-                                          icon: Icon(Icons.flag_rounded),
-                                          color: Palate.wine,
-                                          onPressed: () async {
-                                            Event event =
-                                                await EventController().getByID(
-                                                    provider.pastSpots[index]
-                                                        .eventId);
-                                            String organizerEmail = '';
-                                            if (event != null) {
-                                              organizerEmail =
-                                                  event.organizer!.email;
-                                              _showReportPopup(
-                                                  context, organizerEmail);
-                                            }
-                                          },
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                );
-                              },
-                            );
-                          }),
+                            }),
+                      ),
                     )
                   : Center(
                       child: Text("No Memories"),
@@ -214,7 +234,8 @@ class _MemoriesState extends State<Memories> {
 
   void sendReportEmail(
       String organizerEmail, //String eventName,
-    String name,  String reason) async {
+      String name,
+      String reason) async {
     String username = 'clustevents@gmail.com'; // your email address
     String password = 'ovqsvecbocresybx'; // your email password
 
