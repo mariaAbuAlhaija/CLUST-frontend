@@ -116,16 +116,6 @@ class _MemoriesState extends State<Memories> {
                                                   Navigator.of(context).pop();
                                                   sendReportEmail(
                                                       organizerEmail,
-                                                      // provider.allEvents
-                                                      //     .firstWhere((x) =>
-                                                      //         x.id ==
-                                                      //         provider
-                                                      //             .pastSpots[
-                                                      //                 index]
-                                                      //             .eventId)
-                                                      //     .organizer!
-                                                      //     .firstName,
-                                                      organizerEmail,
                                                       event.name,
                                                       reason);
                                                   // Create a report object and save it to the database
@@ -170,26 +160,29 @@ class _MemoriesState extends State<Memories> {
                                 return Row(
                                   children: [
                                     Items(event: snapshott.data!),
-                                    Column(
-                                      children: [
-                                        IconButton(
-                                          icon: Icon(Icons.flag_rounded),
-                                          color: Palate.wine,
-                                          onPressed: () async {
-                                            Event event =
-                                                await EventController().getByID(
-                                                    provider.pastSpots[index]
-                                                        .eventId);
-                                            String organizerEmail = '';
-                                            if (event != null) {
-                                              organizerEmail =
-                                                  event.organizer!.email;
-                                              _showReportPopup(
-                                                  context, organizerEmail);
-                                            }
-                                          },
-                                        ),
-                                      ],
+                                    Expanded(
+                                      child: Column(
+                                        children: [
+                                          IconButton(
+                                            icon: Icon(Icons.flag_rounded),
+                                            color: Palate.wine,
+                                            onPressed: () async {
+                                              Event event =
+                                                  await EventController()
+                                                      .getByID(provider
+                                                          .pastSpots[index]
+                                                          .eventId);
+                                              String organizerEmail = '';
+                                              if (event != null) {
+                                                organizerEmail =
+                                                    event.organizer!.email;
+                                                _showReportPopup(
+                                                    context, organizerEmail);
+                                              }
+                                            },
+                                          ),
+                                        ],
+                                      ),
                                     )
                                   ],
                                 );
@@ -223,6 +216,7 @@ class _MemoriesState extends State<Memories> {
 
   void sendReportEmail(
       String organizerEmail, //String eventName,
+      String name,
       String reason) async {
     String username = 'clustevents@gmail.com'; // your email address
     String password = 'ovqsvecbocresybx'; // your email password
