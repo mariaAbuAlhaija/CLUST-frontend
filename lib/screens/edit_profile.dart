@@ -16,6 +16,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+import '../widgets/date_picker.dart';
+
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
 
@@ -27,6 +29,9 @@ class _EditProfileState extends State<EditProfile> {
   final _formKey = GlobalKey<FormBuilderState>();
   var firstNameController = TextEditingController();
   var lastNameController = TextEditingController();
+  var aboutController = TextEditingController();
+  var dateController = TextEditingController();
+
   File? _file;
   var uploaded = false;
   String? uploadedImage;
@@ -36,6 +41,9 @@ class _EditProfileState extends State<EditProfile> {
         builder: (BuildContext context, UserProvider provider, Widget? child) {
       firstNameController.text = provider.user!.firstName;
       lastNameController.text = provider.user!.lastName;
+      aboutController.text = provider.user!.about!;
+      dateController.text = provider.user!.birthDate;
+
       return Scaffold(
           appBar: AppBar(
             title: Text("Account info"),
@@ -68,7 +76,22 @@ class _EditProfileState extends State<EditProfile> {
                         validator: FormBuilderValidators.required(),
                         decoration: InputDecoration(labelText: "Last Name"),
                       ),
-                      Sized_Box().sizedBoxH(context, 15.h),
+                      Sized_Box().sizedBoxH(context, 30.h),
+                      TextFormField(
+                        controller: aboutController,
+                        maxLines: 3,
+                        keyboardType: TextInputType.multiline,
+                        decoration: InputDecoration(
+                          labelText: 'About',
+                          alignLabelWithHint: true,
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      Sized_Box().sizedBoxH(context, 30.h),
+                     
+                      DatePicker(
+                        dateController: dateController,
+                      ),
                     ],
                   ),
                   Container(
@@ -79,7 +102,9 @@ class _EditProfileState extends State<EditProfile> {
                       onPressed: () {
                         User user = User.fromObj(provider.user!,
                             firstName: firstNameController.text,
-                            lastName: lastNameController.text);
+                            lastName: lastNameController.text,
+                            about: aboutController.text,
+                            birthDate: dateController.text);
 
                         provider.updateUser(user);
                         Navigator.pop(context);

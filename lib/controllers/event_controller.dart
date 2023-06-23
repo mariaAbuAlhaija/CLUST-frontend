@@ -38,6 +38,13 @@ class EventController {
     return result;
   }
 
+  void updateViews(Event event) async {
+    dynamic jsonObject =
+        await ApiHelper().put("$path" "increment/${event.id}", event.toJson());
+  
+   
+  }
+
   Future<void> destroy(int id) async {
     dynamic jsonObject = await ApiHelper().delete("$path$id");
     // Event result = Event.fromJson(jsonObject);
@@ -53,6 +60,7 @@ class EventController {
     });
     return eventIds;
   }
+
   Future<List<Event>> getAllByOrganizer(int? organizerId) async {
     String endpoint = "${path}org/$organizerId";
     dynamic jsonObject = await ApiHelper().get(endpoint);

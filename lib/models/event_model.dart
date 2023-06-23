@@ -78,19 +78,19 @@ class Event {
       json["images"],
       json["spot"],
       json["address"],
-      json["country_id"], json['id'] ?? 0,
+      json["country_id"],
+      json['id'] ?? 0,
       organizer: User.fromJson(json["organizer"]),
       status: json['status'] == Status.available.toString()
           ? Status.available
           : Status.unavailable,
-
       views: json['views'] ?? 0,
       capacity: json['capacity'] ?? 0,
       thanking_message: json['thanking_message'] ?? '',
       country: Country.fromJson(json['country']),
       interaction: json['interaction'] != null
           ? Interaction.fromJson(json['interaction'])
-          : null, // Parse the interaction field only if it's not null
+          : null,
     );
 
     return _event;
@@ -110,8 +110,10 @@ class Event {
       "status": status.name,
       "views": views.toString(),
       "capacity": capacity.toString(),
-      "interaction": interaction
-          ?.toJson(), // Include the interaction field in the JSON if it's not null
+      "interaction": interaction == null
+          ? ""
+          : interaction
+              ?.toJson(), // Include the interaction field in the JSON if it's not null
     };
   }
 

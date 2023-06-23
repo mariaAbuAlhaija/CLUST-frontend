@@ -24,8 +24,18 @@ class _EventsViewState extends State<EventsView> {
           child: Consumer(
             builder: (BuildContext context, eventSpotProvider provider,
                 Widget? child) {
+                     Future<void> refresh() async {
+                setState(() {
+                  provider.liveEvents.clear();
+                });
+              var event=  provider.liveEventsGenerate();
+                await event;
+              }
+
               return provider.liveEvents.isNotEmpty
-                  ? EventsViewWidget.EventsView(provider.liveEvents)
+                  ? RefreshIndicator(
+                    onRefresh:refresh ,
+                    child: SingleChildScrollView(child: EventsViewWidget.EventsView(provider.liveEvents)))
                   : Center(
                       child: Text("No Live Events"),
                     );
