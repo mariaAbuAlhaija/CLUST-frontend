@@ -38,6 +38,7 @@ class _DisplayEventState extends State<DisplayEvent> {
 
   var spotted = false;
   var rated = false;
+  var pastEvent = false;
   int _rating = 0;
   String eventRate = "0";
   @override
@@ -59,6 +60,8 @@ class _DisplayEventState extends State<DisplayEvent> {
                     widget._event.id, snapshot.data!.id);
                 spotted =
                     provider.containsSpot(widget._event.id, snapshot.data!.id);
+                pastEvent =
+                    provider.isPastEvent(widget._event.id, snapshot.data!.id);
                 // eventRate =
                 //     .toStringAsFixed(2);
                 return Scaffold(
@@ -123,7 +126,7 @@ class _DisplayEventState extends State<DisplayEvent> {
                 spotted ||
                 rated
             ? null
-            : !rated
+            : pastEvent && !rated
                 ? () {
                     bottomSheet(snapshot.data!);
                   }
@@ -154,7 +157,7 @@ class _DisplayEventState extends State<DisplayEvent> {
         child: Text(
           rated
               ? "Rated"
-              : provider.isPastEvent(widget._event.id, snapshot.data!.id)
+              : pastEvent
                   ? "Rate"
                   : widget._event.spotsCount >= widget._event.capacity
                       ? "Full Capacity"
@@ -298,9 +301,12 @@ class _DisplayEventState extends State<DisplayEvent> {
         color: Colors.white,
       ),
       actions: [
-        Padding(
-          padding: EdgeInsets.only(right: 20),
-          child: chip(txt: widget._event.rate.toStringAsFixed(2)),
+        Visibility(
+          visible: pastEvent,
+          child: Padding(
+            padding: EdgeInsets.only(right: 20),
+            child: chip(txt: widget._event.rate.toStringAsFixed(2)),
+          ),
         )
       ],
     );
