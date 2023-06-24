@@ -110,10 +110,7 @@ class Event {
       "status": status.name,
       "views": views.toString(),
       "capacity": capacity.toString(),
-      "interaction": interaction == null
-          ? ""
-          : interaction
-              ?.toJson(), // Include the interaction field in the JSON if it's not null
+      "interaction": '' // Include the interaction field in the JSON if it's not null
     };
   }
 

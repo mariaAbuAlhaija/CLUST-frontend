@@ -171,13 +171,16 @@ class _DisplayEventState extends State<DisplayEvent> {
   }
 
   Widget interactionData() {
+    eventSpotProvider provider = eventSpotProvider();
+   bool ispast= !provider.liveEvents.any((event) => event.id == widget._event.id);
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  QuestionScreen(interactionId: _interaction!.id!)),
+              builder: (context) => QuestionScreen(
+                    interactionId: _interaction!.id!,ispast: ispast,
+                  )),
         );
       },
       child: Row(
