@@ -75,10 +75,10 @@ class eventSpotProvider with ChangeNotifier {
     return createdEvent;
   }
 
-   Future<Event> addEvent(Event event) async {
+  addEvent(Event event) async {
     allEvents.add(event);
+    await events();
     notifyListeners();
-    return event;
   }
 
   removeEvent(Event event) {

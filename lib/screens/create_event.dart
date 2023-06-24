@@ -381,10 +381,11 @@ class _CreateEventState extends State<CreateEvent> {
                     capacity: int.parse(eventCapacityController.text),
                     views: 0);
 
-                Event createdEvent = await provider.addEvent(event);
+                Event createdEvent = await provider.createEvent(event);
                 image_model.Image eventImage = image_model.Image(
                     0, uploadedImage!, createdEvent.id ?? 0, false);
-                ImageController().create(eventImage).then((value) {
+                ImageController().create(eventImage).then((value) async {
+                  await provider.addEvent(createdEvent);
                   EasyLoading.showSuccess("Event request sent",
                       duration: Duration(seconds: 3));
                   if (questionController.text.isNotEmpty) {
