@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:clust/providers/event_spot_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -179,7 +181,6 @@ class QuestionScreen extends StatelessWidget {
     );
   }
 }
-
 class AnswerList extends StatefulWidget {
   final int interactionId;
 
@@ -191,11 +192,19 @@ class AnswerList extends StatefulWidget {
 
 class _AnswerListState extends State<AnswerList> {
   List<Answer> answers = [];
+  bool showNoAnswers = false;
 
   @override
   void initState() {
     super.initState();
     fetchAnswers();
+    Timer(Duration(seconds: 4), () {
+      if (answers.isEmpty) {
+        setState(() {
+          showNoAnswers = true;
+        });
+      }
+    });
   }
 
   Future<void> fetchAnswers() async {
@@ -213,15 +222,28 @@ class _AnswerListState extends State<AnswerList> {
   Future<void> refreshAnswers() async {
     setState(() {
       answers.clear();
+      showNoAnswers = false;
     });
     await fetchAnswers();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (answers.isEmpty) {
+    if (answers.isEmpty && !showNoAnswers) {
       return Center(
         child: CircularProgressIndicator(),
+      );
+    } else if (answers.isEmpty && showNoAnswers) {
+      return RefreshIndicator(
+        onRefresh: refreshAnswers,
+        child: ListView(
+          physics: AlwaysScrollableScrollPhysics(),
+          children: [
+            Center(
+              child: Text('No answers'),
+            ),
+          ],
+        ),
       );
     }
 

@@ -29,7 +29,7 @@ class Event {
   var rate;
   User? organizer;
   Country? country;
-  Interaction? interaction; // New field
+  Interaction? interaction; 
 
   Event(
     this.name,
@@ -49,7 +49,7 @@ class Event {
     this.capacity,
     this.thanking_message,
     this.country,
-    this.interaction, // Initialize the interaction field
+    this.interaction,
   }) {
     if (dynamicImages != null) {
       dynamicImages.forEach((json) {

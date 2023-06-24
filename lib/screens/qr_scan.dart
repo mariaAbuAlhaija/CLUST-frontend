@@ -55,19 +55,7 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
     );
 
     // Update the spot with checked = true
-    int spotId = int.tryParse(barcodeScanResult) ?? -1;
-    if (spotId != -1) {
-      SpotController().updateSpotChecked(spotId);
-      setState(() {});
-      EasyLoading.showSuccess(
-        "Checked!",
-        duration: Duration(seconds: 3),
-      );
-    } else {
-      setState(() {});
-      EasyLoading.showSuccess(
-        "Error!",
-      );
+   
       // Extract spotId and eventId from the scanned QR code result
       List<String> qrResult = barcodeScanResult.split(',');
       if (qrResult.length == 2) {
@@ -118,4 +106,4 @@ class _ScanQRScreenState extends State<ScanQRScreen> {
       }
     }
   }
-}
+ 

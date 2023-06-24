@@ -30,7 +30,7 @@ class UserController {
     return result;
   }
 
-  Future<User> update(User user) async {
+  Future<User> update(User  user) async {
     print(user.accessRole);
     dynamic jsonObject = await ApiHelper().put(path, user.toJson());
     User result = User.fromJson(jsonObject);

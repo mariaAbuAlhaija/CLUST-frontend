@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:clust/controllers/api_helper.dart';
+import 'package:clust/controllers/event_controller.dart';
 import 'package:clust/controllers/user_controller.dart';
 import 'package:clust/globals.dart';
 import 'package:clust/providers/event_spot_provider.dart';
@@ -349,6 +350,8 @@ class _HomeMobState extends State<HomeMob> {
   }
 
   Future<void> _scanQRCode() async {
+      String scannedResult = 'No QR code scanned';
+
     String barcodeScanResult = await FlutterBarcodeScanner.scanBarcode(
       '#ff6666',
       'Cancel',
@@ -357,20 +360,54 @@ class _HomeMobState extends State<HomeMob> {
     );
 
     // Update the spot with checked = true
-    int spotId = int.tryParse(barcodeScanResult) ?? -1;
-    if (spotId != -1) {
-      SpotController().updateSpotChecked(spotId);
-      setState(() {});
-      EasyLoading.showSuccess(
-        "Checked!",
-        duration: Duration(seconds: 3),
-      );
-    } else {
-      setState(() {});
-      EasyLoading.showSuccess(
-        "Error!",
-        duration: Duration(seconds: 3),
-      );
+   
+      // Extract spotId and eventId from the scanned QR code result
+      List<String> qrResult = barcodeScanResult.split(',');
+      if (qrResult.length == 2) {
+        int spotId = int.tryParse(qrResult[0].trim()) ?? -1;
+        int eventId = int.tryParse(qrResult[1].trim()) ?? -1;
+        if (spotId != -1 && eventId != -1) {
+          // Check if the event ID exists for the organizer
+          List<int> eventIds = await EventController().getEventIdsByOrganizer(
+              UserProvider()
+                  .user!
+                  .id); // Replace `organizerId` with the actual organizer ID
+          if (eventIds.contains(eventId)) {
+            // Update the spot with checked = true
+            SpotController().updateSpotChecked(spotId);
+            setState(() {
+              scannedResult = 'Spot ID $spotId has been checked';
+            });
+            EasyLoading.showSuccess(
+              "Checked!",
+              duration: Duration(seconds: 3),
+            );
+          } else {
+            setState(() {
+              scannedResult = 'Wrong event';
+            });
+            EasyLoading.showError(
+              "Wrong event",
+              duration: Duration(seconds: 3),
+            );
+          }
+        } else {
+          setState(() {
+            scannedResult = 'Invalid QR code';
+          });
+          EasyLoading.showError(
+            "Invalid QR code",
+            duration: Duration(seconds: 3),
+          );
+        }
+      } else {
+        setState(() {
+          scannedResult = 'Invalid QR code';
+        });
+        EasyLoading.showError(
+          "Invalid QR code",
+          duration: Duration(seconds: 3),
+        );
+      }
     }
-  }
 }

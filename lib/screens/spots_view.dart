@@ -104,129 +104,139 @@ class _SpotsViewState extends State<SpotsView> {
                 child: Text("No Spotted Spots!"),
               );
             }
-            return Container(
-              child: ListView.builder(
-                itemCount: provider.spottedSpots.length,
-                itemBuilder: (context, index) {
-                  return FutureBuilder<Event>(
-                    future: EventController()
-                        .getByID(provider.spottedSpots[index].eventId),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return Container();
-                      }
-                      bool isCheckedAndLive =
-                          provider.spottedSpots[index].checked &&
-                              provider.liveEvents.any((event) =>
-                                  event.id ==
-                                  provider.spottedSpots[index].eventId) &&
-                              provider.liveEvents.any((event) =>
-                                  event.interaction != null &&
-                                  event.id! ==
-                                      provider.spottedSpots[index].eventId);
-                      bool isNotChecked = !provider.spottedSpots[index].checked;
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Items(event: snapshot.data!),
-                          Expanded(
-                            child: Column(
-                              children: [
-                                Visibility(
-                                  visible: isNotChecked,
-                                  child: IconButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return Dialog(
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  color: Palate.white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          12)),
-                                              padding:
-                                                  const EdgeInsets.all(16.0),
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  const Text(
-                                                    "QR Code",
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 18.0,
+                Future<void> refresh() async {
+                setState(() {
+                  provider.spottedSpots.clear();
+                });
+              var event=  provider.spots();
+                await event;
+              }
+            return RefreshIndicator(
+              onRefresh: refresh,
+              child: Container(
+                child: ListView.builder(
+                  itemCount: provider.spottedSpots.length,
+                  itemBuilder: (context, index) {
+                    return FutureBuilder<Event>(
+                      future: EventController()
+                          .getByID(provider.spottedSpots[index].eventId),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return Container();
+                        }
+                        bool isCheckedAndLive =
+                            provider.spottedSpots[index].checked &&
+                                provider.liveEvents.any((event) =>
+                                    event.id ==
+                                    provider.spottedSpots[index].eventId) &&
+                                provider.liveEvents.any((event) =>
+                                    event.interaction != null &&
+                                    event.id! ==
+                                        provider.spottedSpots[index].eventId);
+                        bool isNotChecked = !provider.spottedSpots[index].checked;
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Items(event: snapshot.data!),
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  Visibility(
+                                    visible: isNotChecked,
+                                    child: IconButton(
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return Dialog(
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    color: Palate.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12)),
+                                                padding:
+                                                    const EdgeInsets.all(16.0),
+                                                child: Column(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    const Text(
+                                                      "QR Code",
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 18.0,
+                                                      ),
                                                     ),
-                                                  ),
-                                                  const SizedBox(height: 16.0),
-                                                  if (!provider
-                                                      .spottedSpots[index]
-                                                      .checked)
-                                                    QrImage(
-                                                      data:
-                                                          '${provider.spottedSpots[index].id},${provider.spottedSpots[index].eventId}',
-                                                      version: QrVersions.auto,
-                                                      size: 200.0,
+                                                    const SizedBox(height: 16.0),
+                                                    if (!provider
+                                                        .spottedSpots[index]
+                                                        .checked)
+                                                      QrImage(
+                                                        data:
+                                                            '${provider.spottedSpots[index].id},${provider.spottedSpots[index].eventId}',
+                                                        version: QrVersions.auto,
+                                                        size: 200.0,
+                                                      ),
+                                                    const SizedBox(height: 16.0),
+                                                    ElevatedButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: const Text('Close'),
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        primary: Colors.grey,
+                                                        onPrimary: Colors.white,
+                                                      ),
                                                     ),
-                                                  const SizedBox(height: 16.0),
-                                                  ElevatedButton(
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    child: const Text('Close'),
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      primary: Colors.grey,
-                                                      onPrimary: Colors.white,
-                                                    ),
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    },
-                                    icon: const Icon(
-                                      Icons.qr_code,
-                                      color: Colors.blue,
+                                            );
+                                          },
+                                        );
+                                      },
+                                      icon: const Icon(
+                                        Icons.qr_code,
+                                        color: Colors.blue,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Visibility(
-                                  visible: isCheckedAndLive,
-                                  child: IconButton(
+                                  Visibility(
+                                    visible: isCheckedAndLive,
+                                    child: IconButton(
+                                      onPressed: () {
+                                        // Show interaction dialog
+                                        _showInteractionDialog(
+                                            snapshot.data!.interaction!);
+                                      },
+                                      icon: const Icon(
+                                        Icons.question_answer,
+                                        color: Colors.green,
+                                      ),
+                                    ),
+                                  ),
+                                  IconButton(
                                     onPressed: () {
-                                      // Show interaction dialog
-                                      _showInteractionDialog(
-                                          snapshot.data!.interaction!);
+                                      provider.removeSpot(
+                                          provider.spottedSpots[index]);
                                     },
                                     icon: const Icon(
-                                      Icons.question_answer,
-                                      color: Colors.green,
+                                      Icons.close,
+                                      color: Colors.red,
                                     ),
                                   ),
-                                ),
-                                IconButton(
-                                  onPressed: () {
-                                    provider.removeSpot(
-                                        provider.spottedSpots[index]);
-                                  },
-                                  icon: const Icon(
-                                    Icons.close,
-                                    color: Colors.red,
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
+                          ],
+                        );
+                      },
+                    );
+                  },
+                ),
               ),
             );
           },

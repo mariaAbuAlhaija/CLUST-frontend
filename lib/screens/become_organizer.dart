@@ -41,7 +41,8 @@ class _BecomeOrganizerState extends State<BecomeOrganizer> {
       ..from = Address(username, 'Clust Events')
       ..recipients.add('aymancheese@hotmail.com')
       ..subject = 'Approval Needed'
-      ..text = 'A user needs authentication to become an organizer. Please check the dashboard.';
+      ..text =
+          'A user needs authentication to become an organizer. Please check the dashboard.';
 
     try {
       final sendReport = await send(message, smtpServer);
@@ -231,6 +232,7 @@ class _BecomeOrganizerState extends State<BecomeOrganizer> {
                 print(_user.firstName);
                 print("${_user.accessRole}" + " button");
                 try {
+                  _user.accessRole = AccessRole.pending;
                   provider.updateUser(_user);
                   EasyLoading.showSuccess(
                     "Requested!",
