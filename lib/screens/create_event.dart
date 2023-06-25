@@ -386,7 +386,7 @@ class _CreateEventState extends State<CreateEvent> {
                     0, uploadedImage!, createdEvent.id ?? 0, false);
                 ImageController().create(eventImage).then((value) async {
                   await provider.addEvent(createdEvent);
-                  EasyLoading.showSuccess("Event request sent",
+                  EasyLoading.showSuccess("Event created",
                       duration: Duration(seconds: 3));
                   if (questionController.text.isNotEmpty) {
                     Interaction interaction =
@@ -404,7 +404,7 @@ class _CreateEventState extends State<CreateEvent> {
                 });
               },
               child: Text(
-                "Send Request",
+                "Create event",
                 style: TextStyle(color: Palate.white),
               ),
             ))

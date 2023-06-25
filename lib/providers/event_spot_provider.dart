@@ -101,7 +101,7 @@ class eventSpotProvider with ChangeNotifier {
   }
 
   Future<Event> defaultEventGenerate() async {
-    var result = await EventController().getByID(15);
+    var result = await EventController().getByID(48);
     defaultEvent = result;
     notifyListeners();
     return defaultEvent;
