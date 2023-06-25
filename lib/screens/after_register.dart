@@ -239,7 +239,11 @@ class _StepsState extends State<Steps> {
   InkWell skipButton(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushReplacementNamed(context, '/home');
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          "/navigator",
+          (Route<dynamic> route) => false,
+        );
       },
       child: Text(
         "Skip",

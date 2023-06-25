@@ -87,6 +87,7 @@ class eventSpotProvider with ChangeNotifier {
   }
 
   Future<List<Event>> events() async {
+    allEvents.clear();
     var result = await EventController().getAll();
     allEvents.addAll(result);
     notifyListeners();

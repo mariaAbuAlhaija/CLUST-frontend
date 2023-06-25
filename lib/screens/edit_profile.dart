@@ -45,6 +45,7 @@ class _EditProfileState extends State<EditProfile> {
       dateController.text = provider.user!.birthDate;
 
       return Scaffold(
+          resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: Text("Account info"),
           ),
@@ -88,7 +89,6 @@ class _EditProfileState extends State<EditProfile> {
                         ),
                       ),
                       Sized_Box().sizedBoxH(context, 30.h),
-                     
                       DatePicker(
                         dateController: dateController,
                       ),
