@@ -13,7 +13,7 @@ import '../controllers/answer_controller.dart';
 class QuestionScreen extends StatelessWidget {
   final int interactionId;
   final bool ispast;
-  QuestionScreen({required this.interactionId,required this.ispast});
+  QuestionScreen({required this.interactionId, required this.ispast});
 
   @override
   Widget build(BuildContext context) {
@@ -34,37 +34,37 @@ class QuestionScreen extends StatelessWidget {
       data: !kIsWeb ? theme(context) : ThemeData(),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Interactions'),
+          title: const Text('Interactions'),
           backgroundColor: Palate.sand,
         ),
         body: FutureBuilder<Interaction>(
           future: InteractionController().getByID(interactionId),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else if (snapshot.hasData) {
               Interaction interaction = snapshot.data!;
               eventSpotProvider provider = eventSpotProvider();
-             
+
               return Padding(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.campaign_rounded,
                           size: 40,
                           color: Palate.sand,
                         ),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         Flexible(
                           child: Text(
                             interaction.type,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
                             ),
@@ -73,7 +73,7 @@ class QuestionScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Expanded(
                       child: AnswerList(interactionId: interactionId),
                     ),
@@ -81,20 +81,22 @@ class QuestionScreen extends StatelessWidget {
                 ),
               );
             } else {
-              return Center(child: Text('No question found.'));
+              return const Center(child: Text('No question found.'));
             }
           },
         ),
-        floatingActionButton:ispast? null:FloatingActionButton(
-          onPressed: () {
-            _showAnswerDialog(context);
-          },
-          backgroundColor: Palate.sand,
-          child: Icon(
-            Icons.chat,
-            color: Palate.black,
-          ),
-        ),
+        floatingActionButton: ispast
+            ? null
+            : FloatingActionButton(
+                onPressed: () {
+                  _showAnswerDialog(context);
+                },
+                backgroundColor: Palate.sand,
+                child: const Icon(
+                  Icons.chat,
+                  color: Palate.black,
+                ),
+              ),
       ),
     );
   }
@@ -119,7 +121,7 @@ class QuestionScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
+                const Text(
                   'Enter your answer',
                   style: TextStyle(
                     fontSize: 18.0,
@@ -127,14 +129,14 @@ class QuestionScreen extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 TextField(
                   controller: answerController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                   ),
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -142,14 +144,14 @@ class QuestionScreen extends StatelessWidget {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Text(
+                      child: const Text(
                         'Cancel',
                         style: TextStyle(
                           color: Colors.grey,
                         ),
                       ),
                     ),
-                    SizedBox(width: 8.0),
+                    const SizedBox(width: 8.0),
                     TextButton(
                       onPressed: () async {
                         String answerText = answerController.text;
@@ -164,7 +166,7 @@ class QuestionScreen extends StatelessWidget {
                           Navigator.pop(context);
                         }
                       },
-                      child: Text(
+                      child: const Text(
                         'Save',
                         style: TextStyle(
                           color: Colors.green,
@@ -181,6 +183,7 @@ class QuestionScreen extends StatelessWidget {
     );
   }
 }
+
 class AnswerList extends StatefulWidget {
   final int interactionId;
 
@@ -198,7 +201,7 @@ class _AnswerListState extends State<AnswerList> {
   void initState() {
     super.initState();
     fetchAnswers();
-    Timer(Duration(seconds: 4), () {
+    Timer(const Duration(seconds: 4), () {
       if (answers.isEmpty) {
         setState(() {
           showNoAnswers = true;
@@ -230,16 +233,16 @@ class _AnswerListState extends State<AnswerList> {
   @override
   Widget build(BuildContext context) {
     if (answers.isEmpty && !showNoAnswers) {
-      return Center(
+      return const Center(
         child: CircularProgressIndicator(),
       );
     } else if (answers.isEmpty && showNoAnswers) {
       return RefreshIndicator(
         onRefresh: refreshAnswers,
         child: ListView(
-          physics: AlwaysScrollableScrollPhysics(),
+          physics: const AlwaysScrollableScrollPhysics(),
           children: [
-            Center(
+            const Center(
               child: Text('No answers'),
             ),
           ],
@@ -255,15 +258,15 @@ class _AnswerListState extends State<AnswerList> {
           return ListTile(
             title: Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.assignment_ind_outlined,
                   size: 20,
                   color: Palate.lightwine,
                 ),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 Text(
                   answers[index].textDescription,
-                  style: TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16),
                 ),
               ],
             ),

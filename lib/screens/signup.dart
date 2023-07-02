@@ -1,10 +1,9 @@
 import 'package:clust/controllers/user_controller.dart';
 import 'package:clust/models/user_model.dart';
-import 'package:clust/screens/logo.dart';
 import 'package:clust/styles/palate.dart';
 import 'package:clust/widgets/chips.dart';
 import 'package:clust/widgets/sized_box.dart';
-import 'package:clust/widgets/text_field.dart' as txtField;
+import 'package:clust/widgets/text_field.dart' as txt_field;
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -14,7 +13,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:clust/widgets/date_picker.dart';
-import 'package:form_builder_validators/form_builder_validators.dart';
 
 var fnameController = TextEditingController();
 var lnameController = TextEditingController();
@@ -25,36 +23,13 @@ var passwordController = TextEditingController();
 var confirmPasswordController = TextEditingController();
 var selectedIndex = "";
 
-class Signup extends StatefulWidget {
-  const Signup({super.key});
-
-  @override
-  State<Signup> createState() => _SignupState();
-}
-
-class _SignupState extends State<Signup> {
+class Signup extends StatelessWidget {
   final _formKey = GlobalKey<FormBuilderState>();
 
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: ThemeData(
-        primaryColor: Colors.amberAccent,
-        useMaterial3: true,
-        textTheme: kIsWeb
-            ? Theme.of(context).textTheme.copyWith(
-                  labelMedium:
-                      web.labelMedium(color: Palate.black.withOpacity(0.5)),
-                  bodySmall: mobile.bodySmall(
-                    color: Palate.black.withOpacity(0.5),
-                  ),
-                )
-            : Theme.of(context).textTheme.copyWith(
-                  bodySmall: mobile.bodySmall(
-                    color: Palate.black.withOpacity(0.5),
-                  ),
-                ),
-      ),
+      data: theme(context),
       child: Scaffold(
         backgroundColor: Palate.black,
         body: Center(
@@ -96,6 +71,26 @@ class _SignupState extends State<Signup> {
     );
   }
 
+  ThemeData theme(BuildContext context) {
+    return ThemeData(
+      primaryColor: Colors.amberAccent,
+      useMaterial3: true,
+      textTheme: kIsWeb
+          ? Theme.of(context).textTheme.copyWith(
+                labelMedium:
+                    web.labelMedium(color: Palate.black.withOpacity(0.5)),
+                bodySmall: mobile.bodySmall(
+                  color: Palate.black.withOpacity(0.5),
+                ),
+              )
+          : Theme.of(context).textTheme.copyWith(
+                bodySmall: mobile.bodySmall(
+                  color: Palate.black.withOpacity(0.5),
+                ),
+              ),
+    );
+  }
+
   RichText options(BuildContext context) {
     return RichText(
       textAlign: TextAlign.center,
@@ -123,12 +118,12 @@ class _SignupState extends State<Signup> {
   Container emailField() {
     return Container(
       width: 460,
-      child: txtField.CustomTextField(
-        type: txtField.Type.email,
+      child: txt_field.CustomTextField(
+        type: txt_field.Type.email,
         controller: emailController,
         hint: "Email",
         lable: "Email",
-        forWhat: txtField.For.signin,
+        forWhat: txt_field.For.signin,
       ),
     );
   }
@@ -140,10 +135,10 @@ class _SignupState extends State<Signup> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           splitedFields(fnameController, "First name", "First name",
-              txtField.Type.general),
+              txt_field.Type.general),
           // sizedBoxW(context, 10.w),
-          splitedFields(
-              lnameController, "Last name", "Last name", txtField.Type.general),
+          splitedFields(lnameController, "Last name", "Last name",
+              txt_field.Type.general),
         ],
       ),
     );
@@ -152,12 +147,12 @@ class _SignupState extends State<Signup> {
   Container splitedFields(controller, hint, lable, type) {
     return Container(
       width: kIsWeb ? 225 : 170,
-      child: txtField.CustomTextField(
+      child: txt_field.CustomTextField(
         type: type,
         controller: controller,
         hint: hint,
         lable: lable,
-        forWhat: txtField.For.signup,
+        forWhat: txt_field.For.signup,
       ),
     );
   }
@@ -165,12 +160,12 @@ class _SignupState extends State<Signup> {
   Container passwordField() {
     return Container(
       width: 460,
-      child: txtField.CustomTextField(
-        type: txtField.Type.password,
+      child: txt_field.CustomTextField(
+        type: txt_field.Type.password,
         controller: passwordController,
         hint: "Password",
         lable: "Password",
-        forWhat: txtField.For.signup,
+        forWhat: txt_field.For.signup,
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:clust/providers/event_spot_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:clust/widgets/events_view.dart' as EventsViewWidget;
+import 'package:clust/widgets/events_view.dart' as events_view_widget;
 import 'package:clust/styles/palate.dart';
 import 'package:flutter/foundation.dart';
 import 'package:clust/styles/mobile_styles.dart' as mobile;
@@ -20,27 +20,27 @@ class _EventsViewState extends State<EventsView> {
       data: !kIsWeb ? theme(context) : ThemeData(),
       child: Scaffold(
         appBar: AppBar(title: Text(widget.txt)),
-        body: Container(
-          child: Consumer(
-            builder: (BuildContext context, eventSpotProvider provider,
-                Widget? child) {
-                     Future<void> refresh() async {
-                setState(() {
-                  provider.liveEvents.clear();
-                });
-              var event=  provider.liveEventsGenerate();
-                await event;
-              }
+        body: Consumer(
+          builder: (BuildContext context, eventSpotProvider provider,
+              Widget? child) {
+            Future<void> refresh() async {
+              setState(() {
+                provider.liveEvents.clear();
+              });
+              var event = provider.liveEventsGenerate();
+              await event;
+            }
 
-              return provider.liveEvents.isNotEmpty
-                  ? RefreshIndicator(
-                    onRefresh:refresh ,
-                    child: SingleChildScrollView(child: EventsViewWidget.EventsView(provider.liveEvents)))
-                  : Center(
-                      child: Text("No Live Events"),
-                    );
-            },
-          ),
+            return provider.liveEvents.isNotEmpty
+                ? RefreshIndicator(
+                    onRefresh: refresh,
+                    child: SingleChildScrollView(
+                        child:
+                            events_view_widget.EventsView(provider.liveEvents)))
+                : const Center(
+                    child: Text("No Live Events"),
+                  );
+          },
         ),
       ),
     );

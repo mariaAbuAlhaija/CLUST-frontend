@@ -43,11 +43,6 @@ class _StepsState extends State<Steps> {
   Widget build(BuildContext context) {
     return Consumer(
         builder: (BuildContext context, UserProvider provider, Widget? child) {
-      // if (provider.user == null) {
-      //   return Center(
-      //     child: CircularProgressIndicator(color: Colors.black),
-      //   );
-      // }
       return Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: Palate.black,
@@ -58,10 +53,9 @@ class _StepsState extends State<Steps> {
           ),
           body: Responsive(
             mobile: mobileLayout(context, provider),
-            desktop: Center(
+            desktop: const Center(
               child: Text("Not Supported"),
             ),
-            // desktop: webLayout(context),
           ));
     });
   }
@@ -69,9 +63,7 @@ class _StepsState extends State<Steps> {
   Center mobileLayout(BuildContext context, UserProvider provider) {
     return Center(
       child: Container(
-        padding: kIsWeb
-            ? EdgeInsets.fromLTRB(300.w, 150.h, 100.w, 100.h)
-            : EdgeInsets.fromLTRB(60.w, 100.h, 60.w, 50.h),
+        padding: EdgeInsets.fromLTRB(60.w, 100.h, 60.w, 50.h),
         child: Stack(
           children: [
             Column(
@@ -139,48 +131,6 @@ class _StepsState extends State<Steps> {
         return const Text("");
     }
   }
-
-  // Padding webLayout(BuildContext context) {
-  //   return Padding(
-  //     padding: padding(),
-  //     child: Wrap(
-  //       children: [
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           crossAxisAlignment: CrossAxisAlignment.center,
-  //           children: [
-  //             Column(
-  //               mainAxisAlignment: MainAxisAlignment.spaceAround,
-  //               children: [steps(), skipButton(context)],
-  //             ),
-  //             stepContent(context)
-  //           ],
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-  // Container stepContent(BuildContext context) {
-  //   return Container(
-  //     padding: EdgeInsets.fromLTRB(150.w, 50.h, 150.w, 20.h),
-  //     height: 700.h,
-  //     width: 830.01.w,
-  //     decoration: BoxDecoration(
-  //         color: Palate.white.withOpacity(0.1),
-  //         borderRadius: const BorderRadius.all(Radius.circular(10))),
-  //     child: Center(
-  //         child:
-  //             Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-  //       Text(
-  //         "Set up your account",
-  //         textAlign: TextAlign.center,
-  //         style: Theme.of(context).textTheme.headlineLarge,
-  //       ),
-  //       content(activeStep),
-  //     ])),
-  //   );
-  // }
 
   stepper.EasyStepper steps() {
     return stepper.EasyStepper(
@@ -255,39 +205,6 @@ class _StepsState extends State<Steps> {
   }
 
   EdgeInsets padding() => EdgeInsets.fromLTRB(180.w, 100.h, 500.w, 150.h);
-
-  // Widget content(int index) {
-  //   switch (index) {
-  //     case 0:
-  //       return Column(
-  //         children: [
-  //           Sized_Box().sizedBoxH(context, 60.0.w),
-  //           Text(
-  //             "Smile!!",
-  //             style: Theme.of(context).textTheme.headlineMedium,
-  //           ),
-  //           Sized_Box().sizedBoxH(context, 40.0.w),
-  //           uploadImage(),
-  //           Sized_Box().sizedBoxH(context, 40.0.h),
-  //           nextButton()
-  //         ],
-  //       );
-  //     case 1:
-  //       return Column(
-  //         children: [
-  //           Sized_Box().sizedBoxH(context, 70.0.h),
-  //           Text(
-  //             "Tell us about you",
-  //             style: Theme.of(context).textTheme.headlineMedium,
-  //           ),
-  //           Sized_Box().sizedBoxH(context, 10.0.h),
-  //           form(provider)
-  //         ],
-  //       );
-  //     default:
-  //       return const Text("");
-  //   }
-  // }
 
   Form form(UserProvider provider) {
     return Form(

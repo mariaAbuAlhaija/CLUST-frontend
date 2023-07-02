@@ -1,27 +1,19 @@
-import 'package:clust/models/event_model.dart';
 import 'package:clust/widgets/image.dart';
-import 'package:clust/widgets/items_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:clust/models/user_model.dart';
 import 'package:clust/providers/user_provider.dart';
-import 'package:clust/controllers/event_controller.dart';
 import 'package:clust/controllers/user_controller.dart';
 import 'package:intl/intl.dart';
-
-import '../widgets/events_view.dart';
-import 'display_orgEvents.dart';
+import 'display_org_events.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Access the user provider to get the user data
     UserProvider userProvider = Provider.of<UserProvider>(context);
     User? user = userProvider.user;
 
-    // Access the event controller to get the events for the organizer
-    EventController eventController = EventController();
     UserController userController = UserController();
 
     DateFormat dateFormat = DateFormat('yyyy/MM/dd');
@@ -34,137 +26,163 @@ class ProfilePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  ClipOval(
-                    child: Container(
-                      width: 100,
-                      height: 100,
-                      child: ImageView(image: user!.image),
-                    ),
-                  ),
-                  SizedBox(width: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${user.firstName} ${user.lastName}',
-                        style: TextStyle(
-                          fontSize: 21,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        ' ${user.accessRole!.name}',
-                        style: TextStyle(fontSize: 14, color: Colors.grey),
-                      ),
-                      SizedBox(height: 25),
-                    ],
-                  ),
-                ],
-              ),
-              Visibility(
-                visible: user.about != " ",
-                child: Container(
-                  margin: EdgeInsets.only(left: 10.w, top: 10.h, bottom: 20.h),
-                  width: MediaQuery.of(context).size.width * 2 / 3,
-                  child: Text(user.about!),
-                ),
-              ),
-              Container(
-                width: double.infinity,
-                margin: EdgeInsets.only(bottom: 16.0),
-                child: TextButton.icon(
-                  onPressed: () {
-                    Navigator.pushNamed(context, "/edit");
-                  },
-                  style: TextButton.styleFrom(
-                    primary: Colors.black,
-                    padding: EdgeInsets.symmetric(vertical: 16.0),
-                    alignment: Alignment.centerLeft,
-                  ),
-                  icon: Icon(
-                    Icons.edit,
-                    size: 20,
-                    // color: Colors.grey.withOpacity(0.7),
-                  ),
-                  label: Text(
-                    'Account info',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-              ),
-              Visibility(
-                visible: user.accessRole == AccessRole.organizer,
-                child: Container(
-                  width: double.infinity,
-                  margin: EdgeInsets.only(bottom: 16.0),
-                  child: TextButton.icon(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => OrgEventsScreen(
-                            organizerId: userProvider.user?.id,
-                          ),
-                        ),
-                      );
-                    },
-                    style: TextButton.styleFrom(
-                      primary: Colors.black,
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                      alignment: Alignment.centerLeft,
-                    ),
-                    icon: Icon(
-                      Icons.event,
-                      size: 20,
-                      // color: Colors.black.withOpacity(0.7),
-                    ),
-                    label: Text(
-                      'Events',
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                width: double.infinity,
-                margin: EdgeInsets.only(bottom: 16.0),
-                child: TextButton.icon(
-                  onPressed: () async {
-                    userController.signout().then((value) {
-                      Navigator.pushReplacementNamed(context, "/signin");
-                    }).onError((error, stackTrace) {
-                      print(error);
-                      print(stackTrace);
-                    });
-                  },
-                  style: TextButton.styleFrom(
-                    primary: Colors.black,
-                    padding: EdgeInsets.symmetric(vertical: 16.0),
-                    alignment: Alignment.centerLeft,
-                  ),
-                  icon: Icon(
-                    Icons.logout,
-                    size: 20,
-                    // color: Colors.grey.withOpacity(0.7),
-                  ),
-                  label: Text(
-                    'Sign Out',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-              ),
+              userInfo(user!),
+              about(user, context),
+              editProfile(context),
+              events(user, context, userProvider),
+              signout(userController, context),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Container signout(UserController userController, BuildContext context) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(bottom: 16.0),
+      child: TextButton.icon(
+        onPressed: () async {
+          userController.signout().then((value) {
+            Navigator.pushReplacementNamed(context, "/signin");
+          }).onError((error, stackTrace) {
+            print(error);
+            print(stackTrace);
+          });
+        },
+        style: TextButton.styleFrom(
+          primary: Colors.black,
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          alignment: Alignment.centerLeft,
+        ),
+        icon: const Icon(
+          Icons.logout,
+          size: 20,
+        ),
+        label: const Text(
+          'Sign Out',
+          style: TextStyle(
+            fontSize: 18,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Visibility events(
+      User user, BuildContext context, UserProvider userProvider) {
+    return Visibility(
+      visible: user.accessRole == AccessRole.organizer,
+      child: Container(
+        width: double.infinity,
+        margin: const EdgeInsets.only(bottom: 16.0),
+        child: TextButton.icon(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => OrgEventsScreen(
+                  organizerId: userProvider.user?.id,
+                ),
+              ),
+            );
+          },
+          style: TextButton.styleFrom(
+            primary: Colors.black,
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            alignment: Alignment.centerLeft,
+          ),
+          icon: const Icon(
+            Icons.event,
+            size: 20,
+          ),
+          label: const Text(
+            'Events',
+            style: TextStyle(
+              fontSize: 18,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Container editProfile(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(bottom: 16.0),
+      child: TextButton.icon(
+        onPressed: () {
+          Navigator.pushNamed(context, "/edit");
+        },
+        style: TextButton.styleFrom(
+          primary: Colors.black,
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          alignment: Alignment.centerLeft,
+        ),
+        icon: const Icon(
+          Icons.edit,
+          size: 20,
+        ),
+        label: const Text(
+          'Account info',
+          style: TextStyle(
+            fontSize: 18,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Visibility about(User user, BuildContext context) {
+    return Visibility(
+      visible: user.about != " ",
+      child: Container(
+        margin: EdgeInsets.only(left: 10.w, top: 10.h, bottom: 20.h),
+        width: MediaQuery.of(context).size.width * 2 / 3,
+        child: Text(user.about!),
+      ),
+    );
+  }
+
+  Row userInfo(User? user) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        avatar(user!),
+        const SizedBox(width: 16),
+        info(user),
+      ],
+    );
+  }
+
+  Column info(User user) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '${user.firstName} ${user.lastName}',
+          style: const TextStyle(
+            fontSize: 21,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          ' ${user.accessRole!.name}',
+          style: const TextStyle(fontSize: 14, color: Colors.grey),
+        ),
+        const SizedBox(height: 25),
+      ],
+    );
+  }
+
+  ClipOval avatar(User? user) {
+    return ClipOval(
+      child: Container(
+        width: 100,
+        height: 100,
+        child: ImageView(image: user!.image),
       ),
     );
   }

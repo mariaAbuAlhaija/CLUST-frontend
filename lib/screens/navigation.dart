@@ -1,14 +1,8 @@
-import 'package:clust/controllers/user_controller.dart';
-import 'package:clust/models/user_model.dart';
 import 'package:clust/screens/profile.dart';
-import 'package:clust/screens/qr_scan.dart';
 import 'package:clust/screens/searchpage.dart';
-import 'package:clust/styles/palate.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'home_mob.dart';
-import 'maps.dart';
 
 class Navigation extends StatefulWidget {
   const Navigation({super.key});
@@ -19,7 +13,7 @@ class Navigation extends StatefulWidget {
 
 class _NavigationState extends State<Navigation> {
   var _selectedIndex = 0;
-  static List<Widget> _widgetOptions = <Widget>[
+  static final List<Widget> _widgetOptions = <Widget>[
     HomeMob(),
     SearchPage(),
     ProfilePage(),
@@ -80,17 +74,6 @@ class _NavigationState extends State<Navigation> {
         size: 30,
       ),
       label: 'Home',
-    );
-  }
-
-  Padding cart() {
-    return Padding(
-      padding: EdgeInsets.only(right: 20.w),
-      child: Icon(
-        FontAwesomeIcons.bagShopping,
-        color: Colors.black54,
-        size: 21,
-      ),
     );
   }
 }

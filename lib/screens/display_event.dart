@@ -1,13 +1,10 @@
-import 'package:clust/controllers/spot_controller.dart';
 import 'package:clust/controllers/user_controller.dart';
-import 'package:clust/main.dart';
 import 'package:clust/models/event_model.dart';
 import 'package:clust/models/rate_model.dart';
 import 'package:clust/models/spot_model.dart';
 import 'package:clust/models/user_model.dart';
 import 'package:clust/providers/event_spot_provider.dart';
 import 'package:clust/providers/rate_provider.dart';
-import 'package:clust/screens/home_mob.dart';
 import 'package:clust/screens/intractions.dart';
 import 'package:clust/styles/palate.dart';
 import 'package:clust/widgets/image.dart';
@@ -18,52 +15,46 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:clust/globals.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:clust/styles/mobile_styles.dart' as mobile;
 
-import '../controllers/interaction_controller.dart';
 import '../models/interaction_model.dart';
 
-class DisplayEvent extends StatefulWidget {
+class DisplayEvent extends StatelessWidget {
   DisplayEvent(this._event, {super.key});
   final Event _event;
-  @override
-  State<DisplayEvent> createState() => _DisplayEventState();
-}
-
-class _DisplayEventState extends State<DisplayEvent> {
   Interaction? _interaction;
 
   var spotted = false;
+
   var rated = false;
+
   var pastEvent = false;
+
   int _rating = 0;
+
   String eventRate = "0";
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<User>(
         future: UserController().getAll(),
         builder: (BuildContext context, snapshot) {
           if (!snapshot.hasData) {
-            return loading();
+            return const loading();
           }
-          _interaction = widget._event.interaction;
+          _interaction = _event.interaction;
 
           return Consumer(builder:
               (BuildContext context, RateProvider rateProvider, Widget? child) {
             return Consumer(
               builder: (BuildContext context, eventSpotProvider provider,
                   Widget? child) {
-                rated = rateProvider.checkRated(
-                    widget._event.id, snapshot.data!.id);
-                spotted =
-                    provider.containsSpot(widget._event.id, snapshot.data!.id);
-                pastEvent =
-                    provider.isPastEvent(widget._event.id, snapshot.data!.id);
-                // eventRate =
-                //     .toStringAsFixed(2);
+                rated = rateProvider.checkRated(_event.id, snapshot.data!.id);
+                spotted = provider.containsSpot(_event.id, snapshot.data!.id);
+                pastEvent = provider.isPastEvent(_event.id, snapshot.data!.id);
+
                 return Scaffold(
                   extendBodyBehindAppBar: true,
                   appBar: appbar(rateProvider),
@@ -73,7 +64,7 @@ class _DisplayEventState extends State<DisplayEvent> {
                       children: [
                         image(),
                         Container(
-                          margin: EdgeInsets.fromLTRB(10, 20, 10, 10),
+                          margin: const EdgeInsets.fromLTRB(10, 20, 10, 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -87,7 +78,8 @@ class _DisplayEventState extends State<DisplayEvent> {
                                 height: 10.h,
                               ),
                               description(),
-                              if (_interaction != null) interactionData(),
+                              if (_interaction != null)
+                                interactionData(context),
                             ],
                           ),
                         ),
@@ -95,7 +87,7 @@ class _DisplayEventState extends State<DisplayEvent> {
                     ),
                   ),
                   bottomNavigationBar: Container(
-                    padding: EdgeInsets.fromLTRB(8, 10, 8, 10),
+                    padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
                     height: 110.h,
                     color: Colors.white,
                     child: Column(
@@ -105,7 +97,7 @@ class _DisplayEventState extends State<DisplayEvent> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [date(), location()],
                         ),
-                        spotButton(snapshot, provider),
+                        spotButton(snapshot, provider, context),
                       ],
                     ),
                   ),
@@ -117,37 +109,35 @@ class _DisplayEventState extends State<DisplayEvent> {
   }
 
   Container spotButton(
-      AsyncSnapshot<User> snapshot, eventSpotProvider provider) {
+      AsyncSnapshot<User> snapshot, eventSpotProvider provider, context) {
     return Container(
       width: double.infinity,
       height: 50.h,
       child: MaterialButton(
-        onPressed: (widget._event.spotsCount >= widget._event.capacity) ||
-                spotted ||
-                rated
+        onPressed: (_event.spotsCount >= _event.capacity) || spotted || rated
             ? null
             : pastEvent && !rated
                 ? () {
-                    bottomSheet(snapshot.data!);
+                    bottomSheet(snapshot.data!, context);
                   }
                 : () {
                     try {
-                      if (widget._event.spotsCount < widget._event.capacity) {
-                        Spot spot = Spot(
-                            0, widget._event.id!, snapshot.data!.id, false);
-                        provider.spotAdded(widget._event, spot);
+                      if (_event.spotsCount < _event.capacity) {
+                        Spot spot =
+                            Spot(0, _event.id, snapshot.data!.id, false);
+                        provider.spotAdded(_event, spot);
 
                         EasyLoading.showSuccess(
                           "Spotted!",
-                          duration: Duration(seconds: 3),
+                          duration: const Duration(seconds: 3),
                         );
                       } else {
                         throw ("Full Capacity");
                       }
                     } catch (error) {
                       EasyLoading.showError(
-                        "${error.toString()}",
-                        duration: Duration(seconds: 3),
+                        error.toString(),
+                        duration: const Duration(seconds: 3),
                       );
                     }
                   },
@@ -159,27 +149,28 @@ class _DisplayEventState extends State<DisplayEvent> {
               ? "Rated"
               : pastEvent
                   ? "Rate"
-                  : widget._event.spotsCount >= widget._event.capacity
+                  : _event.spotsCount >= _event.capacity
                       ? "Full Capacity"
                       : spotted
                           ? "Spotted!"
                           : "Spot",
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
         ),
       ),
     );
   }
 
-  Widget interactionData() {
+  Widget interactionData(context) {
     eventSpotProvider provider = eventSpotProvider();
-   bool ispast= !provider.liveEvents.any((event) => event.id == widget._event.id);
+    bool ispast = !provider.liveEvents.any((event) => event.id == _event.id);
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => QuestionScreen(
-                    interactionId: _interaction!.id!,ispast: ispast,
+                    interactionId: _interaction!.id!,
+                    ispast: ispast,
                   )),
         );
       },
@@ -199,7 +190,7 @@ class _DisplayEventState extends State<DisplayEvent> {
               ],
             ),
           ),
-          Icon(Icons.arrow_forward),
+          const Icon(Icons.arrow_forward),
         ],
       ),
     );
@@ -209,9 +200,9 @@ class _DisplayEventState extends State<DisplayEvent> {
     return Container(
       child: Row(
         children: [
-          Icon(FontAwesomeIcons.clock),
+          const Icon(FontAwesomeIcons.clock),
           Text(
-              "  ${Items().weekDay(widget._event.start_date.weekday)}, ${Items().months(widget._event.start_date.month)} ${widget._event.start_date.day} ${widget._event.start_date.year} ${widget._event.start_date.hour}:${widget._event.start_date.minute} "),
+              "  ${Items().weekDay(_event.start_date.weekday)}, ${Items().months(_event.start_date.month)} ${_event.start_date.day} ${_event.start_date.year} ${_event.start_date.hour}:${_event.start_date.minute} "),
         ],
       ),
     );
@@ -221,9 +212,8 @@ class _DisplayEventState extends State<DisplayEvent> {
     return Container(
       child: Row(
         children: [
-          Icon(Icons.location_on),
-          Text(
-              " ${widget._event.address}, ${widget._event.country!.countryName}"),
+          const Icon(Icons.location_on),
+          Text(" ${_event.address}, ${_event.country!.countryName}"),
         ],
       ),
     );
@@ -231,7 +221,7 @@ class _DisplayEventState extends State<DisplayEvent> {
 
   Text description() {
     return Text(
-      "${widget._event.description}",
+      _event.description,
       style: GoogleFonts.kameron(
           textStyle: mobile.headlineMedium(color: Palate.black)),
     );
@@ -247,7 +237,7 @@ class _DisplayEventState extends State<DisplayEvent> {
 
   Text organizerData() {
     return Text(
-      "${widget._event.organizer!.firstName} ${widget._event.organizer!.lastName}",
+      "${_event.organizer!.firstName} ${_event.organizer!.lastName}",
       style:
           GoogleFonts.kameron(textStyle: mobile.bodySmall(color: Palate.black)),
     );
@@ -260,7 +250,7 @@ class _DisplayEventState extends State<DisplayEvent> {
         Container(
           width: 200.w,
           child: Text(
-            "${widget._event.name}",
+            _event.name,
             softWrap: true,
             style: GoogleFonts.kameron(
                 textStyle: mobile.headlineLarge(color: Palate.black)),
@@ -272,12 +262,12 @@ class _DisplayEventState extends State<DisplayEvent> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Going: ${(widget._event).spotsCount}",
+                "Going: ${(_event).spotsCount}",
                 style: GoogleFonts.kameron(
                     textStyle: mobile.bodySmall(color: Palate.black)),
               ),
               Text(
-                "Capacity: ${widget._event.capacity}",
+                "Capacity: ${_event.capacity}",
                 style: GoogleFonts.kameron(
                     textStyle: mobile.bodySmall(color: Palate.black)),
               ),
@@ -292,7 +282,7 @@ class _DisplayEventState extends State<DisplayEvent> {
     return Container(
       height: 350.h,
       width: double.infinity,
-      child: ImageView(event: widget._event),
+      child: ImageView(event: _event),
     );
   }
 
@@ -300,22 +290,22 @@ class _DisplayEventState extends State<DisplayEvent> {
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 1,
-      iconTheme: IconThemeData(
+      iconTheme: const IconThemeData(
         color: Colors.white,
       ),
       actions: [
         Visibility(
           visible: pastEvent,
           child: Padding(
-            padding: EdgeInsets.only(right: 20),
-            child: chip(txt: widget._event.rate.toStringAsFixed(2)),
+            padding: const EdgeInsets.only(right: 20),
+            child: chip(txt: _event.rate.toStringAsFixed(2)),
           ),
         )
       ],
     );
   }
 
-  bottomSheet(user) {
+  bottomSheet(user, context) {
     return showModalBottomSheet(
       isScrollControlled: true,
       backgroundColor: Colors.white,
@@ -334,7 +324,7 @@ class _DisplayEventState extends State<DisplayEvent> {
                       onTap: () {
                         Navigator.pop(context);
                       },
-                      child: Align(
+                      child: const Align(
                         alignment: Alignment.bottomLeft,
                         child: Icon(
                           Icons.close,
@@ -380,8 +370,7 @@ class _DisplayEventState extends State<DisplayEvent> {
                     onPressed: () {
                       setModalState(() {
                         if (_rating == index + 1) {
-                          _rating =
-                              index; // If the same star is clicked again, unselect it
+                          _rating = index;
                         } else {
                           _rating = index + 1;
                         }
@@ -397,22 +386,22 @@ class _DisplayEventState extends State<DisplayEvent> {
             onPressed: () async {
               print("""
                 ${user.id},
-                ${widget._event.id},""");
+                ${_event.id},""");
               Rate rate = Rate(
                 0,
-                widget._event.id,
+                _event.id,
                 user.id,
                 _rating,
               );
               await Provider.of<RateProvider>(context, listen: false)
                   .addRate(rate);
               Provider.of<RateProvider>(context, listen: false)
-                  .getEventRates(widget._event);
+                  .getEventRates(_event);
 
               Navigator.pop(context);
             },
             color: Colors.black,
-            child: Text(
+            child: const Text(
               "Submit",
               style: TextStyle(color: Colors.white),
             ),

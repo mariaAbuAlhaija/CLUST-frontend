@@ -3,7 +3,6 @@ import 'package:clust/screens/logo.dart';
 import 'package:clust/styles/palate.dart';
 import 'package:clust/widgets/sized_box.dart';
 import 'package:clust/widgets/text_field.dart' as txt_field;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -12,33 +11,17 @@ import 'package:clust/styles/mobile_styles.dart' as mobile;
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class SignIn extends StatefulWidget {
-  const SignIn({super.key});
-
-  @override
-  State<SignIn> createState() => _SignInState();
-}
-
-class _SignInState extends State<SignIn> {
+class SignIn extends StatelessWidget {
   var emailController = TextEditingController();
+
   var passwordController = TextEditingController();
+
   final _formKey = GlobalKey<FormBuilderState>();
+
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: ThemeData(
-        useMaterial3: true,
-        textTheme: kIsWeb
-            ? Theme.of(context).textTheme.copyWith(
-                  labelMedium:
-                      web.labelMedium(color: Palate.black.withOpacity(0.5)),
-                )
-            : Theme.of(context).textTheme.copyWith(
-                  bodySmall: mobile.bodySmall(
-                    color: Palate.black.withOpacity(0.5),
-                  ),
-                ),
-      ),
+      data: theme(context),
       child: Scaffold(
         backgroundColor: Palate.black,
         body: Padding(
@@ -65,6 +48,22 @@ class _SignInState extends State<SignIn> {
           ),
         ),
       ),
+    );
+  }
+
+  ThemeData theme(BuildContext context) {
+    return ThemeData(
+      useMaterial3: true,
+      textTheme: kIsWeb
+          ? Theme.of(context).textTheme.copyWith(
+                labelMedium:
+                    web.labelMedium(color: Palate.black.withOpacity(0.5)),
+              )
+          : Theme.of(context).textTheme.copyWith(
+                bodySmall: mobile.bodySmall(
+                  color: Palate.black.withOpacity(0.5),
+                ),
+              ),
     );
   }
 
@@ -179,7 +178,6 @@ class _SignInState extends State<SignIn> {
         const SnackBar(
           content: Text("This is my content"),
         );
-
       });
     }
   }

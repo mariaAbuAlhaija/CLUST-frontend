@@ -5,7 +5,6 @@ import 'package:clust/providers/rate_provider.dart';
 import 'package:clust/providers/user_provider.dart';
 import 'package:clust/screens/become_organizer.dart';
 import 'package:clust/screens/create_event.dart';
-import 'package:clust/screens/createevent.dart';
 import 'package:clust/screens/display_event.dart';
 import 'package:clust/screens/edit_profile.dart';
 import 'package:clust/screens/home_mob.dart';
@@ -13,7 +12,6 @@ import 'package:clust/screens/landingPage.dart';
 import 'package:clust/screens/logo.dart';
 import 'package:clust/screens/memories.dart';
 import 'package:clust/screens/navigation.dart';
-import 'package:clust/screens/qr_scan.dart';
 import 'package:clust/screens/signin.dart';
 import 'package:clust/screens/signup.dart';
 import 'package:clust/screens/live_events.dart';
@@ -103,7 +101,6 @@ class MyApp extends StatelessWidget {
                 "/navigator": (context) => Navigation(),
                 "/creatEvent": (context) => CreateEvent(),
                 "/spots": (context) => SpotsView(),
-                "/scanner": (context) => ScanQRScreen(),
                 "/memories": (context) => Memories(),
                 "/edit": (context) => EditProfile(),
                 "/becomeOrganizer": (context) => BecomeOrganizer(),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:clust/providers/event_spot_provider.dart';
-import 'package:clust/widgets/events_view.dart' as EventsViewWidget;
+import 'package:clust/widgets/events_view.dart' as events_view_widget;
 import 'package:clust/styles/palate.dart';
 import 'package:clust/styles/mobile_styles.dart' as mobile;
 import '../models/category_model.dart';
@@ -32,23 +32,10 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Search'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              showSearch(
-                context: context,
-                delegate: CustomSearchDelegate(),
-              );
-            },
-          ),
-        ],
-      ),
+      appBar: appBar(context),
       body: Column(
         children: [
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           FutureBuilder<List<Category>>(
             future: _categoriesFuture,
             builder: (context, snapshot) {
@@ -62,63 +49,82 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                 );
               } else if (snapshot.hasError) {
-                return Text('Error loading categories');
+                return const Text('Error loading categories');
               } else {
-                return CircularProgressIndicator();
+                return const CircularProgressIndicator();
               }
             },
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Expanded(
-            child: Theme(
-              data: theme(context),
-              child: Container(
-                child: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.all(16.0),
-                  child: Consumer<eventSpotProvider>(
+              child: Theme(
+            data: theme(context),
+            child: Container(
+              child: SingleChildScrollView(
+                  child: Container(
+                padding: const EdgeInsets.all(16.0),
+                child: Consumer<eventSpotProvider>(
                   builder: (context, provider, _) {
                     final events =
                         provider.getEventsByCategoryIds(selectedCategoryIds);
-                    return EventsViewWidget.EventsView(provider.filteredEvents);
+                    return events_view_widget.EventsView(
+                        provider.filteredEvents);
                   },
-                ),)),
-              ),
-            )
-          ),
+                ),
+              )),
+            ),
+          )),
         ],
       ),
-    );  
+    );
   }
 
-List<Widget> getChoiceChips(List<Category> categories) {
-  return categories.map((category) {
-    return ChoiceChip(
-      label: Text(
-        category.name,
-        style: TextStyle(fontSize:10),
-      ),
-      labelPadding: EdgeInsets.symmetric(horizontal: 4),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      selected: selectedCategoryIds.contains(category.id),
-      selectedColor: Palate.sand.withOpacity(0.7),
-      onSelected: (isSelected) {
-        setState(() {
-          if (isSelected) {
-            selectedCategoryIds.add(category.id);
-          } else {
-            selectedCategoryIds.remove(category.id);
-          }
-        });
-      },
-      visualDensity: VisualDensity(horizontal: -3, vertical: -3), backgroundColor: Colors.grey.withOpacity(0.1),
-      
+  AppBar appBar(BuildContext context) {
+    return AppBar(
+      title: const Text('Search'),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.search),
+          onPressed: () {
+            showSearch(
+              context: context,
+              delegate: CustomSearchDelegate(),
+            );
+          },
+        ),
+      ],
     );
-  }).toList();
-}
-ThemeData theme(BuildContext context) {
+  }
+
+  List<Widget> getChoiceChips(List<Category> categories) {
+    return categories.map((category) {
+      return ChoiceChip(
+        label: Text(
+          category.name,
+          style: const TextStyle(fontSize: 10),
+        ),
+        labelPadding: const EdgeInsets.symmetric(horizontal: 4),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        selected: selectedCategoryIds.contains(category.id),
+        selectedColor: Palate.sand.withOpacity(0.7),
+        onSelected: (isSelected) {
+          setState(() {
+            if (isSelected) {
+              selectedCategoryIds.add(category.id);
+            } else {
+              selectedCategoryIds.remove(category.id);
+            }
+          });
+        },
+        visualDensity: const VisualDensity(horizontal: -3, vertical: -3),
+        backgroundColor: Colors.grey.withOpacity(0.1),
+      );
+    }).toList();
+  }
+
+  ThemeData theme(BuildContext context) {
     return ThemeData(
       useMaterial3: true,
       textTheme: Theme.of(context).textTheme.copyWith(

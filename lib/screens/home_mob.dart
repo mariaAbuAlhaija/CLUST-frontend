@@ -1,8 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:clust/controllers/api_helper.dart';
 import 'package:clust/controllers/event_controller.dart';
-import 'package:clust/controllers/user_controller.dart';
-import 'package:clust/globals.dart';
 import 'package:clust/providers/event_spot_provider.dart';
 import 'package:clust/providers/user_provider.dart';
 import 'package:clust/styles/palate.dart';
@@ -48,7 +45,7 @@ class _HomeMobState extends State<HomeMob> {
     return Responsive(
         mobile: mobileWidget(),
         desktop: Container(
-          child: Center(
+          child: const Center(
             child: Text("Not Supported"),
           ),
         ));
@@ -59,9 +56,8 @@ class _HomeMobState extends State<HomeMob> {
       builder:
           (BuildContext context, UserProvider userProvider, Widget? child) {
         if (userProvider.user == null) {
-          return loading();
+          return const loading();
         }
-        print(userProvider.user!.accessRole);
         return Theme(
           data: !kIsWeb ? theme(context) : ThemeData(),
           child: Scaffold(
@@ -92,15 +88,7 @@ class _HomeMobState extends State<HomeMob> {
                     height: 30.h,
                   ),
                   explore(),
-                  Container(
-                    width: double.infinity,
-                    child: Consumer(
-                      builder: (BuildContext context,
-                          eventSpotProvider provider, Widget? child) {
-                        return EventsView(provider.allEvents);
-                      },
-                    ),
-                  )
+                  events()
                 ],
               ),
             ),
@@ -108,12 +96,10 @@ class _HomeMobState extends State<HomeMob> {
                 userProvider.user!.accessRole == AccessRole.organizer
                     ? FloatingActionButton(
                         onPressed: () {
-                          // Navigator.pushNamed(context, "/scanner");
-
                           _scanQRCode();
                         },
                         backgroundColor: Palate.sand,
-                        child: Icon(
+                        child: const Icon(
                           Icons.qr_code_scanner_rounded,
                           size: 30,
                           color: Palate.black,
@@ -123,6 +109,18 @@ class _HomeMobState extends State<HomeMob> {
           ),
         );
       },
+    );
+  }
+
+  Container events() {
+    return Container(
+      width: double.infinity,
+      child: Consumer(
+        builder:
+            (BuildContext context, eventSpotProvider provider, Widget? child) {
+          return EventsView(provider.allEvents);
+        },
+      ),
     );
   }
 
@@ -148,7 +146,7 @@ class _HomeMobState extends State<HomeMob> {
               child: Container(height: 200, child: slider(provider)),
             );
           else
-            return SizedBox();
+            return const SizedBox();
         },
       ),
     );
@@ -220,7 +218,6 @@ class _HomeMobState extends State<HomeMob> {
           switch (index) {
             case 0:
               provider.fetchUser();
-              print(provider.user!.accessRole);
               if (provider.user!.accessRole == AccessRole.organizer) {
                 Navigator.pushNamed(context, "/creatEvent");
               } else {
@@ -246,7 +243,7 @@ class _HomeMobState extends State<HomeMob> {
             alignment: Alignment.topLeft,
             children: [
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   gradient:
                       LinearGradient(colors: [Color(0xffF4E7CA), Palate.sand]),
                 ),
@@ -318,11 +315,11 @@ class _HomeMobState extends State<HomeMob> {
           children: [
             Text(
               "${event.name}",
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
             Text(
               "${event.organizer!.firstName}",
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
           ],
         ),
@@ -350,7 +347,7 @@ class _HomeMobState extends State<HomeMob> {
   }
 
   Future<void> _scanQRCode() async {
-      String scannedResult = 'No QR code scanned';
+    String scannedResult = 'No QR code scanned';
 
     String barcodeScanResult = await FlutterBarcodeScanner.scanBarcode(
       '#ff6666',
@@ -359,45 +356,29 @@ class _HomeMobState extends State<HomeMob> {
       ScanMode.QR,
     );
 
-    // Update the spot with checked = true
-   
-      // Extract spotId and eventId from the scanned QR code result
-      List<String> qrResult = barcodeScanResult.split(',');
-      if (qrResult.length == 2) {
-        int spotId = int.tryParse(qrResult[0].trim()) ?? -1;
-        int eventId = int.tryParse(qrResult[1].trim()) ?? -1;
-        if (spotId != -1 && eventId != -1) {
-          // Check if the event ID exists for the organizer
-          List<int> eventIds = await EventController().getEventIdsByOrganizer(
-              UserProvider()
-                  .user!
-                  .id); // Replace `organizerId` with the actual organizer ID
-          if (eventIds.contains(eventId)) {
-            // Update the spot with checked = true
-            SpotController().updateSpotChecked(spotId);
-            setState(() {
-              scannedResult = 'Spot ID $spotId has been checked';
-            });
-            EasyLoading.showSuccess(
-              "Checked!",
-              duration: Duration(seconds: 3),
-            );
-          } else {
-            setState(() {
-              scannedResult = 'Wrong event';
-            });
-            EasyLoading.showError(
-              "Wrong event",
-              duration: Duration(seconds: 3),
-            );
-          }
+    List<String> qrResult = barcodeScanResult.split(',');
+    if (qrResult.length == 2) {
+      int spotId = int.tryParse(qrResult[0].trim()) ?? -1;
+      int eventId = int.tryParse(qrResult[1].trim()) ?? -1;
+      if (spotId != -1 && eventId != -1) {
+        List<int> eventIds = await EventController()
+            .getEventIdsByOrganizer(UserProvider().user!.id);
+        if (eventIds.contains(eventId)) {
+          SpotController().updateSpotChecked(spotId);
+          setState(() {
+            scannedResult = 'Spot ID $spotId has been checked';
+          });
+          EasyLoading.showSuccess(
+            "Checked!",
+            duration: const Duration(seconds: 3),
+          );
         } else {
           setState(() {
-            scannedResult = 'Invalid QR code';
+            scannedResult = 'Wrong event';
           });
           EasyLoading.showError(
-            "Invalid QR code",
-            duration: Duration(seconds: 3),
+            "Wrong event",
+            duration: const Duration(seconds: 3),
           );
         }
       } else {
@@ -406,8 +387,17 @@ class _HomeMobState extends State<HomeMob> {
         });
         EasyLoading.showError(
           "Invalid QR code",
-          duration: Duration(seconds: 3),
+          duration: const Duration(seconds: 3),
         );
       }
+    } else {
+      setState(() {
+        scannedResult = 'Invalid QR code';
+      });
+      EasyLoading.showError(
+        "Invalid QR code",
+        duration: const Duration(seconds: 3),
+      );
     }
+  }
 }

@@ -1,5 +1,4 @@
 import 'package:clust/models/event_model.dart';
-import 'package:clust/providers/event_spot_provider.dart';
 import 'package:clust/widgets/items_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

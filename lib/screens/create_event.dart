@@ -1,14 +1,9 @@
 import 'dart:io';
-
-import 'package:clust/controllers/event_controller.dart';
 import 'package:clust/controllers/image_controller.dart';
 import 'package:clust/controllers/interaction_controller.dart';
-import 'package:clust/controllers/user_controller.dart';
-import 'package:clust/globals.dart';
 import 'package:clust/models/event_model.dart';
 import 'package:clust/models/image_model.dart' as image_model;
 import 'package:clust/models/interaction_model.dart';
-import 'package:clust/models/user_model.dart';
 import 'package:clust/providers/event_spot_provider.dart';
 import 'package:clust/providers/user_provider.dart';
 import 'package:clust/styles/palate.dart';
@@ -17,11 +12,8 @@ import 'package:clust/widgets/datetimepicker.dart';
 import 'package:clust/widgets/image.dart';
 import 'package:clust/widgets/loading.dart';
 import 'package:clust/widgets/sized_box.dart';
-import 'package:clust/widgets/text_field.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -83,14 +75,14 @@ class _CreateEventState extends State<CreateEvent> {
         return Consumer(
           builder:
               (BuildContext context, UserProvider userProvider, Widget? child) {
-            if (userProvider.user == null)
-              return loading();
-            else {
+            if (userProvider.user == null) {
+              return const loading();
+            } else {
               return Scaffold(
                 resizeToAvoidBottomInset: false,
                 body: Container(
                   padding: EdgeInsets.only(top: 100.h, right: 30.w, left: 30.w),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
@@ -98,7 +90,6 @@ class _CreateEventState extends State<CreateEvent> {
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
                         "Create Event",
@@ -106,62 +97,8 @@ class _CreateEventState extends State<CreateEvent> {
                             textStyle:
                                 mobile.displayLarge(color: Palate.black)),
                       ),
-                      Expanded(
-                        child: PageView(
-                          scrollDirection: Axis.horizontal,
-                          physics:
-                              scroll ? null : NeverScrollableScrollPhysics(),
-                          controller: _controller,
-                          onPageChanged: (value) {
-                            print(categoryController.text);
-                            setState(() {
-                              _pageIndex = value;
-                            });
-                            if ((value == 1 || value == 2) &&
-                                (!validated || !validated2)) {
-                              setState(() {
-                                scroll = false;
-                              });
-                            }
-                            if (value == 3) {
-                              setState(() {
-                                visible = true;
-                              });
-                            } else {
-                              setState(() {
-                                visible = false;
-                              });
-                            }
-                          },
-                          children: <Widget>[
-                            firstPage(),
-                            secondPage(),
-                            thirdPage(),
-                            imageScreen(),
-                            // fourthPage(),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                            right: 20.w, left: 20.w, bottom: 20),
-                        height: 60.h,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              child: Row(
-                                children: List.generate(
-                                    4,
-                                    (index) =>
-                                        dotsIndicator(_pageIndex == index)),
-                              ),
-                            ),
-                            arrow(provider, userProvider)
-                          ],
-                        ),
-                      )
+                      content(),
+                      navigation(provider, userProvider)
                     ],
                   ),
                 ),
@@ -173,6 +110,62 @@ class _CreateEventState extends State<CreateEvent> {
     );
   }
 
+  Container navigation(eventSpotProvider provider, UserProvider userProvider) {
+    return Container(
+      margin: EdgeInsets.only(right: 20.w, left: 20.w, bottom: 20),
+      height: 60.h,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            child: Row(
+              children: List.generate(
+                  4, (index) => dotsIndicator(_pageIndex == index)),
+            ),
+          ),
+          arrow(provider, userProvider)
+        ],
+      ),
+    );
+  }
+
+  Expanded content() {
+    return Expanded(
+      child: PageView(
+        scrollDirection: Axis.horizontal,
+        physics: scroll ? null : const NeverScrollableScrollPhysics(),
+        controller: _controller,
+        onPageChanged: (value) {
+          print(categoryController.text);
+          setState(() {
+            _pageIndex = value;
+          });
+          if ((value == 1 || value == 2) && (!validated || !validated2)) {
+            setState(() {
+              scroll = false;
+            });
+          }
+          if (value == 3) {
+            setState(() {
+              visible = true;
+            });
+          } else {
+            setState(() {
+              visible = false;
+            });
+          }
+        },
+        children: <Widget>[
+          firstPage(),
+          secondPage(),
+          thirdPage(),
+          imageScreen(),
+        ],
+      ),
+    );
+  }
+
   Center firstPage() {
     return Center(
         child: Container(
@@ -180,7 +173,7 @@ class _CreateEventState extends State<CreateEvent> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
+          const Text(
             "Create your own event, gather with people you share intrests with, and don't forget to enjoy your time",
             textAlign: TextAlign.center,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
@@ -199,7 +192,7 @@ class _CreateEventState extends State<CreateEvent> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Sized_Box().sizedBoxH(context, 60.0.w),
-          Text(
+          const Text(
             "Upload event image (optional)",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
@@ -228,7 +221,7 @@ class _CreateEventState extends State<CreateEvent> {
                     scroll = validated;
                   });
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     hintText: "Event Name", labelText: "Event Name"),
               ),
               Sized_Box().sizedBoxH(context, 15.h),
@@ -246,7 +239,7 @@ class _CreateEventState extends State<CreateEvent> {
                   });
                 },
                 validator: FormBuilderValidators.required(),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: "About Event",
                   labelText: "About Event",
                 ),
@@ -264,7 +257,7 @@ class _CreateEventState extends State<CreateEvent> {
                   });
                 },
                 maxLength: 3,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     hintText: "Capacity", labelText: "Capacity"),
               ),
               Sized_Box().sizedBoxH(context, 15.h),
@@ -325,7 +318,7 @@ class _CreateEventState extends State<CreateEvent> {
             children: [
               Icon(FontAwesomeIcons.camera, color: Palate.black, size: 50.w),
               Sized_Box().sizedBoxH(context, 10.0.h),
-              Text(
+              const Text(
                 "Upload",
               )
             ],
@@ -361,7 +354,7 @@ class _CreateEventState extends State<CreateEvent> {
             visible: visible,
             child: MaterialButton(
               color: Palate.wine,
-              shape: RoundedRectangleBorder(
+              shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               onPressed: () async {
                 Event event = Event(
@@ -387,7 +380,7 @@ class _CreateEventState extends State<CreateEvent> {
                 ImageController().create(eventImage).then((value) async {
                   await provider.addEvent(createdEvent);
                   EasyLoading.showSuccess("Event created",
-                      duration: Duration(seconds: 3));
+                      duration: const Duration(seconds: 3));
                   if (questionController.text.isNotEmpty) {
                     Interaction interaction =
                         Interaction(0, questionController.text, event!.id);
@@ -403,7 +396,7 @@ class _CreateEventState extends State<CreateEvent> {
                   print(stackTrace);
                 });
               },
-              child: Text(
+              child: const Text(
                 "Create event",
                 style: TextStyle(color: Palate.white),
               ),
@@ -415,12 +408,14 @@ class _CreateEventState extends State<CreateEvent> {
   AnimatedContainer dotsIndicator(isActive) {
     return AnimatedContainer(
       decoration: BoxDecoration(
-          color: isActive ? Color.fromRGBO(30, 28, 28, 1) : Palate.lighterBlack,
-          borderRadius: BorderRadius.all(Radius.circular(10))),
-      margin: EdgeInsets.all(2),
+          color: isActive
+              ? const Color.fromRGBO(30, 28, 28, 1)
+              : Palate.lighterBlack,
+          borderRadius: const BorderRadius.all(Radius.circular(10))),
+      margin: const EdgeInsets.all(2),
       height: isActive ? 20 : 10.h,
       width: 3.w,
-      duration: Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 200),
     );
   }
 
@@ -482,7 +477,7 @@ class _CreateEventState extends State<CreateEvent> {
                     });
                   },
                   validator: FormBuilderValidators.required(),
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: "Event Address",
                     labelText: "Event Address",
                   ),

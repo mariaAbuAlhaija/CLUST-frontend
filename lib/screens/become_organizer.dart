@@ -1,13 +1,8 @@
-import 'package:clust/controllers/user_controller.dart';
-import 'package:clust/globals.dart';
 import 'package:clust/models/user_model.dart';
 import 'package:clust/providers/user_provider.dart';
 import 'package:clust/styles/palate.dart';
 import 'package:clust/widgets/loading.dart';
-import 'package:clust/widgets/text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -56,32 +51,26 @@ class _BecomeOrganizerState extends State<BecomeOrganizer> {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (BuildContext context, UserProvider provider, Widget? child) {
-        if (provider.user == null)
-          return loading();
-        else {
-          if (provider.user!.accessRole == AccessRole.pending)
+        if (provider.user == null) {
+          return const loading();
+        } else {
+          if (provider.user!.accessRole == AccessRole.pending) {
+            return pending();
+          } else if (provider.user!.accessRole == AccessRole.attendee) {
             return Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: const [Color(0xffF4E7CA), Palate.sand]),
-                ),
-                child: thirdPage());
-          else if (provider.user!.accessRole == AccessRole.attendee) {
-            return Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: const [Color(0xffF4E7CA), Palate.sand]),
+                    colors: [Color(0xffF4E7CA), Palate.sand]),
               ),
               child: Column(
                 children: [
                   Expanded(
                     child: PageView(
                       scrollDirection: Axis.horizontal,
-                      physics: scroll ? null : NeverScrollableScrollPhysics(),
+                      physics:
+                          scroll ? null : const NeverScrollableScrollPhysics(),
                       controller: _controller,
                       onPageChanged: (value) {
                         setState(() {
@@ -105,7 +94,7 @@ class _BecomeOrganizerState extends State<BecomeOrganizer> {
                       children: <Widget>[
                         firstPage(),
                         secondPage(),
-                        thirdPage(),
+                        const thirdPage(),
                       ],
                     ),
                   ),
@@ -131,11 +120,22 @@ class _BecomeOrganizerState extends State<BecomeOrganizer> {
               ),
             );
           } else {
-            return loading();
+            return const loading();
           }
         }
       },
     );
+  }
+
+  Container pending() {
+    return Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xffF4E7CA), Palate.sand]),
+        ),
+        child: const thirdPage());
   }
 
   Center secondPage() {
@@ -145,7 +145,7 @@ class _BecomeOrganizerState extends State<BecomeOrganizer> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
+          const Text(
             "Organizer request",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
@@ -167,7 +167,7 @@ class _BecomeOrganizerState extends State<BecomeOrganizer> {
                       scroll = validated;
                     });
                   },
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       hintText: "Social Security number",
                       labelText: "Enter Your Social Security number"),
                 ),
@@ -223,7 +223,7 @@ class _BecomeOrganizerState extends State<BecomeOrganizer> {
             visible: visible,
             child: MaterialButton(
               color: Palate.wine,
-              shape: RoundedRectangleBorder(
+              shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               onPressed: () {
                 User _user = User.fromObj(provider.user!,
@@ -236,10 +236,9 @@ class _BecomeOrganizerState extends State<BecomeOrganizer> {
                   provider.updateUser(_user);
                   EasyLoading.showSuccess(
                     "Requested!",
-                    duration: Duration(seconds: 3),
+                    duration: const Duration(seconds: 3),
                   );
 
-                  // Send approval email after success
                   sendApprovalEmail();
 
                   Navigator.pushReplacementNamed(context, "/navigator");
@@ -247,12 +246,12 @@ class _BecomeOrganizerState extends State<BecomeOrganizer> {
                   print(error);
                   print(stackTrace);
                   EasyLoading.showError(
-                    "${error.toString()}",
-                    duration: Duration(seconds: 3),
+                    error.toString(),
+                    duration: const Duration(seconds: 3),
                   );
                 }
               },
-              child: Text(
+              child: const Text(
                 "Send Request",
                 style: TextStyle(color: Palate.white),
               ),
@@ -265,11 +264,11 @@ class _BecomeOrganizerState extends State<BecomeOrganizer> {
     return AnimatedContainer(
       decoration: BoxDecoration(
           color: isActive ? Palate.black : Palate.lighterBlack,
-          borderRadius: BorderRadius.all(Radius.circular(10))),
-      margin: EdgeInsets.all(2),
+          borderRadius: const BorderRadius.all(Radius.circular(10))),
+      margin: const EdgeInsets.all(2),
       height: isActive ? 20 : 10.h,
       width: 3.w,
-      duration: Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 200),
     );
   }
 }

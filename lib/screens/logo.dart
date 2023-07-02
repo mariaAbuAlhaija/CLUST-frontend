@@ -4,12 +4,6 @@ import 'dart:async';
 import 'package:clust/styles/palate.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../styles/responsive.dart';
-import 'landingPage.dart';
-
-import '../styles/responsive.dart';
-import 'landingPage.dart';
-
 class Logo extends StatefulWidget {
   Logo({
     Key? key,
@@ -44,7 +38,7 @@ class _LogoState extends State<Logo> {
     timer = Timer(
       const Duration(seconds: 3),
       () async {
-        var storage = await FlutterSecureStorage();
+        var storage = const FlutterSecureStorage();
         var authirized = await storage.containsKey(key: "token");
         print(authirized);
         authirized
