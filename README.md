@@ -1,16 +1,12 @@
-# clust
 
-A new Flutter project.
+# CLUST: Event Management Application
+CLUST is an event management application that simplifies the process of organizing and attending events. It provides a platform for event organizers to create and manage events, while also allowing attendees to browse and book spots at their desired events. Whether you're planning a conference, concert, workshop, or any other type of event, CLUST has you covered.
 
-## Getting Started
+# Key Features
+* Event Discovery: CLUST offers an event browsing feature that allows attendees to discover all events.
+  
+* Organizer Requests: CLUST allows users to submit requests to become event organizers. Individuals or organizations interested in hosting their own events can apply to become organizers through the application.
+  
+* Event Creation: Event organizers can easily create new events through CLUST. They can provide detailed information about the event, including the event title, date, time, venue, description, and capacity. This feature enables organizers to efficiently set up and manage their events.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* Spots Booking: CLUST allows attendees to browse through a wide range of events and book Spots effortlessly.
